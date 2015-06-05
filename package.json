@@ -6,7 +6,7 @@
   "author": "Paul Smith (smiffy6969)",
   "dependencies": {
     "razor-naff": "smiffy6969/razor-naff",
-    "webcomponentsjs": "webcomponents/webcomponentsjs",
+    "webcomponentsjs": "webcomponents/webcomponentsjs"
   },
   "license": "MIT",
   "devDependencies": {

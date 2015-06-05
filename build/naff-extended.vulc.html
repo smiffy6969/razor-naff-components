@@ -1,0 +1,43 @@
+<!--
+* razor-naff-components
+* naff-extended
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+--><html><head><style type="text/css">
+	button[is='naff-x-button'] { opacity: 0.8; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	button[is='naff-x-button'], button[is='naff-x-button']:focus { opacity: 1; }
+	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
+	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	button[is='naff-x-button'][size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
+	button[is='naff-x-button'][size=small] { padding: 4px 8px; font-size: 12px; line-height: 12px; }
+	button[is='naff-x-button'][size=medium] { padding: 6px 12px; font-size: 14px; line-height: 16px; }
+	button[is='naff-x-button'][size=large] { padding: 8px 16px; font-size: 18px; line-height: 18px; }
+	button[is='naff-x-button'][size='extra-large'] { padding: 10px 20px; font-size: 22px; line-height: 22px; }
+	button[is='naff-x-button'][shape=round] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+</style>
+
+<!-- LOGIC -->
+<script>
+(function()
+{
+	/* SETUP */
+
+	var naffXButtonProto = Object.create(HTMLElement.prototype);
+
+	/* ELEMENT */
+
+	document.registerElement('naff-x-button', { prototype: naffXButtonProto, extends: 'button'});
+})()
+</script></head><body></body></html>

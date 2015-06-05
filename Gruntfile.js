@@ -11,16 +11,10 @@ module.exports = function(grunt) {
         options: {
           // Task-specific options go here.
           csp: false,
-          excludes: {
-            imports: [
-              "polymer.html"
-            ]
-          },
-          "strip-excludes": false
         },
         files: {
           // Target-specific file lists and/or options go here. dest: source
-          'build/razor.vulc.html': 'src/razor.html'
+          'build/naff.vulc.html': 'src/naff.html'
         }
       },
 
@@ -29,16 +23,10 @@ module.exports = function(grunt) {
         options: {
           // Task-specific options go here.
           csp: true,
-          excludes: {
-            imports: [
-              "polymer.html"
-            ]
-          },
-          "strip-excludes": false
         },
         files: {
           // Target-specific file lists and/or options go here. dest: source
-          'build/razor.vulc.csp.html': 'src/razor.html'
+          'build/naff.vulc.csp.html': 'src/naff.html'
         }
       },
 
@@ -49,21 +37,16 @@ module.exports = function(grunt) {
           csp: false,
           excludes: {
             imports: [
-              "polymer.html",
-              "razor-base.html",
-              "razor-control.html",
-              "razor-overlay.html",
-              "razor-extended.html"
+              "naff-base.html",
+              "naff-extended.html"
             ]
           },
           "strip-excludes": false
         },
         files: {
           // Target-specific file lists and/or options go here. dest: source
-          'build/razor-base.vulc.html': 'src/razor-base.html',
-          'build/razor-control.vulc.html': 'src/razor-control.html',
-          'build/razor-overlay.vulc.html': 'src/razor-overlay.html',
-          'build/razor-extended.vulc.html': 'src/razor-extended.html'
+          'build/naff-base.vulc.html': 'src/naff-base.html',
+          'build/naff-extended.vulc.html': 'src/naff-extended.html'
         }
       },    
 
@@ -74,21 +57,16 @@ module.exports = function(grunt) {
           csp: true,
           excludes: {
             imports: [
-              "polymer.html",
-              "razor-base.html",
-              "razor-control.html",
-              "razor-overlay.html",
-              "razor-extended.html"
+              "naff-base.html",
+              "naff-extended.html"
             ]
           },
           "strip-excludes": false
         },
         files: {
           // Target-specific file lists and/or options go here. dest: source
-          'build/razor-base.vulc.csp.html': 'src/razor-base.html',
-          'build/razor-control.vulc.csp.html': 'src/razor-control.html',
-          'build/razor-overlay.vulc.csp.html': 'src/razor-overlay.html',
-          'build/razor-extended.vulc.csp.html': 'src/razor-extended.html'
+          'build/naff-base.vulc.csp.html': 'src/naff-base.html',
+          'build/naff-extended.vulc.csp.html': 'src/naff-extended.html'
         }
       }
     },
@@ -99,10 +77,8 @@ module.exports = function(grunt) {
         src: ['build/*.html'],
         overwrite: true,                 // overwrite matched source files
         replacements: [
-          {from: "src/razor-base.html", to: "build/razor-base.vulc.html"},
-          {from: "src/razor-control.html", to: "build/razor-control.vulc.html"},
-          {from: "src/razor-overlay.html", to: "build/razor-overlay.vulc.html"},
-          {from: "src/razor-extended.html", to: "build/razor-extended.vulc.html"}
+          {from: "src/naff-base.html", to: "build/naff-base.vulc.html"},
+          {from: "src/naff-extended.html", to: "build/naff-extended.vulc.html"}
         ]
       }
     }

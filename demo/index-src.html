@@ -22,7 +22,7 @@
 	</head>
 	<body>
 
-		<h2>Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
+		<h2>Custom Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
 		<naff-icon name="check"></naff-icon>
 		<naff-icon name="check" style="background-color: #444" inverse></naff-icon>
 		<naff-icon name="bed" size="2" style="color: red"></naff-icon>
@@ -33,32 +33,38 @@
 
 		<hr>
 
-<!-- 		<h2>Tag</h2>
+ 		<h2>Custom Tag [naff-tag]</h2>
 		<p>
-			<razor-tag color="grey" size="extra-small">Extra Small Tag</razor-tag>
-			<razor-tag color="blue" size="small">Small Tag</razor-tag>
-			<razor-tag color="red" size="small">Small Tag</razor-tag>
-		</p>
-		<p>
-			<razor-tag shape="rounded" color="green" size="medium">Medium Rounded Tag</razor-tag>
-			<razor-tag shape="rounded" color="orange" size="medium">Medium Rounded Tag</razor-tag>
-			<razor-tag shape="rounded" color="black" size="medium">Medium Rounded Tag</razor-tag>
-			<razor-tag shape="rounded" color="pink" size="medium">Medium Rounded Tag</razor-tag>
-		</p>
-		<p style="background-color: #f4f4f4; padding: 20px;">
-			<razor-tag shape="round" color="purple" size="large">Large Round Tag</razor-tag>
-			<razor-tag shape="round" color="yellow" size="large">Large Round Tag</razor-tag>
-			<razor-tag shape="round" color="aqua" size="extra-large">Extra Large Round Tag</razor-tag>
-			<razor-tag shape="round" color="white" size="extra-large">Extra Large Round Tag</razor-tag>
-		</p>
-		<p>
-			<razor-tag shape="oval" color="orange" size="small">Small Oval Tag</razor-tag>
-			<razor-tag shape="oval" color="blue" size="medium">Medium Oval Tag</razor-tag>
-			<razor-tag shape="oval" color="black" size="Large">Large Oval Tag</razor-tag>
+			<naff-tag size="extra-small">Extra Small Tag</naff-tag>
+			<naff-tag size="small">Small Tag</naff-tag>
+			<naff-tag size="medium" color="red">Medium Tag</naff-tag>
+			<naff-tag shape="rounded" size="medium" color="blue">Medium Rounded Tag</naff-tag>
+			<naff-tag shape="round" size="medium" color="orange">Medium Round Tag</naff-tag>
+			<naff-tag shape="oval" size="medium" color="green">Medium Oval Tag</naff-tag>
+			<naff-tag size="large" color="black">Large Round Tag</naff-tag>
+			<naff-tag size="extra-large">Extra Large Round Tag</naff-tag>
 		</p>
 
 		<hr>
 
+ 		<h2>Extended Button [is="naff-x-button"]</h2>
+ 		<p>Clicked <span id="naff-x-button-clicked">0</span> times</p>
+		<button onclick="updateClicks()" is="naff-x-button" size="extra-small">Extra Small Button</button>
+		<button onclick="updateClicks()" is="naff-x-button" color="red" size="small">Small Disabled button</button>
+		<button onclick="updateClicks()" is="naff-x-button" color="blue" size="medium">Default/Medium button</button>
+		<button onclick="updateClicks()" is="naff-x-button" color="green" size="medium">Default/Medium button</button>
+		<button onclick="updateClicks()" is="naff-x-button" color="orange" size="large">Large button</button>
+		<button onclick="updateClicks()" is="naff-x-button" color="black" size="extra-large">Extra Large Button</button>
+
+		<script type="text/javascript">
+			function updateClicks()
+			{
+				var clicked = document.querySelector('#naff-x-button-clicked');
+				var times = parseInt(clicked.innerText);
+				clicked.innerHTML = times += 1;
+			}
+		</script>
+<!--
 		<h2>Button</h2>
 		<polymer-element name="test-razor-button">
 			<template>		

@@ -1,0 +1,45 @@
+<!--
+* razor-naff-components
+* naff-tag - Displays a contents of the tag in a coloured box, much like a bootstrap label.
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- STYLE - Encapsulate all css to tag name to stop bleed out of component style -->
+<style type="text/css">
+	naff-tag { display: inline-block; padding: 6px 8px; background: #ddd; color: #222;}
+	naff-tag[size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
+	naff-tag[size='small'] { padding: 4px 6px; font-size: 12px; line-height: 12px; }
+	naff-tag[size='medium'] { padding: 6px 8px; font-size: 14px; line-height: 16px; }
+	naff-tag[size='large'] { padding: 8px 12px; font-size: 18px; line-height: 18px; }
+	naff-tag[size='extra-large'] { padding: 10px 14px; font-size: 22px; line-height: 22px; }
+	naff-tag[shape='round'] { border-radius: 100px; }
+	naff-tag[shape='rounded'] { border-radius: 5px; }
+	naff-tag[shape='oval'] { border-radius: 75% / 77%; }
+	naff-tag[color='grey'] { background: #ddd; color: #222; }
+	naff-tag[color='blue'] { background: rgb(74, 74, 255); color: #fff; }
+	naff-tag[color='red'] { background: rgb(255, 44, 44); color: #fff; }
+	naff-tag[color='green'] { background: rgb(18, 163, 18); color: #fff; }
+	naff-tag[color='orange'] { background: rgb(255, 136, 26); color: #fff; }
+	naff-tag[color='black'] { background: #222; color: #fff; }
+	naff-tag[color='pink'] { background: #D729D5; color: #fff; }
+	naff-tag[color='purple'] { background: #8913D4; color: #fff; }
+	naff-tag[color='yellow'] { background: #E5E522; color: #444; }
+	naff-tag[color='aqua'] { background: #31AEDB; color: #FFF; }
+	naff-tag[color='white'] { background: #FFFFFF; color: #444; }
+</style>
+
+<!-- LOGIC -->
+<script>
+(function()
+{
+	/* SETUP */
+
+	var naffTagProto = Object.create(HTMLElement.prototype);
+
+	/* ELEMENT */
+
+	document.registerElement('naff-tag', { prototype: naffTagProto });
+})()
+</script>

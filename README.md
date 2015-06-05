@@ -85,6 +85,22 @@ For details on how to use the web components, please see the applicable index fi
 The components are split into groups, with a distinction between extended components that simply extend an exisiting element using the is="" attribute, and custom components. All extended components use the -x- naming convention to help distinguish between these two types when using.
 
 
+## naff-x-button [naff-extended]
+
+
+```html
+<button is="naff-x-button" size="" color="" disabled></button>
+```
+
+
+A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
+
+
+* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
+* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
+* __shape__ - Shapes include square and rounded corners.
+
+
 ## naff-icon [naff-base]
 
 
@@ -105,6 +121,22 @@ All icons are supplied via embedded [font-awesome](http://fortawesome.github.io/
 * __pulse__ - Make the icon spin in steps
 * __inverse__ - Invert the icon color (white icon)
 * __fixed-width__ - Set the icon to a fixed width (great for aligning icons)
+
+
+## naff-tag [naff-base]
+
+
+```html
+<naff-tag shape="" size="" color=""></naff-tag>
+```
+
+
+Adds a tag with the contents being shown in a colored box in several shapes, use this for highlighting text.
+
+
+* __size__ - The size as extra-small, small, medium, large, extra-large
+* __shape__ - The shape as round, rounded, oval or square
+* __color__ - The color as grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white
 
 
 

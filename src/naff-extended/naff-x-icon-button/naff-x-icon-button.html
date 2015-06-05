@@ -1,0 +1,167 @@
+<!--
+* razor web components
+* razor-x-icon-button - a circular button that contains only an icon
+* Copywrite 2015 to Present Day - Paul Smith (smiffy6969)
+*
+* @author Paul Smith
+* @site ulsmith.net
+* @created Jul 2014
+-->
+
+<link rel="import" href="../../../../polymer/polymer.html">
+<link rel="import" href="../../razor-base.html">
+
+<polymer-element name="razor-x-icon-button" extends="button" attributes="size color icon shape" noscript>
+	<template>		
+		<style>
+			:host { opacity: 0.8; }
+
+			:host(:hover), :host(:focus) { opacity: 1; }
+			
+			:host(:active:not(.disabled)) { opacity: 0.8; }
+
+			:host([disabled]), :host([disabled]:hover), :host([disabled]:focus) 
+			{ 
+				opacity: 0.4;
+				cursor: not-allowed;
+			}
+
+			:host([color=grey])
+			{
+				border: 1px solid #bbb;
+				background: #ddd;
+				color: #222;
+			}
+
+			:host([color=blue])
+			{
+				border: 1px solid blue;
+				background: rgb(74, 74, 255);
+				color: #fff;
+			}
+
+			:host([color=red])
+			{
+				border: 1px solid red;
+				background: rgb(255, 44, 44);
+				color: #fff;
+			}
+
+			:host([color=green])
+			{
+				border: 1px solid green;
+				background: rgb(18, 163, 18);
+				color: #fff;
+			}
+
+			:host([color=orange])
+			{
+				border: 1px solid rgb(255, 118, 26);
+				background: rgb(255, 136, 26);
+				color: #fff;
+			}
+
+			:host([color=black])
+			{
+				border: 1px solid #111;
+				background: #222;
+				color: #fff;
+			}
+
+			:host([color=pink])
+			{
+				border: 1px solid #991C97;
+				background: #D729D5;
+				color: #fff;
+			}
+
+			:host([color=purple])
+			{
+				border: 1px solid #440869;
+				background: #8913D4;
+				color: #fff;
+			}
+
+			:host([color=yellow])
+			{
+				border: 1px solid #CCCC36;
+				background: #E5E522;
+				color: #444;
+			}
+
+			:host([color=aqua])
+			{
+				border: 1px solid #308FB1;
+				background: #31AEDB;
+				color: #FFF;
+			}
+
+			:host([color=white])
+			{
+				border: 1px solid #ccc;
+				background: #FFFFFF;
+				color: #444;
+			}
+
+			:host([size='extra-small'])
+			{
+				width: 18px;
+				height: 18px;
+				font-size: 10px;
+				line-height: 10px;
+			}
+
+			:host([size='extra-small']) razor-icon
+			{
+				position: relative;
+				left: -2.5px;
+			}
+
+			:host([size=small])
+			{
+				width: 24px;
+				height: 24px;
+				font-size: 12px;
+				line-height: 12px;
+			}
+
+			:host([size=medium])
+			{
+				width: 30px;
+				height: 30px;
+				font-size: 14px;
+				line-height: 16px;
+			}
+
+			:host([size=large])
+			{
+				width: 36px;
+				height: 36px;
+				font-size: 18px;
+				line-height: 18px;
+			}
+
+			:host([size='extra-large'])
+			{
+				width: 44px;
+				height: 44px;
+				font-size: 22px;
+				line-height: 22px;
+			}
+
+			:host([shape=round])
+			{
+				-webkit-border-radius: 100px;
+				-moz-border-radius: 100px;
+				-ms-border-radius: 100px;
+				-o-border-radius: 100px;
+				border-radius: 100px;
+			}
+
+			razor-icon { cursor: default; }
+			
+			:host([disabled]) razor-icon { cursor: not-allowed; }
+		</style>
+		<razor-icon icon="{{icon}}"></razor-icon>
+	</template>
+</polymer-element>
