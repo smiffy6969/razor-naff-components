@@ -1,0 +1,23 @@
+{
+  "name": "razor-naff-components",
+  "description": "razorNAFF web components written in native JS (using razor-naff helper library), includes various web components for use with web applications.",
+  "homepage": "http://ulsmith.net/razor-naff/razor-naff-components",
+  "license": "MIT",
+  "keywords": [
+    "razor",
+    "naff",
+    "web applications",
+    "web components",
+    "web-components"
+  ],
+  "ignore": [
+    ".git"
+  ],
+  "private": false,
+  "author": "Paul Smith (smiffy6969)",
+  "dependencies": {
+    "razor-naff": "smiffy6969/razor-naff",
+    "webcomponentsjs": "webcomponents/webcomponentsjs",
+  },
+  "version": "1.0.0"
+}

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>razorNAFF Web Components</title>
+
+		<!-- Polyfill native API's with web components plugin -->
+		<script src="../../webcomponentsjs/webcomponents.min.js"></script>
+
+		<!-- Load the naff helper library used by the web components -->
+		<script src="../../razor-naff/src/naff.js"></script>
+    
+    	<!-- single import from vulcanized file -->
+		<link rel="import" href="../src/naff.html">
+		
+		<!-- sugar for demo page -->
+	    <style type="text/css">
+	    	* { font-family: sans-serif; }
+	    </style>
+	</head>
+	<body>
+
+		<h2>Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
+		<naff-icon name="check"></naff-icon>
+		<naff-icon name="check" style="background-color: #444" inverse></naff-icon>
+		<naff-icon name="bed" size="2" style="color: red"></naff-icon>
+		<naff-icon name="bed" size="2" style="color: red" flip="horizontal"></naff-icon>
+		<naff-icon name="refresh" size="3" style="color: blue" spin></naff-icon>
+		<naff-icon name="spinner" size="4" style="color: orange" pulse></naff-icon>
+		<naff-icon name="suitcase" size="5" style="color: green" rotate="90"></naff-icon>
+
+		<hr>
+
+<!-- 		<h2>Tag</h2>
+		<p>
+			<razor-tag color="grey" size="extra-small">Extra Small Tag</razor-tag>
+			<razor-tag color="blue" size="small">Small Tag</razor-tag>
+			<razor-tag color="red" size="small">Small Tag</razor-tag>
+		</p>
+		<p>
+			<razor-tag shape="rounded" color="green" size="medium">Medium Rounded Tag</razor-tag>
+			<razor-tag shape="rounded" color="orange" size="medium">Medium Rounded Tag</razor-tag>
+			<razor-tag shape="rounded" color="black" size="medium">Medium Rounded Tag</razor-tag>
+			<razor-tag shape="rounded" color="pink" size="medium">Medium Rounded Tag</razor-tag>
+		</p>
+		<p style="background-color: #f4f4f4; padding: 20px;">
+			<razor-tag shape="round" color="purple" size="large">Large Round Tag</razor-tag>
+			<razor-tag shape="round" color="yellow" size="large">Large Round Tag</razor-tag>
+			<razor-tag shape="round" color="aqua" size="extra-large">Extra Large Round Tag</razor-tag>
+			<razor-tag shape="round" color="white" size="extra-large">Extra Large Round Tag</razor-tag>
+		</p>
+		<p>
+			<razor-tag shape="oval" color="orange" size="small">Small Oval Tag</razor-tag>
+			<razor-tag shape="oval" color="blue" size="medium">Medium Oval Tag</razor-tag>
+			<razor-tag shape="oval" color="black" size="Large">Large Oval Tag</razor-tag>
+		</p>
+
+		<hr>
+
+		<h2>Button</h2>
+		<polymer-element name="test-razor-button">
+			<template>		
+				<p>Click Counter: {{total}}</p>
+				<button is="razor-x-button" size="extra-small" on-click="{{plusOne}}">Extra Small Button</button>
+				<button is="razor-x-button" size="small" disabled on-click="{{plusOne}}">Small Disabled button</button>
+				<button is="razor-x-button" size="medium" color="white" on-click="{{plusOne}}">Default/Medium button</button>
+				<button is="razor-x-button" size="medium" color="black" on-click="{{plusOne}}">Default/Medium button</button>
+				<button is="razor-x-button" size="medium" color="red" on-click="{{plusOne}}">Default/Medium button</button>
+				<button is="razor-x-button" size="large" color="green" on-click="{{plusOne}}">Large button</button>
+				<button is="razor-x-button" size="extra-large" color="blue" on-click="{{plusOne}}">Extra Large Button</button>
+				<br/>
+				<br/>
+				<button is="razor-x-button" size="extra-small" shape="round" on-click="{{plusOne}}">Extra Small Button</button>
+				<button is="razor-x-button" size="small" shape="round" disabled="disabled" on-click="{{plusOne}}">Small Disabled button</button>
+				<button is="razor-x-button" size="medium" shape="round" color="white" on-click="{{plusOne}}">Default/Medium button</button>
+				<button is="razor-x-button" size="medium" shape="round" color="black" on-click="{{plusOne}}">Default/Medium button</button>
+				<button is="razor-x-button" size="medium" shape="round" color="red" on-click="{{plusOne}}">Default/Medium button</button>
+				<button is="razor-x-button" size="large" shape="round" color="green" on-click="{{plusOne}}">Large button</button>
+				<button is="razor-x-button" size="extra-large" shape="round" color="blue" on-click="{{plusOne}}">Extra Large Button</button>
+			</template>
+			<script>
+				Polymer('test-razor-button', {
+					total: 0,
+
+					plusOne: function(ev)
+					{
+						if (ev.target.disabled) return;
+						this.total++;
+					}
+				});
+			</script>
+		</polymer-element>
+		<test-razor-button></test-razor-button>
+
+		<hr>
+
+		<h2>Icon Button</h2>
+		<polymer-element name="test-razor-icon-button">
+			<template>		
+				<p>Click Counter: {{total}}</p>
+				<button is="razor-x-icon-button" size="extra-small" icon="times" on-click="{{plusOne}}"></button>
+				<button is="razor-x-icon-button" size="small" color="blue" disabled="disabled" icon="check" on-click="{{plusOne}}"></button>
+				<button is="razor-x-icon-button" size="medium" color="green" icon="trash" on-click="{{plusOne}}"></button>
+				<button is="razor-x-icon-button" size="medium" color="orange" icon="phone" on-click="{{plusOne}}"></button>
+				<button is="razor-x-icon-button" size="medium" color="purple" icon="check-circle" on-click="{{plusOne}}"></button>
+				<button is="razor-x-icon-button" size="large" color="aqua" icon="refresh" on-click="{{plusOne}}"></button>
+				<button is="razor-x-icon-button" size="extra-large" icon="envelope" color="white" on-click="{{plusOne}}"></button>
+
+				<button is="razor-x-icon-button" size="extra-small" icon="times" on-click="{{plusOne}}" shape="round"></button>
+				<button is="razor-x-icon-button" size="small" color="blue" disabled icon="times" on-click="{{plusOne}}" shape="round"></button>
+				<button is="razor-x-icon-button" size="medium" color="green" icon="times" on-click="{{plusOne}}" shape="round"></button>
+				<button is="razor-x-icon-button" size="medium" color="orange" icon="check" on-click="{{plusOne}}" shape="round"></button>
+				<button is="razor-x-icon-button" size="medium" color="purple" icon="times" on-click="{{plusOne}}" shape="round"></button>
+				<button is="razor-x-icon-button" size="large" color="aqua" icon="times" on-click="{{plusOne}}" shape="round"></button>
+				<button is="razor-x-icon-button" size="extra-large" icon="times" color="white" on-click="{{plusOne}}" shape="round"></button>
+			</template>
+			<script>
+				Polymer('test-razor-icon-button', {
+					total: 0,
+
+					plusOne: function(ev)
+					{
+						if (ev.target.disabled) return;
+						this.total++;
+					}
+				});
+			</script>
+		</polymer-element>
+		<test-razor-icon-button></test-razor-icon-button>
+
+		<hr>
+
+		<h2>Input</h2>
+		<polymer-element name="test-razor-input">
+			<template>		
+				<div style="display: inline-block; width: 200px;">
+					<p>Live Binding: {{testValue}}</p>
+					<br>
+					<razor-input placeholder="Type Something" name="testName" value="{{testValue}}"></razor-input>
+				</div>
+				<div style="display: inline-block; width: 200px;">
+					<p>Password: {{testValue2}}</p>
+					<br>
+					<razor-input placeholder="Password" name="testName" type="password" value="{{testValue2}}"></razor-input>
+				</div>
+				<div style="display: inline-block; width: 200px;">
+					<p>Disabled</p>
+					<br>
+					<razor-input name="testName2" value="Cannot change me" disabled></razor-input>
+				</div>
+				<div style="display: inline-block; width: 200px;">
+					<p>Validate Numbers: {{form.error ? "Invalid" : testValue3}}</p>
+					<br>
+					<razor-input placeholder="Type Something" name="testName" value="{{testValue3}}" validate="^$|[0-9]+$" validateMessage="Numbers only dude!" error="{{form.error}}"></razor-input>
+				</div>
+			</template>
+			<script>
+				Polymer('test-razor-input', {
+					total: 0,
+
+					error: false,
+
+					form: {}
+				});
+			</script>
+		</polymer-element>
+		<test-razor-input></test-razor-input>
+
+		<hr>
+
+		<h2>Switch</h2>
+		<polymer-element name="test-razor-switch">
+			<template>		
+				<div style="display: inline-block; width: 200px;">
+					<p>Status: {{status}}</p>
+					<razor-switch status="{{status}}"></razor-switch>
+				</div>
+				<div style="display: inline-block; width: 200px;">
+					<p>Status: {{status2}}</p>
+					<razor-switch status="{{status2}}"></razor-switch>
+				</div>
+				<div style="display: inline-block; width: 200px;">
+					<p>Status: {{status3}}</p>
+					<razor-switch status="{{status3}}" disabled></razor-switch>
+				</div>
+				<div style="display: inline-block; width: 200px;">
+					<p>Status: {{status4}}</p>
+					<razor-switch status="{{status4}}" disabled></razor-switch>
+				</div>
+			</template>
+			<script>
+				Polymer('test-razor-switch', {
+					status: false,
+					status2: true,
+					status3: false,
+					status4: true
+				});
+			</script>
+		</polymer-element>
+		<test-razor-switch></test-razor-switch>
+
+		<hr>
+
+		<h2>Message (fire again to jiggle)</h2>
+		<polymer-element name="test-razor-message">
+			<template>		
+				<button is="razor-x-button" color="black" size="medium" shape="round" on-click="{{showMessage1}}">Show Message</button>
+				<razor-message id="message1" position="bottom"><h4>This is a message</h4><p>With some really long text in it that does not really say a lot but it's there nonetheless.</p><p>There is also a second line here with some more stuff in it.</p></razor-message>
+				<button is="razor-x-button" color="red" size="medium" shape="round" on-click="{{showMessage2}}">Show Message</button>
+				<razor-message id="message2" position="top" color="red"><razor-icon icon="exclamation-triangle" color="white"></razor-icon> Something bad happened</razor-message>
+				<button is="razor-x-button" color="orange" size="medium" shape="round" on-click="{{showMessage3}}">Show Message</button>
+				<razor-message id="message3" position="top-left" color="orange"><razor-icon icon="exclamation-circle" color="white"></razor-icon> You need to know something important</razor-message>
+				<button is="razor-x-button" color="blue" size="medium" shape="round" on-click="{{showMessage4}}">Show Message</button>
+				<razor-message id="message4" position="bottom-right" color="blue"><razor-icon icon="info-circle" color="white"></razor-icon> Something happened</razor-message>
+				<button is="razor-x-button" color="green" size="medium" shape="round" on-click="{{showMessage5}}">Show Message</button>
+				<razor-message id="message5" position="bottom" color="green"><razor-icon icon="check" color="white"></razor-icon> Something good happened</razor-message>
+			</template>
+			<script>
+				Polymer('test-razor-message', {
+					showMessage1: function()
+					{
+						this.$.message1.show();
+					},
+					showMessage2: function()
+					{
+						this.$.message2.show();
+					},
+					showMessage3: function()
+					{
+						this.$.message3.show();
+					},
+					showMessage4: function()
+					{
+						this.$.message4.show();
+					},
+					showMessage5: function()
+					{
+						this.$.message5.show();
+					}
+				});
+			</script>
+		</polymer-element>
+		<test-razor-message></test-razor-message>
+
+		<hr>
+
+		<h2>Modal</h2>
+		<polymer-element name="test-razor-modal">
+			<template>		
+				<button is="razor-x-button" shape="round" color="black" size="medium" on-click="{{showModal1}}">Show Modal Overlay</button>
+				<button is="razor-x-button" shape="round" color="red" size="medium" on-click="{{showModal2}}">Show Modal Overlay (no heading)</button>
+				<button is="razor-x-button" shape="round" color="green" size="medium" on-click="{{showModal3}}">Show Modal Overlay (no footer)</button>
+
+				<razor-modal id="modal1" heading="Lorem Ipsum">
+					<main>
+						<div class="test">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						</div>
+					</main>
+					<footer>
+						<button is="razor-x-icon-button" icon="check" size="medium" on-click="{{hideModal1}}" color="green"></button>
+						<button is="razor-x-button" size="medium" on-click="{{hideModal1}}" color="red">Cancel</button>
+					</footer>
+				</razor-modal>
+
+				<razor-modal id="modal2" width="50" height="20">
+					<main>
+						<div class="test">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						</div>
+					</main>
+					<footer>
+						<button is="razor-x-icon-button" icon="check" size="medium" shape="round" on-click="{{hideModal2}}" color="green"></button>
+						<button is="razor-x-icon-button" icon="times" size="medium" shape="round" on-click="{{hideModal2}}" color="red"></button>
+					</footer>
+				</razor-modal>
+
+				<razor-modal id="modal3" heading="Lorem Ipsum" width="25">
+					<main>
+						<div class="test">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						</div>
+					</main>
+				</razor-modal>
+			</template>
+			<script>
+				Polymer('test-razor-modal', {
+					showModal1: function()
+					{
+						this.$.modal1.show();
+					},
+					hideModal1: function()
+					{
+						this.$.modal1.hide();
+					},
+					showModal2: function()
+					{
+						this.$.modal2.show();
+					},
+					hideModal2: function()
+					{
+						this.$.modal2.hide();
+					},
+					showModal3: function()
+					{
+						this.$.modal3.show();
+					},
+					hideModal3: function()
+					{
+						this.$.modal3.hide();
+					}
+				});
+			</script>
+		</polymer-element>
+		<test-razor-modal></test-razor-modal> -->
+	</body>
+</html>

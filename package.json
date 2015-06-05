@@ -1,0 +1,20 @@
+{
+  "name": "razor-naff-components",
+  "description": "razorNAFF web components written in native JS (using razor-naff helper library), includes various web components for use with web applications.",
+  "homepage": "http://ulsmith.net/razor-naff/razor-naff-components",
+  "author": "Paul Smith (smiffy6969)",
+  "dependencies": {
+    "razor-naff": "smiffy6969/razor-naff",
+    "webcomponentsjs": "webcomponents/webcomponentsjs",
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-vulcanize": "~0.6.4",
+    "vulcanize": "~1.4.0",
+    "grunt-text-replace": "~0.4.0"
+  }
+}
