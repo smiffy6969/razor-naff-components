@@ -85,11 +85,14 @@ For details on how to use the web components, please see the applicable index fi
 The components are split into groups, with a distinction between extended components that simply extend an exisiting element using the is="" attribute, and custom components. All extended components use the -x- naming convention to help distinguish between these two types when using.
 
 
-## naff-x-button [naff-extended]
+## Extended Components
+
+
+### naff-x-button (naff-extended)
 
 
 ```html
-<button is="naff-x-button" size="" color="" disabled></button>
+<button is="naff-x-button" size="" color="" shape="" disabled></button>
 ```
 
 
@@ -98,10 +101,34 @@ A nice set of buttons that extend the default button element that allow us to co
 
 * __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
 * __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
-* __shape__ - Shapes include square and rounded corners.
+* __shape__ - Shapes include square, round, rounded and oval.
+* __disabled__ - Disables the button.
 
 
-## naff-icon [naff-base]
+### naff-x-icon-button (naff-extended)
+
+
+```html
+<button is="naff-x-icon-button" name="" size="" color="" shape="" spin pulse disabled></button>
+```
+
+
+A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
+
+
+* __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name).
+* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
+* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
+* __shape__ - Shapes include square, round, rounded and oval.
+* __spin__ - Make the icon spin.
+* __pulse__ - Make the icon spin in steps.
+* __disabled__ - Disables the button.
+
+
+## Base Components
+
+
+### naff-icon (naff-base)
 
 
 ```html
@@ -112,18 +139,18 @@ A nice set of buttons that extend the default button element that allow us to co
 All icons are supplied via embedded [font-awesome](http://fortawesome.github.io/Font-Awesome/) which does not require a dependancy, for a full list of icons available please see their site. NOTE: you can add the attribute 'spin' to make icons spin. Styling can be applied direct to the element via standard css means, or you can have control via attributes such as size="2".
 
 
-* __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name)
-* __size__ - The size as per font-awesome docs lg, 2, 3, 4, 5
-* __rotate__ - The orientation of the icon reotated from the current position such as 90, 80, 270
-* __flip__ - The orientation of the icon flipped across an axis such as horizontal, vertical
-* __border__ - Apply a border to the icon
-* __spin__ - Make the icon spin
-* __pulse__ - Make the icon spin in steps
-* __inverse__ - Invert the icon color (white icon)
-* __fixed-width__ - Set the icon to a fixed width (great for aligning icons)
+* __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name).
+* __size__ - The size as per font-awesome docs lg, 2, 3, 4, 5.
+* __rotate__ - The orientation of the icon reotated from the current position such as 90, 80, 270.
+* __flip__ - The orientation of the icon flipped across an axis such as horizontal, vertical.
+* __border__ - Apply a border to the icon.
+* __spin__ - Make the icon spin.
+* __pulse__ - Make the icon spin in steps.
+* __inverse__ - Invert the icon color (white icon).
+* __fixed-width__ - Set the icon to a fixed width (great for aligning icons).
 
 
-## naff-tag [naff-base]
+### naff-tag (naff-base)
 
 
 ```html
@@ -134,9 +161,9 @@ All icons are supplied via embedded [font-awesome](http://fortawesome.github.io/
 Adds a tag with the contents being shown in a colored box in several shapes, use this for highlighting text.
 
 
-* __size__ - The size as extra-small, small, medium, large, extra-large
-* __shape__ - The shape as round, rounded, oval or square
-* __color__ - The color as grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white
+* __size__ - The size as extra-small, small, medium, large, extra-large.
+* __shape__ - The shape as round, rounded, oval or square.
+* __color__ - The color as grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
 
 
 

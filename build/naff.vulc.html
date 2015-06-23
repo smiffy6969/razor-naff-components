@@ -17,7 +17,7 @@
   font-weight: normal;
   font-style: normal;
 }
-naff-icon {
+html /deep/ naff-icon {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -27,19 +27,19 @@ naff-icon {
   transform: translate(0, 0);
 }
 /* makes the font 33% larger relative to the icon container */
-naff-icon[size='lg'] { font-size: 1.33333333em; line-height: 0.75em; vertical-align: -15%; }
-naff-icon[size='2'] { font-size: 2em; }
-naff-icon[size='3'] { font-size: 3em; }
-naff-icon[size='4'] { font-size: 4em; }
-naff-icon[size='5'] { font-size: 5em; }
-naff-icon[fixed-width] { width: 1.28571429em; text-align: center; }
-naff-icon[border] { padding: .2em .25em .15em; border: solid 0.08em #eeeeee; border-radius: .1em; }
+html /deep/ naff-icon[size='lg'] { font-size: 1.33333333em; line-height: 0.75em; vertical-align: -15%; }
+html /deep/ naff-icon[size='2'] { font-size: 2em; }
+html /deep/ naff-icon[size='3'] { font-size: 3em; }
+html /deep/ naff-icon[size='4'] { font-size: 4em; }
+html /deep/ naff-icon[size='5'] { font-size: 5em; }
+html /deep/ naff-icon[fixed-width] { width: 1.28571429em; text-align: center; }
+html /deep/ naff-icon[border] { padding: .2em .25em .15em; border: solid 0.08em #eeeeee; border-radius: .1em; }
 .pull-right { float: right; }
 .pull-left { float: left; }
-naff-icon.pull-left { margin-right: .3em; }
-naff-icon.pull-right { margin-left: .3em; }
-naff-icon[spin] { -webkit-animation: fa-spin 2s infinite linear; animation: fa-spin 2s infinite linear; }
-naff-icon[pulse] { -webkit-animation: fa-spin 1s infinite steps(8); animation: fa-spin 1s infinite steps(8); }
+html /deep/ naff-icon.pull-left { margin-right: .3em; }
+html /deep/ naff-icon.pull-right { margin-left: .3em; }
+html /deep/ naff-icon[spin] { -webkit-animation: fa-spin 2s infinite linear; animation: fa-spin 2s infinite linear; }
+html /deep/ naff-icon[pulse] { -webkit-animation: fa-spin 1s infinite steps(8); animation: fa-spin 1s infinite steps(8); }
 @-webkit-keyframes fa-spin {
   0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
   100% { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
@@ -48,646 +48,680 @@ naff-icon[pulse] { -webkit-animation: fa-spin 1s infinite steps(8); animation: f
   0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
   100% { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
 }
-naff-icon[rotate='90'] { 
+html /deep/ naff-icon[rotate='90'] { 
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
-naff-icon[rotate='180'] {
+html /deep/ naff-icon[rotate='180'] {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-naff-icon[rotate='270'] {
+html /deep/ naff-icon[rotate='270'] {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   -webkit-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   transform: rotate(270deg);
 }
-naff-icon[flip='horizontal'] {
+html /deep/ naff-icon[flip='horizontal'] {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
   -webkit-transform: scale(-1, 1);
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
 }
-naff-icon[flip='vertical'] {
+html /deep/ naff-icon[flip='vertical'] {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
   -webkit-transform: scale(1, -1);
   -ms-transform: scale(1, -1);
   transform: scale(1, -1);
 }
-:root naff-icon[rotate='90'], :root naff-icon[rotate='180'], :root naff-icon[rotate='270'], :root naff-icon[flip='horizontal'], :root naff-icon[flip='vertical'] { filter: none; }
-naff-icon[inverse] { color: #ffffff; }
+html /deep/ :root naff-icon[rotate='90'], html /deep/ :root naff-icon[rotate='180'], html /deep/ :root naff-icon[rotate='270'], html /deep/ :root naff-icon[flip='horizontal'], html /deep/ :root naff-icon[flip='vertical'] { filter: none; }
+html /deep/ naff-icon[inverse] { color: #ffffff; }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
-naff-icon[name='glass']:before { content: "\f000"; }
-naff-icon[name='music']:before { content: "\f001"; }
-naff-icon[name='search']:before { content: "\f002"; }
-naff-icon[name='envelope-o']:before { content: "\f003"; }
-naff-icon[name='heart']:before { content: "\f004"; }
-naff-icon[name='star']:before { content: "\f005"; }
-naff-icon[name='star-o']:before { content: "\f006"; }
-naff-icon[name='user']:before { content: "\f007"; }
-naff-icon[name='film']:before { content: "\f008"; }
-naff-icon[name='th-large']:before { content: "\f009"; }
-naff-icon[name='th']:before { content: "\f00a"; }
-naff-icon[name='th-list']:before { content: "\f00b"; }
-naff-icon[name='check']:before { content: "\f00c"; }
-naff-icon[name='remove']:before, naff-icon[name='close']:before, naff-icon[name='times']:before { content: "\f00d"; }
-naff-icon[name='search-plus']:before { content: "\f00e"; }
-naff-icon[name='search-minus']:before { content: "\f010"; }
-naff-icon[name='power-off']:before { content: "\f011"; }
-naff-icon[name='signal']:before { content: "\f012"; }
-naff-icon[name='gear']:before, naff-icon[name='cog']:before { content: "\f013"; }
-naff-icon[name='trash-o']:before { content: "\f014"; }
-naff-icon[name='home']:before { content: "\f015"; }
-naff-icon[name='file-o']:before { content: "\f016"; }
-naff-icon[name='clock-o']:before { content: "\f017"; }
-naff-icon[name='road']:before { content: "\f018"; }
-naff-icon[name='download']:before { content: "\f019"; }
-naff-icon[name='arrow-circle-o-down']:before { content: "\f01a"; }
-naff-icon[name='arrow-circle-o-up']:before { content: "\f01b"; }
-naff-icon[name='inbox']:before { content: "\f01c"; }
-naff-icon[name='play-circle-o']:before { content: "\f01d"; }
-naff-icon[name='rotate-right']:before, naff-icon[name='repeat']:before { content: "\f01e"; }
-naff-icon[name='refresh']:before { content: "\f021"; }
-naff-icon[name='list-alt']:before { content: "\f022"; }
-naff-icon[name='lock']:before { content: "\f023"; }
-naff-icon[name='flag']:before { content: "\f024"; }
-naff-icon[name='headphones']:before { content: "\f025"; }
-naff-icon[name='volume-off']:before { content: "\f026"; }
-naff-icon[name='volume-down']:before { content: "\f027"; }
-naff-icon[name='volume-up']:before { content: "\f028"; }
-naff-icon[name='qrcode']:before { content: "\f029"; }
-naff-icon[name='barcode']:before { content: "\f02a"; }
-naff-icon[name='tag']:before { content: "\f02b"; }
-naff-icon[name='tags']:before { content: "\f02c"; }
-naff-icon[name='book']:before { content: "\f02d"; }
-naff-icon[name='bookmark']:before { content: "\f02e"; }
-naff-icon[name='print']:before { content: "\f02f"; }
-naff-icon[name='camera']:before { content: "\f030"; }
-naff-icon[name='font']:before { content: "\f031"; }
-naff-icon[name='bold']:before { content: "\f032"; }
-naff-icon[name='italic']:before { content: "\f033"; }
-naff-icon[name='text-height']:before { content: "\f034"; }
-naff-icon[name='text-width']:before { content: "\f035"; }
-naff-icon[name='align-left']:before { content: "\f036"; }
-naff-icon[name='align-center']:before { content: "\f037"; }
-naff-icon[name='align-right']:before { content: "\f038"; }
-naff-icon[name='align-justify']:before { content: "\f039"; }
-naff-icon[name='list']:before { content: "\f03a"; }
-naff-icon[name='dedent']:before, naff-icon[name='outdent']:before { content: "\f03b"; }
-naff-icon[name='indent']:before { content: "\f03c"; }
-naff-icon[name='video-camera']:before { content: "\f03d"; }
-naff-icon[name='photo']:before, naff-icon[name='image']:before, naff-icon[name='picture-o']:before { content: "\f03e"; }
-naff-icon[name='pencil']:before { content: "\f040"; }
-naff-icon[name='map-marker']:before { content: "\f041"; }
-naff-icon[name='adjust']:before { content: "\f042"; }
-naff-icon[name='tint']:before { content: "\f043"; }
-naff-icon[name='edit']:before, naff-icon[name='pencil-square-o']:before { content: "\f044"; }
-naff-icon[name='share-square-o']:before { content: "\f045"; }
-naff-icon[name='check-square-o']:before { content: "\f046"; }
-naff-icon[name='arrows']:before { content: "\f047"; }
-naff-icon[name='step-backward']:before { content: "\f048"; }
-naff-icon[name='fast-backward']:before { content: "\f049"; }
-naff-icon[name='backward']:before { content: "\f04a"; }
-naff-icon[name='play']:before { content: "\f04b"; }
-naff-icon[name='pause']:before { content: "\f04c"; }
-naff-icon[name='stop']:before { content: "\f04d"; }
-naff-icon[name='forward']:before { content: "\f04e"; }
-naff-icon[name='fast-forward']:before { content: "\f050"; }
-naff-icon[name='step-forward']:before { content: "\f051"; }
-naff-icon[name='eject']:before { content: "\f052"; }
-naff-icon[name='chevron-left']:before { content: "\f053"; }
-naff-icon[name='chevron-right']:before { content: "\f054"; }
-naff-icon[name='plus-circle']:before { content: "\f055"; }
-naff-icon[name='minus-circle']:before { content: "\f056"; }
-naff-icon[name='times-circle']:before { content: "\f057"; }
-naff-icon[name='check-circle']:before { content: "\f058"; }
-naff-icon[name='question-circle']:before { content: "\f059"; }
-naff-icon[name='info-circle']:before { content: "\f05a"; }
-naff-icon[name='crosshairs']:before { content: "\f05b"; }
-naff-icon[name='times-circle-o']:before { content: "\f05c"; }
-naff-icon[name='check-circle-o']:before { content: "\f05d"; }
-naff-icon[name='ban']:before { content: "\f05e"; }
-naff-icon[name='arrow-left']:before { content: "\f060"; }
-naff-icon[name='arrow-right']:before { content: "\f061"; }
-naff-icon[name='arrow-up']:before { content: "\f062"; }
-naff-icon[name='arrow-down']:before { content: "\f063"; }
-naff-icon[name='mail-forward']:before, naff-icon[name='share']:before { content: "\f064"; }
-naff-icon[name='expand']:before { content: "\f065"; }
-naff-icon[name='compress']:before { content: "\f066"; }
-naff-icon[name='plus']:before { content: "\f067"; }
-naff-icon[name='minus']:before { content: "\f068"; }
-naff-icon[name='asterisk']:before { content: "\f069"; }
-naff-icon[name='exclamation-circle']:before { content: "\f06a"; }
-naff-icon[name='gift']:before { content: "\f06b"; }
-naff-icon[name='leaf']:before { content: "\f06c"; }
-naff-icon[name='fire']:before { content: "\f06d"; }
-naff-icon[name='eye']:before { content: "\f06e"; }
-naff-icon[name='eye-slash']:before { content: "\f070"; }
-naff-icon[name='warning']:before, naff-icon[name='exclamation-triangle']:before { content: "\f071"; }
-naff-icon[name='plane']:before { content: "\f072"; }
-naff-icon[name='calendar']:before { content: "\f073"; }
-naff-icon[name='random']:before { content: "\f074"; }
-naff-icon[name='comment']:before { content: "\f075"; }
-naff-icon[name='magnet']:before { content: "\f076"; }
-naff-icon[name='chevron-up']:before { content: "\f077"; }
-naff-icon[name='chevron-down']:before { content: "\f078"; }
-naff-icon[name='retweet']:before { content: "\f079"; }
-naff-icon[name='shopping-cart']:before { content: "\f07a"; }
-naff-icon[name='folder']:before { content: "\f07b"; }
-naff-icon[name='folder-open']:before { content: "\f07c"; }
-naff-icon[name='arrows-v']:before { content: "\f07d"; }
-naff-icon[name='arrows-h']:before { content: "\f07e"; }
-naff-icon[name='bar-chart-o']:before, naff-icon[name='bar-chart']:before { content: "\f080"; }
-naff-icon[name='twitter-square']:before { content: "\f081"; }
-naff-icon[name='facebook-square']:before { content: "\f082"; }
-naff-icon[name='camera-retro']:before { content: "\f083"; }
-naff-icon[name='key']:before { content: "\f084"; }
-naff-icon[name='gears']:before, naff-icon[name='cogs']:before { content: "\f085"; }
-naff-icon[name='comments']:before { content: "\f086"; }
-naff-icon[name='thumbs-o-up']:before { content: "\f087"; }
-naff-icon[name='thumbs-o-down']:before { content: "\f088"; }
-naff-icon[name='star-half']:before { content: "\f089"; }
-naff-icon[name='heart-o']:before { content: "\f08a"; }
-naff-icon[name='sign-out']:before { content: "\f08b"; }
-naff-icon[name='linkedin-square']:before { content: "\f08c"; }
-naff-icon[name='thumb-tack']:before { content: "\f08d"; }
-naff-icon[name='external-link']:before { content: "\f08e"; }
-naff-icon[name='sign-in']:before { content: "\f090"; }
-naff-icon[name='trophy']:before { content: "\f091"; }
-naff-icon[name='github-square']:before { content: "\f092"; }
-naff-icon[name='upload']:before { content: "\f093"; }
-naff-icon[name='lemon-o']:before { content: "\f094"; }
-naff-icon[name='phone']:before { content: "\f095"; }
-naff-icon[name='square-o']:before { content: "\f096"; }
-naff-icon[name='bookmark-o']:before { content: "\f097"; }
-naff-icon[name='phone-square']:before { content: "\f098"; }
-naff-icon[name='twitter']:before { content: "\f099"; }
-naff-icon[name='facebook-f']:before, naff-icon[name='facebook']:before { content: "\f09a"; }
-naff-icon[name='github']:before { content: "\f09b"; }
-naff-icon[name='unlock']:before { content: "\f09c"; }
-naff-icon[name='credit-card']:before { content: "\f09d"; }
-naff-icon[name='rss']:before { content: "\f09e"; }
-naff-icon[name='hdd-o']:before { content: "\f0a0"; }
-naff-icon[name='bullhorn']:before { content: "\f0a1"; }
-naff-icon[name='bell']:before { content: "\f0f3"; }
-naff-icon[name='certificate']:before { content: "\f0a3"; }
-naff-icon[name='hand-o-right']:before { content: "\f0a4"; }
-naff-icon[name='hand-o-left']:before { content: "\f0a5"; }
-naff-icon[name='hand-o-up']:before { content: "\f0a6"; }
-naff-icon[name='hand-o-down']:before { content: "\f0a7"; }
-naff-icon[name='arrow-circle-left']:before { content: "\f0a8"; }
-naff-icon[name='arrow-circle-right']:before { content: "\f0a9"; }
-naff-icon[name='arrow-circle-up']:before { content: "\f0aa"; }
-naff-icon[name='arrow-circle-down']:before { content: "\f0ab"; }
-naff-icon[name='globe']:before { content: "\f0ac"; }
-naff-icon[name='wrench']:before { content: "\f0ad"; }
-naff-icon[name='tasks']:before { content: "\f0ae"; }
-naff-icon[name='filter']:before { content: "\f0b0"; }
-naff-icon[name='briefcase']:before { content: "\f0b1"; }
-naff-icon[name='arrows-alt']:before { content: "\f0b2"; }
-naff-icon[name='group']:before, naff-icon[name='users']:before { content: "\f0c0"; }
-naff-icon[name='chain']:before, naff-icon[name='link']:before { content: "\f0c1"; }
-naff-icon[name='cloud']:before { content: "\f0c2"; }
-naff-icon[name='flask']:before { content: "\f0c3"; }
-naff-icon[name='cut']:before, naff-icon[name='scissors']:before { content: "\f0c4"; }
-naff-icon[name='copy']:before, naff-icon[name='files-o']:before { content: "\f0c5"; }
-naff-icon[name='paperclip']:before { content: "\f0c6"; }
-naff-icon[name='save']:before, naff-icon[name='floppy-o']:before { content: "\f0c7"; }
-naff-icon[name='square']:before { content: "\f0c8"; }
-naff-icon[name='navicon']:before, naff-icon[name='reorder']:before, naff-icon[name='bars']:before { content: "\f0c9"; }
-naff-icon[name='list-ul']:before { content: "\f0ca"; }
-naff-icon[name='list-ol']:before { content: "\f0cb"; }
-naff-icon[name='strikethrough']:before { content: "\f0cc"; }
-naff-icon[name='underline']:before { content: "\f0cd"; }
-naff-icon[name='table']:before { content: "\f0ce"; }
-naff-icon[name='magic']:before { content: "\f0d0"; }
-naff-icon[name='truck']:before { content: "\f0d1"; }
-naff-icon[name='pinterest']:before { content: "\f0d2"; }
-naff-icon[name='pinterest-square']:before { content: "\f0d3"; }
-naff-icon[name='google-plus-square']:before { content: "\f0d4"; }
-naff-icon[name='google-plus']:before { content: "\f0d5"; }
-naff-icon[name='money']:before { content: "\f0d6"; }
-naff-icon[name='caret-down']:before { content: "\f0d7"; }
-naff-icon[name='caret-up']:before { content: "\f0d8"; }
-naff-icon[name='caret-left']:before { content: "\f0d9"; }
-naff-icon[name='caret-right']:before { content: "\f0da"; }
-naff-icon[name='columns']:before { content: "\f0db"; }
-naff-icon[name='unsorted']:before, naff-icon[name='sort']:before { content: "\f0dc"; }
-naff-icon[name='sort-down']:before, naff-icon[name='sort-desc']:before { content: "\f0dd"; }
-naff-icon[name='sort-up']:before, naff-icon[name='sort-asc']:before { content: "\f0de"; }
-naff-icon[name='envelope']:before { content: "\f0e0"; }
-naff-icon[name='linkedin']:before { content: "\f0e1"; }
-naff-icon[name='rotate-left']:before, naff-icon[name='undo']:before { content: "\f0e2"; }
-naff-icon[name='legal']:before, naff-icon[name='gavel']:before { content: "\f0e3"; }
-naff-icon[name='dashboard']:before, naff-icon[name='tachometer']:before { content: "\f0e4"; }
-naff-icon[name='comment-o']:before { content: "\f0e5"; }
-naff-icon[name='comments-o']:before { content: "\f0e6"; }
-naff-icon[name='flash']:before, naff-icon[name='bolt']:before { content: "\f0e7"; }
-naff-icon[name='sitemap']:before { content: "\f0e8"; }
-naff-icon[name='umbrella']:before { content: "\f0e9"; }
-naff-icon[name='paste']:before, naff-icon[name='clipboard']:before { content: "\f0ea"; }
-naff-icon[name='lightbulb-o']:before { content: "\f0eb"; }
-naff-icon[name='exchange']:before { content: "\f0ec"; }
-naff-icon[name='cloud-download']:before { content: "\f0ed"; }
-naff-icon[name='cloud-upload']:before { content: "\f0ee"; }
-naff-icon[name='user-md']:before { content: "\f0f0"; }
-naff-icon[name='stethoscope']:before { content: "\f0f1"; }
-naff-icon[name='suitcase']:before { content: "\f0f2"; }
-naff-icon[name='bell-o']:before { content: "\f0a2"; }
-naff-icon[name='coffee']:before { content: "\f0f4"; }
-naff-icon[name='cutlery']:before { content: "\f0f5"; }
-naff-icon[name='file-text-o']:before { content: "\f0f6"; }
-naff-icon[name='building-o']:before { content: "\f0f7"; }
-naff-icon[name='hospital-o']:before { content: "\f0f8"; }
-naff-icon[name='ambulance']:before { content: "\f0f9"; }
-naff-icon[name='medkit']:before { content: "\f0fa"; }
-naff-icon[name='fighter-jet']:before { content: "\f0fb"; }
-naff-icon[name='beer']:before { content: "\f0fc"; }
-naff-icon[name='h-square']:before { content: "\f0fd"; }
-naff-icon[name='plus-square']:before { content: "\f0fe"; }
-naff-icon[name='angle-double-left']:before { content: "\f100"; }
-naff-icon[name='angle-double-right']:before { content: "\f101"; }
-naff-icon[name='angle-double-up']:before { content: "\f102"; }
-naff-icon[name='angle-double-down']:before { content: "\f103"; }
-naff-icon[name='angle-left']:before { content: "\f104"; }
-naff-icon[name='angle-right']:before { content: "\f105"; }
-naff-icon[name='angle-up']:before { content: "\f106"; }
-naff-icon[name='angle-down']:before { content: "\f107"; }
-naff-icon[name='desktop']:before { content: "\f108"; }
-naff-icon[name='laptop']:before { content: "\f109"; }
-naff-icon[name='tablet']:before { content: "\f10a"; }
-naff-icon[name='mobile-phone']:before, naff-icon[name='mobile']:before { content: "\f10b"; }
-naff-icon[name='circle-o']:before { content: "\f10c"; }
-naff-icon[name='quote-left']:before { content: "\f10d"; }
-naff-icon[name='quote-right']:before { content: "\f10e"; }
-naff-icon[name='spinner']:before { content: "\f110"; }
-naff-icon[name='circle']:before { content: "\f111"; }
-naff-icon[name='mail-reply']:before, naff-icon[name='reply']:before { content: "\f112"; }
-naff-icon[name='github-alt']:before { content: "\f113"; }
-naff-icon[name='folder-o']:before { content: "\f114"; }
-naff-icon[name='folder-open-o']:before { content: "\f115"; }
-naff-icon[name='smile-o']:before { content: "\f118"; }
-naff-icon[name='frown-o']:before { content: "\f119"; }
-naff-icon[name='meh-o']:before { content: "\f11a"; }
-naff-icon[name='gamepad']:before { content: "\f11b"; }
-naff-icon[name='keyboard-o']:before { content: "\f11c"; }
-naff-icon[name='flag-o']:before { content: "\f11d"; }
-naff-icon[name='flag-checkered']:before { content: "\f11e"; }
-naff-icon[name='terminal']:before { content: "\f120"; }
-naff-icon[name='code']:before { content: "\f121"; }
-naff-icon[name='mail-reply-all']:before, naff-icon[name='reply-all']:before { content: "\f122"; }
-naff-icon[name='star-half-empty']:before, naff-icon[name='star-half-full']:before, naff-icon[name='star-half-o']:before { content: "\f123"; }
-naff-icon[name='location-arrow']:before { content: "\f124"; }
-naff-icon[name='crop']:before { content: "\f125"; }
-naff-icon[name='code-fork']:before { content: "\f126"; }
-naff-icon[name='unlink']:before, naff-icon[name='chain-broken']:before { content: "\f127"; }
-naff-icon[name='question']:before { content: "\f128"; }
-naff-icon[name='info']:before { content: "\f129"; }
-naff-icon[name='exclamation']:before { content: "\f12a"; }
-naff-icon[name='superscript']:before { content: "\f12b"; }
-naff-icon[name='subscript']:before { content: "\f12c"; }
-naff-icon[name='eraser']:before { content: "\f12d"; }
-naff-icon[name='puzzle-piece']:before { content: "\f12e"; }
-naff-icon[name='microphone']:before { content: "\f130"; }
-naff-icon[name='microphone-slash']:before { content: "\f131"; }
-naff-icon[name='shield']:before { content: "\f132"; }
-naff-icon[name='calendar-o']:before { content: "\f133"; }
-naff-icon[name='fire-extinguisher']:before { content: "\f134"; }
-naff-icon[name='rocket']:before { content: "\f135"; }
-naff-icon[name='maxcdn']:before { content: "\f136"; }
-naff-icon[name='chevron-circle-left']:before { content: "\f137"; }
-naff-icon[name='chevron-circle-right']:before { content: "\f138"; }
-naff-icon[name='chevron-circle-up']:before { content: "\f139"; }
-naff-icon[name='chevron-circle-down']:before { content: "\f13a"; }
-naff-icon[name='html5']:before { content: "\f13b"; }
-naff-icon[name='css3']:before { content: "\f13c"; }
-naff-icon[name='anchor']:before { content: "\f13d"; }
-naff-icon[name='unlock-alt']:before { content: "\f13e"; }
-naff-icon[name='bullseye']:before { content: "\f140"; }
-naff-icon[name='ellipsis-h']:before { content: "\f141"; }
-naff-icon[name='ellipsis-v']:before { content: "\f142"; }
-naff-icon[name='rss-square']:before { content: "\f143"; }
-naff-icon[name='play-circle']:before { content: "\f144"; }
-naff-icon[name='ticket']:before { content: "\f145"; }
-naff-icon[name='minus-square']:before { content: "\f146"; }
-naff-icon[name='minus-square-o']:before { content: "\f147"; }
-naff-icon[name='level-up']:before { content: "\f148"; }
-naff-icon[name='level-down']:before { content: "\f149"; }
-naff-icon[name='check-square']:before { content: "\f14a"; }
-naff-icon[name='pencil-square']:before { content: "\f14b"; }
-naff-icon[name='external-link-square']:before { content: "\f14c"; }
-naff-icon[name='share-square']:before { content: "\f14d"; }
-naff-icon[name='compass']:before { content: "\f14e"; }
-naff-icon[name='toggle-down']:before, naff-icon[name='caret-square-o-down']:before { content: "\f150"; }
-naff-icon[name='toggle-up']:before, naff-icon[name='caret-square-o-up']:before { content: "\f151"; }
-naff-icon[name='toggle-right']:before, naff-icon[name='caret-square-o-right']:before { content: "\f152"; }
-naff-icon[name='euro']:before, naff-icon[name='eur']:before { content: "\f153"; }
-naff-icon[name='gbp']:before { content: "\f154"; }
-naff-icon[name='dollar']:before, naff-icon[name='usd']:before { content: "\f155"; }
-naff-icon[name='rupee']:before, naff-icon[name='inr']:before { content: "\f156"; }
-naff-icon[name='cny']:before, naff-icon[name='rmb']:before, naff-icon[name='yen']:before, naff-icon[name='jpy']:before { content: "\f157"; }
-naff-icon[name='ruble']:before, naff-icon[name='rouble']:before, naff-icon[name='rub']:before { content: "\f158"; }
-naff-icon[name='won']:before, naff-icon[name='krw']:before { content: "\f159"; }
-naff-icon[name='bitcoin']:before, naff-icon[name='btc']:before { content: "\f15a"; }
-naff-icon[name='file']:before { content: "\f15b"; }
-naff-icon[name='file-text']:before { content: "\f15c"; }
-naff-icon[name='sort-alpha-asc']:before { content: "\f15d"; }
-naff-icon[name='sort-alpha-desc']:before { content: "\f15e"; }
-naff-icon[name='sort-amount-asc']:before { content: "\f160"; }
-naff-icon[name='sort-amount-desc']:before { content: "\f161"; }
-naff-icon[name='sort-numeric-asc']:before { content: "\f162"; }
-naff-icon[name='sort-numeric-desc']:before { content: "\f163"; }
-naff-icon[name='thumbs-up']:before { content: "\f164"; }
-naff-icon[name='thumbs-down']:before { content: "\f165"; }
-naff-icon[name='youtube-square']:before { content: "\f166"; }
-naff-icon[name='youtube']:before { content: "\f167"; }
-naff-icon[name='xing']:before { content: "\f168"; }
-naff-icon[name='xing-square']:before { content: "\f169"; }
-naff-icon[name='youtube-play']:before { content: "\f16a"; }
-naff-icon[name='dropbox']:before { content: "\f16b"; }
-naff-icon[name='stack-overflow']:before { content: "\f16c"; }
-naff-icon[name='instagram']:before { content: "\f16d"; }
-naff-icon[name='flickr']:before { content: "\f16e"; }
-naff-icon[name='adn']:before { content: "\f170"; }
-naff-icon[name='bitbucket']:before { content: "\f171"; }
-naff-icon[name='bitbucket-square']:before { content: "\f172"; }
-naff-icon[name='tumblr']:before { content: "\f173"; }
-naff-icon[name='tumblr-square']:before { content: "\f174"; }
-naff-icon[name='long-arrow-down']:before { content: "\f175"; }
-naff-icon[name='long-arrow-up']:before { content: "\f176"; }
-naff-icon[name='long-arrow-left']:before { content: "\f177"; }
-naff-icon[name='long-arrow-right']:before { content: "\f178"; }
-naff-icon[name='apple']:before { content: "\f179"; }
-naff-icon[name='windows']:before { content: "\f17a"; }
-naff-icon[name='android']:before { content: "\f17b"; }
-naff-icon[name='linux']:before { content: "\f17c"; }
-naff-icon[name='dribbble']:before { content: "\f17d"; }
-naff-icon[name='skype']:before { content: "\f17e"; }
-naff-icon[name='foursquare']:before { content: "\f180"; }
-naff-icon[name='trello']:before { content: "\f181"; }
-naff-icon[name='female']:before { content: "\f182"; }
-naff-icon[name='male']:before { content: "\f183"; }
-naff-icon[name='gittip']:before, naff-icon[name='gratipay']:before { content: "\f184"; }
-naff-icon[name='sun-o']:before { content: "\f185"; }
-naff-icon[name='moon-o']:before { content: "\f186"; }
-naff-icon[name='archive']:before { content: "\f187"; }
-naff-icon[name='bug']:before { content: "\f188"; }
-naff-icon[name='vk']:before { content: "\f189"; }
-naff-icon[name='weibo']:before { content: "\f18a"; }
-naff-icon[name='renren']:before { content: "\f18b"; }
-naff-icon[name='pagelines']:before { content: "\f18c"; }
-naff-icon[name='stack-exchange']:before { content: "\f18d"; }
-naff-icon[name='arrow-circle-o-right']:before { content: "\f18e"; }
-naff-icon[name='arrow-circle-o-left']:before { content: "\f190"; }
-naff-icon[name='toggle-left']:before, naff-icon[name='caret-square-o-left']:before { content: "\f191"; }
-naff-icon[name='dot-circle-o']:before { content: "\f192"; }
-naff-icon[name='wheelchair']:before { content: "\f193"; }
-naff-icon[name='vimeo-square']:before { content: "\f194"; }
-naff-icon[name='turkish-lira']:before, naff-icon[name='try']:before { content: "\f195"; }
-naff-icon[name='plus-square-o']:before { content: "\f196"; }
-naff-icon[name='space-shuttle']:before { content: "\f197"; }
-naff-icon[name='slack']:before { content: "\f198"; }
-naff-icon[name='envelope-square']:before { content: "\f199"; }
-naff-icon[name='wordpress']:before { content: "\f19a"; }
-naff-icon[name='openid']:before { content: "\f19b"; }
-naff-icon[name='institution']:before, naff-icon[name='bank']:before, naff-icon[name='university']:before { content: "\f19c"; }
-naff-icon[name='mortar-board']:before, naff-icon[name='graduation-cap']:before { content: "\f19d"; }
-naff-icon[name='yahoo']:before { content: "\f19e"; }
-naff-icon[name='google']:before { content: "\f1a0"; }
-naff-icon[name='reddit']:before { content: "\f1a1"; }
-naff-icon[name='reddit-square']:before { content: "\f1a2"; }
-naff-icon[name='stumbleupon-circle']:before { content: "\f1a3"; }
-naff-icon[name='stumbleupon']:before { content: "\f1a4"; }
-naff-icon[name='delicious']:before { content: "\f1a5"; }
-naff-icon[name='digg']:before { content: "\f1a6"; }
-naff-icon[name='pied-piper']:before { content: "\f1a7"; }
-naff-icon[name='pied-piper-alt']:before { content: "\f1a8"; }
-naff-icon[name='drupal']:before { content: "\f1a9"; }
-naff-icon[name='joomla']:before { content: "\f1aa"; }
-naff-icon[name='language']:before { content: "\f1ab"; }
-naff-icon[name='fax']:before { content: "\f1ac"; }
-naff-icon[name='building']:before { content: "\f1ad"; }
-naff-icon[name='child']:before { content: "\f1ae"; }
-naff-icon[name='paw']:before { content: "\f1b0"; }
-naff-icon[name='spoon']:before { content: "\f1b1"; }
-naff-icon[name='cube']:before { content: "\f1b2"; }
-naff-icon[name='cubes']:before { content: "\f1b3"; }
-naff-icon[name='behance']:before { content: "\f1b4"; }
-naff-icon[name='behance-square']:before { content: "\f1b5"; }
-naff-icon[name='steam']:before { content: "\f1b6"; }
-naff-icon[name='steam-square']:before { content: "\f1b7"; }
-naff-icon[name='recycle']:before { content: "\f1b8"; }
-naff-icon[name='automobile']:before, naff-icon[name='car']:before { content: "\f1b9"; }
-naff-icon[name='cab']:before, naff-icon[name='taxi']:before { content: "\f1ba"; }
-naff-icon[name='tree']:before { content: "\f1bb"; }
-naff-icon[name='spotify']:before { content: "\f1bc"; }
-naff-icon[name='deviantart']:before { content: "\f1bd"; }
-naff-icon[name='soundcloud']:before { content: "\f1be"; }
-naff-icon[name='database']:before { content: "\f1c0"; }
-naff-icon[name='file-pdf-o']:before { content: "\f1c1"; }
-naff-icon[name='file-word-o']:before { content: "\f1c2"; }
-naff-icon[name='file-excel-o']:before { content: "\f1c3"; }
-naff-icon[name='file-powerpoint-o']:before { content: "\f1c4"; }
-naff-icon[name='file-photo-o']:before, naff-icon[name='file-picture-o']:before, naff-icon[name='file-image-o']:before { content: "\f1c5"; }
-naff-icon[name='file-zip-o']:before, naff-icon[name='file-archive-o']:before { content: "\f1c6"; }
-naff-icon[name='file-sound-o']:before, naff-icon[name='file-audio-o']:before { content: "\f1c7"; }
-naff-icon[name='file-movie-o']:before, naff-icon[name='file-video-o']:before { content: "\f1c8"; }
-naff-icon[name='file-code-o']:before { content: "\f1c9"; }
-naff-icon[name='vine']:before { content: "\f1ca"; }
-naff-icon[name='codepen']:before { content: "\f1cb"; }
-naff-icon[name='jsfiddle']:before { content: "\f1cc"; }
-naff-icon[name='life-bouy']:before, naff-icon[name='life-buoy']:before, naff-icon[name='life-saver']:before, naff-icon[name='support']:before, naff-icon[name='life-ring']:before { content: "\f1cd"; }
-naff-icon[name='circle-o-notch']:before { content: "\f1ce"; }
-naff-icon[name='ra']:before, naff-icon[name='rebel']:before { content: "\f1d0"; }
-naff-icon[name='ge']:before, naff-icon[name='empire']:before { content: "\f1d1"; }
-naff-icon[name='git-square']:before { content: "\f1d2"; }
-naff-icon[name='git']:before { content: "\f1d3"; }
-naff-icon[name='hacker-news']:before { content: "\f1d4"; }
-naff-icon[name='tencent-weibo']:before { content: "\f1d5"; }
-naff-icon[name='qq']:before { content: "\f1d6"; }
-naff-icon[name='wechat']:before, naff-icon[name='weixin']:before { content: "\f1d7"; }
-naff-icon[name='send']:before, naff-icon[name='paper-plane']:before { content: "\f1d8"; }
-naff-icon[name='send-o']:before, naff-icon[name='paper-plane-o']:before { content: "\f1d9"; }
-naff-icon[name='history']:before { content: "\f1da"; }
-naff-icon[name='genderless']:before, naff-icon[name='circle-thin']:before { content: "\f1db"; }
-naff-icon[name='header']:before { content: "\f1dc"; }
-naff-icon[name='paragraph']:before { content: "\f1dd"; }
-naff-icon[name='sliders']:before { content: "\f1de"; }
-naff-icon[name='share-alt']:before { content: "\f1e0"; }
-naff-icon[name='share-alt-square']:before { content: "\f1e1"; }
-naff-icon[name='bomb']:before { content: "\f1e2"; }
-naff-icon[name='soccer-ball-o']:before, naff-icon[name='futbol-o']:before { content: "\f1e3"; }
-naff-icon[name='tty']:before { content: "\f1e4"; }
-naff-icon[name='binoculars']:before { content: "\f1e5"; }
-naff-icon[name='plug']:before { content: "\f1e6"; }
-naff-icon[name='slideshare']:before { content: "\f1e7"; }
-naff-icon[name='twitch']:before { content: "\f1e8"; }
-naff-icon[name='yelp']:before { content: "\f1e9"; }
-naff-icon[name='newspaper-o']:before { content: "\f1ea"; }
-naff-icon[name='wifi']:before { content: "\f1eb"; }
-naff-icon[name='calculator']:before { content: "\f1ec"; }
-naff-icon[name='paypal']:before { content: "\f1ed"; }
-naff-icon[name='google-wallet']:before { content: "\f1ee"; }
-naff-icon[name='cc-visa']:before { content: "\f1f0"; }
-naff-icon[name='cc-mastercard']:before { content: "\f1f1"; }
-naff-icon[name='cc-discover']:before { content: "\f1f2"; }
-naff-icon[name='cc-amex']:before { content: "\f1f3"; }
-naff-icon[name='cc-paypal']:before { content: "\f1f4"; }
-naff-icon[name='cc-stripe']:before { content: "\f1f5"; }
-naff-icon[name='bell-slash']:before { content: "\f1f6"; }
-naff-icon[name='bell-slash-o']:before { content: "\f1f7"; }
-naff-icon[name='trash']:before { content: "\f1f8"; }
-naff-icon[name='copyright']:before { content: "\f1f9"; }
-naff-icon[name='at']:before { content: "\f1fa"; }
-naff-icon[name='eyedropper']:before { content: "\f1fb"; }
-naff-icon[name='paint-brush']:before { content: "\f1fc"; }
-naff-icon[name='birthday-cake']:before { content: "\f1fd"; }
-naff-icon[name='area-chart']:before { content: "\f1fe"; }
-naff-icon[name='pie-chart']:before { content: "\f200"; }
-naff-icon[name='line-chart']:before { content: "\f201"; }
-naff-icon[name='lastfm']:before { content: "\f202"; }
-naff-icon[name='lastfm-square']:before { content: "\f203"; }
-naff-icon[name='toggle-off']:before { content: "\f204"; }
-naff-icon[name='toggle-on']:before { content: "\f205"; }
-naff-icon[name='bicycle']:before { content: "\f206"; }
-naff-icon[name='bus']:before { content: "\f207"; }
-naff-icon[name='ioxhost']:before { content: "\f208"; }
-naff-icon[name='angellist']:before { content: "\f209"; }
-naff-icon[name='cc']:before { content: "\f20a"; }
-naff-icon[name='shekel']:before, naff-icon[name='sheqel']:before, naff-icon[name='ils']:before { content: "\f20b"; }
-naff-icon[name='meanpath']:before { content: "\f20c"; }
-naff-icon[name='buysellads']:before { content: "\f20d"; }
-naff-icon[name='connectdevelop']:before { content: "\f20e"; }
-naff-icon[name='dashcube']:before { content: "\f210"; }
-naff-icon[name='forumbee']:before { content: "\f211"; }
-naff-icon[name='leanpub']:before { content: "\f212"; }
-naff-icon[name='sellsy']:before { content: "\f213"; }
-naff-icon[name='shirtsinbulk']:before { content: "\f214"; }
-naff-icon[name='simplybuilt']:before { content: "\f215"; }
-naff-icon[name='skyatlas']:before { content: "\f216"; }
-naff-icon[name='cart-plus']:before { content: "\f217"; }
-naff-icon[name='cart-arrow-down']:before { content: "\f218"; }
-naff-icon[name='diamond']:before { content: "\f219"; }
-naff-icon[name='ship']:before { content: "\f21a"; }
-naff-icon[name='user-secret']:before { content: "\f21b"; }
-naff-icon[name='motorcycle']:before { content: "\f21c"; }
-naff-icon[name='street-view']:before { content: "\f21d"; }
-naff-icon[name='heartbeat']:before { content: "\f21e"; }
-naff-icon[name='venus']:before { content: "\f221"; }
-naff-icon[name='mars']:before { content: "\f222"; }
-naff-icon[name='mercury']:before { content: "\f223"; }
-naff-icon[name='transgender']:before { content: "\f224"; }
-naff-icon[name='transgender-alt']:before { content: "\f225"; }
-naff-icon[name='venus-double']:before { content: "\f226"; }
-naff-icon[name='mars-double']:before { content: "\f227"; }
-naff-icon[name='venus-mars']:before { content: "\f228"; }
-naff-icon[name='mars-stroke']:before { content: "\f229"; }
-naff-icon[name='mars-stroke-v']:before { content: "\f22a"; }
-naff-icon[name='mars-stroke-h']:before { content: "\f22b"; }
-naff-icon[name='neuter']:before { content: "\f22c"; }
-naff-icon[name='facebook-official']:before { content: "\f230"; }
-naff-icon[name='pinterest-p']:before { content: "\f231"; }
-naff-icon[name='whatsapp']:before { content: "\f232"; }
-naff-icon[name='server']:before { content: "\f233"; }
-naff-icon[name='user-plus']:before { content: "\f234"; }
-naff-icon[name='user-times']:before { content: "\f235"; }
-naff-icon[name='hotel']:before, naff-icon[name='bed']:before { content: "\f236"; }
-naff-icon[name='viacoin']:before { content: "\f237"; }
-naff-icon[name='train']:before { content: "\f238"; }
-naff-icon[name='subway']:before { content: "\f239"; }
-naff-icon[name='medium']:before { content: "\f23a"; }
+html /deep/ naff-icon[name='glass']:before { content: "\f000"; }
+html /deep/ naff-icon[name='music']:before { content: "\f001"; }
+html /deep/ naff-icon[name='search']:before { content: "\f002"; }
+html /deep/ naff-icon[name='envelope-o']:before { content: "\f003"; }
+html /deep/ naff-icon[name='heart']:before { content: "\f004"; }
+html /deep/ naff-icon[name='star']:before { content: "\f005"; }
+html /deep/ naff-icon[name='star-o']:before { content: "\f006"; }
+html /deep/ naff-icon[name='user']:before { content: "\f007"; }
+html /deep/ naff-icon[name='film']:before { content: "\f008"; }
+html /deep/ naff-icon[name='th-large']:before { content: "\f009"; }
+html /deep/ naff-icon[name='th']:before { content: "\f00a"; }
+html /deep/ naff-icon[name='th-list']:before { content: "\f00b"; }
+html /deep/ naff-icon[name='check']:before { content: "\f00c"; }
+html /deep/ naff-icon[name='remove']:before, html /deep/ naff-icon[name='close']:before, html /deep/ naff-icon[name='times']:before { content: "\f00d"; }
+html /deep/ naff-icon[name='search-plus']:before { content: "\f00e"; }
+html /deep/ naff-icon[name='search-minus']:before { content: "\f010"; }
+html /deep/ naff-icon[name='power-off']:before { content: "\f011"; }
+html /deep/ naff-icon[name='signal']:before { content: "\f012"; }
+html /deep/ naff-icon[name='gear']:before, html /deep/ naff-icon[name='cog']:before { content: "\f013"; }
+html /deep/ naff-icon[name='trash-o']:before { content: "\f014"; }
+html /deep/ naff-icon[name='home']:before { content: "\f015"; }
+html /deep/ naff-icon[name='file-o']:before { content: "\f016"; }
+html /deep/ naff-icon[name='clock-o']:before { content: "\f017"; }
+html /deep/ naff-icon[name='road']:before { content: "\f018"; }
+html /deep/ naff-icon[name='download']:before { content: "\f019"; }
+html /deep/ naff-icon[name='arrow-circle-o-down']:before { content: "\f01a"; }
+html /deep/ naff-icon[name='arrow-circle-o-up']:before { content: "\f01b"; }
+html /deep/ naff-icon[name='inbox']:before { content: "\f01c"; }
+html /deep/ naff-icon[name='play-circle-o']:before { content: "\f01d"; }
+html /deep/ naff-icon[name='rotate-right']:before, html /deep/ naff-icon[name='repeat']:before { content: "\f01e"; }
+html /deep/ naff-icon[name='refresh']:before { content: "\f021"; }
+html /deep/ naff-icon[name='list-alt']:before { content: "\f022"; }
+html /deep/ naff-icon[name='lock']:before { content: "\f023"; }
+html /deep/ naff-icon[name='flag']:before { content: "\f024"; }
+html /deep/ naff-icon[name='headphones']:before { content: "\f025"; }
+html /deep/ naff-icon[name='volume-off']:before { content: "\f026"; }
+html /deep/ naff-icon[name='volume-down']:before { content: "\f027"; }
+html /deep/ naff-icon[name='volume-up']:before { content: "\f028"; }
+html /deep/ naff-icon[name='qrcode']:before { content: "\f029"; }
+html /deep/ naff-icon[name='barcode']:before { content: "\f02a"; }
+html /deep/ naff-icon[name='tag']:before { content: "\f02b"; }
+html /deep/ naff-icon[name='tags']:before { content: "\f02c"; }
+html /deep/ naff-icon[name='book']:before { content: "\f02d"; }
+html /deep/ naff-icon[name='bookmark']:before { content: "\f02e"; }
+html /deep/ naff-icon[name='print']:before { content: "\f02f"; }
+html /deep/ naff-icon[name='camera']:before { content: "\f030"; }
+html /deep/ naff-icon[name='font']:before { content: "\f031"; }
+html /deep/ naff-icon[name='bold']:before { content: "\f032"; }
+html /deep/ naff-icon[name='italic']:before { content: "\f033"; }
+html /deep/ naff-icon[name='text-height']:before { content: "\f034"; }
+html /deep/ naff-icon[name='text-width']:before { content: "\f035"; }
+html /deep/ naff-icon[name='align-left']:before { content: "\f036"; }
+html /deep/ naff-icon[name='align-center']:before { content: "\f037"; }
+html /deep/ naff-icon[name='align-right']:before { content: "\f038"; }
+html /deep/ naff-icon[name='align-justify']:before { content: "\f039"; }
+html /deep/ naff-icon[name='list']:before { content: "\f03a"; }
+html /deep/ naff-icon[name='dedent']:before, html /deep/ naff-icon[name='outdent']:before { content: "\f03b"; }
+html /deep/ naff-icon[name='indent']:before { content: "\f03c"; }
+html /deep/ naff-icon[name='video-camera']:before { content: "\f03d"; }
+html /deep/ naff-icon[name='photo']:before, html /deep/ naff-icon[name='image']:before, html /deep/ naff-icon[name='picture-o']:before { content: "\f03e"; }
+html /deep/ naff-icon[name='pencil']:before { content: "\f040"; }
+html /deep/ naff-icon[name='map-marker']:before { content: "\f041"; }
+html /deep/ naff-icon[name='adjust']:before { content: "\f042"; }
+html /deep/ naff-icon[name='tint']:before { content: "\f043"; }
+html /deep/ naff-icon[name='edit']:before, html /deep/ naff-icon[name='pencil-square-o']:before { content: "\f044"; }
+html /deep/ naff-icon[name='share-square-o']:before { content: "\f045"; }
+html /deep/ naff-icon[name='check-square-o']:before { content: "\f046"; }
+html /deep/ naff-icon[name='arrows']:before { content: "\f047"; }
+html /deep/ naff-icon[name='step-backward']:before { content: "\f048"; }
+html /deep/ naff-icon[name='fast-backward']:before { content: "\f049"; }
+html /deep/ naff-icon[name='backward']:before { content: "\f04a"; }
+html /deep/ naff-icon[name='play']:before { content: "\f04b"; }
+html /deep/ naff-icon[name='pause']:before { content: "\f04c"; }
+html /deep/ naff-icon[name='stop']:before { content: "\f04d"; }
+html /deep/ naff-icon[name='forward']:before { content: "\f04e"; }
+html /deep/ naff-icon[name='fast-forward']:before { content: "\f050"; }
+html /deep/ naff-icon[name='step-forward']:before { content: "\f051"; }
+html /deep/ naff-icon[name='eject']:before { content: "\f052"; }
+html /deep/ naff-icon[name='chevron-left']:before { content: "\f053"; }
+html /deep/ naff-icon[name='chevron-right']:before { content: "\f054"; }
+html /deep/ naff-icon[name='plus-circle']:before { content: "\f055"; }
+html /deep/ naff-icon[name='minus-circle']:before { content: "\f056"; }
+html /deep/ naff-icon[name='times-circle']:before { content: "\f057"; }
+html /deep/ naff-icon[name='check-circle']:before { content: "\f058"; }
+html /deep/ naff-icon[name='question-circle']:before { content: "\f059"; }
+html /deep/ naff-icon[name='info-circle']:before { content: "\f05a"; }
+html /deep/ naff-icon[name='crosshairs']:before { content: "\f05b"; }
+html /deep/ naff-icon[name='times-circle-o']:before { content: "\f05c"; }
+html /deep/ naff-icon[name='check-circle-o']:before { content: "\f05d"; }
+html /deep/ naff-icon[name='ban']:before { content: "\f05e"; }
+html /deep/ naff-icon[name='arrow-left']:before { content: "\f060"; }
+html /deep/ naff-icon[name='arrow-right']:before { content: "\f061"; }
+html /deep/ naff-icon[name='arrow-up']:before { content: "\f062"; }
+html /deep/ naff-icon[name='arrow-down']:before { content: "\f063"; }
+html /deep/ naff-icon[name='mail-forward']:before, html /deep/ naff-icon[name='share']:before { content: "\f064"; }
+html /deep/ naff-icon[name='expand']:before { content: "\f065"; }
+html /deep/ naff-icon[name='compress']:before { content: "\f066"; }
+html /deep/ naff-icon[name='plus']:before { content: "\f067"; }
+html /deep/ naff-icon[name='minus']:before { content: "\f068"; }
+html /deep/ naff-icon[name='asterisk']:before { content: "\f069"; }
+html /deep/ naff-icon[name='exclamation-circle']:before { content: "\f06a"; }
+html /deep/ naff-icon[name='gift']:before { content: "\f06b"; }
+html /deep/ naff-icon[name='leaf']:before { content: "\f06c"; }
+html /deep/ naff-icon[name='fire']:before { content: "\f06d"; }
+html /deep/ naff-icon[name='eye']:before { content: "\f06e"; }
+html /deep/ naff-icon[name='eye-slash']:before { content: "\f070"; }
+html /deep/ naff-icon[name='warning']:before, html /deep/ naff-icon[name='exclamation-triangle']:before { content: "\f071"; }
+html /deep/ naff-icon[name='plane']:before { content: "\f072"; }
+html /deep/ naff-icon[name='calendar']:before { content: "\f073"; }
+html /deep/ naff-icon[name='random']:before { content: "\f074"; }
+html /deep/ naff-icon[name='comment']:before { content: "\f075"; }
+html /deep/ naff-icon[name='magnet']:before { content: "\f076"; }
+html /deep/ naff-icon[name='chevron-up']:before { content: "\f077"; }
+html /deep/ naff-icon[name='chevron-down']:before { content: "\f078"; }
+html /deep/ naff-icon[name='retweet']:before { content: "\f079"; }
+html /deep/ naff-icon[name='shopping-cart']:before { content: "\f07a"; }
+html /deep/ naff-icon[name='folder']:before { content: "\f07b"; }
+html /deep/ naff-icon[name='folder-open']:before { content: "\f07c"; }
+html /deep/ naff-icon[name='arrows-v']:before { content: "\f07d"; }
+html /deep/ naff-icon[name='arrows-h']:before { content: "\f07e"; }
+html /deep/ naff-icon[name='bar-chart-o']:before, html /deep/ naff-icon[name='bar-chart']:before { content: "\f080"; }
+html /deep/ naff-icon[name='twitter-square']:before { content: "\f081"; }
+html /deep/ naff-icon[name='facebook-square']:before { content: "\f082"; }
+html /deep/ naff-icon[name='camera-retro']:before { content: "\f083"; }
+html /deep/ naff-icon[name='key']:before { content: "\f084"; }
+html /deep/ naff-icon[name='gears']:before, html /deep/ naff-icon[name='cogs']:before { content: "\f085"; }
+html /deep/ naff-icon[name='comments']:before { content: "\f086"; }
+html /deep/ naff-icon[name='thumbs-o-up']:before { content: "\f087"; }
+html /deep/ naff-icon[name='thumbs-o-down']:before { content: "\f088"; }
+html /deep/ naff-icon[name='star-half']:before { content: "\f089"; }
+html /deep/ naff-icon[name='heart-o']:before { content: "\f08a"; }
+html /deep/ naff-icon[name='sign-out']:before { content: "\f08b"; }
+html /deep/ naff-icon[name='linkedin-square']:before { content: "\f08c"; }
+html /deep/ naff-icon[name='thumb-tack']:before { content: "\f08d"; }
+html /deep/ naff-icon[name='external-link']:before { content: "\f08e"; }
+html /deep/ naff-icon[name='sign-in']:before { content: "\f090"; }
+html /deep/ naff-icon[name='trophy']:before { content: "\f091"; }
+html /deep/ naff-icon[name='github-square']:before { content: "\f092"; }
+html /deep/ naff-icon[name='upload']:before { content: "\f093"; }
+html /deep/ naff-icon[name='lemon-o']:before { content: "\f094"; }
+html /deep/ naff-icon[name='phone']:before { content: "\f095"; }
+html /deep/ naff-icon[name='square-o']:before { content: "\f096"; }
+html /deep/ naff-icon[name='bookmark-o']:before { content: "\f097"; }
+html /deep/ naff-icon[name='phone-square']:before { content: "\f098"; }
+html /deep/ naff-icon[name='twitter']:before { content: "\f099"; }
+html /deep/ naff-icon[name='facebook-f']:before, html /deep/ naff-icon[name='facebook']:before { content: "\f09a"; }
+html /deep/ naff-icon[name='github']:before { content: "\f09b"; }
+html /deep/ naff-icon[name='unlock']:before { content: "\f09c"; }
+html /deep/ naff-icon[name='credit-card']:before { content: "\f09d"; }
+html /deep/ naff-icon[name='rss']:before { content: "\f09e"; }
+html /deep/ naff-icon[name='hdd-o']:before { content: "\f0a0"; }
+html /deep/ naff-icon[name='bullhorn']:before { content: "\f0a1"; }
+html /deep/ naff-icon[name='bell']:before { content: "\f0f3"; }
+html /deep/ naff-icon[name='certificate']:before { content: "\f0a3"; }
+html /deep/ naff-icon[name='hand-o-right']:before { content: "\f0a4"; }
+html /deep/ naff-icon[name='hand-o-left']:before { content: "\f0a5"; }
+html /deep/ naff-icon[name='hand-o-up']:before { content: "\f0a6"; }
+html /deep/ naff-icon[name='hand-o-down']:before { content: "\f0a7"; }
+html /deep/ naff-icon[name='arrow-circle-left']:before { content: "\f0a8"; }
+html /deep/ naff-icon[name='arrow-circle-right']:before { content: "\f0a9"; }
+html /deep/ naff-icon[name='arrow-circle-up']:before { content: "\f0aa"; }
+html /deep/ naff-icon[name='arrow-circle-down']:before { content: "\f0ab"; }
+html /deep/ naff-icon[name='globe']:before { content: "\f0ac"; }
+html /deep/ naff-icon[name='wrench']:before { content: "\f0ad"; }
+html /deep/ naff-icon[name='tasks']:before { content: "\f0ae"; }
+html /deep/ naff-icon[name='filter']:before { content: "\f0b0"; }
+html /deep/ naff-icon[name='briefcase']:before { content: "\f0b1"; }
+html /deep/ naff-icon[name='arrows-alt']:before { content: "\f0b2"; }
+html /deep/ naff-icon[name='group']:before, html /deep/ naff-icon[name='users']:before { content: "\f0c0"; }
+html /deep/ naff-icon[name='chain']:before, html /deep/ naff-icon[name='link']:before { content: "\f0c1"; }
+html /deep/ naff-icon[name='cloud']:before { content: "\f0c2"; }
+html /deep/ naff-icon[name='flask']:before { content: "\f0c3"; }
+html /deep/ naff-icon[name='cut']:before, html /deep/ naff-icon[name='scissors']:before { content: "\f0c4"; }
+html /deep/ naff-icon[name='copy']:before, html /deep/ naff-icon[name='files-o']:before { content: "\f0c5"; }
+html /deep/ naff-icon[name='paperclip']:before { content: "\f0c6"; }
+html /deep/ naff-icon[name='save']:before, html /deep/ naff-icon[name='floppy-o']:before { content: "\f0c7"; }
+html /deep/ naff-icon[name='square']:before { content: "\f0c8"; }
+html /deep/ naff-icon[name='navicon']:before, html /deep/ naff-icon[name='reorder']:before, html /deep/ naff-icon[name='bars']:before { content: "\f0c9"; }
+html /deep/ naff-icon[name='list-ul']:before { content: "\f0ca"; }
+html /deep/ naff-icon[name='list-ol']:before { content: "\f0cb"; }
+html /deep/ naff-icon[name='strikethrough']:before { content: "\f0cc"; }
+html /deep/ naff-icon[name='underline']:before { content: "\f0cd"; }
+html /deep/ naff-icon[name='table']:before { content: "\f0ce"; }
+html /deep/ naff-icon[name='magic']:before { content: "\f0d0"; }
+html /deep/ naff-icon[name='truck']:before { content: "\f0d1"; }
+html /deep/ naff-icon[name='pinterest']:before { content: "\f0d2"; }
+html /deep/ naff-icon[name='pinterest-square']:before { content: "\f0d3"; }
+html /deep/ naff-icon[name='google-plus-square']:before { content: "\f0d4"; }
+html /deep/ naff-icon[name='google-plus']:before { content: "\f0d5"; }
+html /deep/ naff-icon[name='money']:before { content: "\f0d6"; }
+html /deep/ naff-icon[name='caret-down']:before { content: "\f0d7"; }
+html /deep/ naff-icon[name='caret-up']:before { content: "\f0d8"; }
+html /deep/ naff-icon[name='caret-left']:before { content: "\f0d9"; }
+html /deep/ naff-icon[name='caret-right']:before { content: "\f0da"; }
+html /deep/ naff-icon[name='columns']:before { content: "\f0db"; }
+html /deep/ naff-icon[name='unsorted']:before, html /deep/ naff-icon[name='sort']:before { content: "\f0dc"; }
+html /deep/ naff-icon[name='sort-down']:before, html /deep/ naff-icon[name='sort-desc']:before { content: "\f0dd"; }
+html /deep/ naff-icon[name='sort-up']:before, html /deep/ naff-icon[name='sort-asc']:before { content: "\f0de"; }
+html /deep/ naff-icon[name='envelope']:before { content: "\f0e0"; }
+html /deep/ naff-icon[name='linkedin']:before { content: "\f0e1"; }
+html /deep/ naff-icon[name='rotate-left']:before, html /deep/ naff-icon[name='undo']:before { content: "\f0e2"; }
+html /deep/ naff-icon[name='legal']:before, html /deep/ naff-icon[name='gavel']:before { content: "\f0e3"; }
+html /deep/ naff-icon[name='dashboard']:before, html /deep/ naff-icon[name='tachometer']:before { content: "\f0e4"; }
+html /deep/ naff-icon[name='comment-o']:before { content: "\f0e5"; }
+html /deep/ naff-icon[name='comments-o']:before { content: "\f0e6"; }
+html /deep/ naff-icon[name='flash']:before, html /deep/ naff-icon[name='bolt']:before { content: "\f0e7"; }
+html /deep/ naff-icon[name='sitemap']:before { content: "\f0e8"; }
+html /deep/ naff-icon[name='umbrella']:before { content: "\f0e9"; }
+html /deep/ naff-icon[name='paste']:before, html /deep/ naff-icon[name='clipboard']:before { content: "\f0ea"; }
+html /deep/ naff-icon[name='lightbulb-o']:before { content: "\f0eb"; }
+html /deep/ naff-icon[name='exchange']:before { content: "\f0ec"; }
+html /deep/ naff-icon[name='cloud-download']:before { content: "\f0ed"; }
+html /deep/ naff-icon[name='cloud-upload']:before { content: "\f0ee"; }
+html /deep/ naff-icon[name='user-md']:before { content: "\f0f0"; }
+html /deep/ naff-icon[name='stethoscope']:before { content: "\f0f1"; }
+html /deep/ naff-icon[name='suitcase']:before { content: "\f0f2"; }
+html /deep/ naff-icon[name='bell-o']:before { content: "\f0a2"; }
+html /deep/ naff-icon[name='coffee']:before { content: "\f0f4"; }
+html /deep/ naff-icon[name='cutlery']:before { content: "\f0f5"; }
+html /deep/ naff-icon[name='file-text-o']:before { content: "\f0f6"; }
+html /deep/ naff-icon[name='building-o']:before { content: "\f0f7"; }
+html /deep/ naff-icon[name='hospital-o']:before { content: "\f0f8"; }
+html /deep/ naff-icon[name='ambulance']:before { content: "\f0f9"; }
+html /deep/ naff-icon[name='medkit']:before { content: "\f0fa"; }
+html /deep/ naff-icon[name='fighter-jet']:before { content: "\f0fb"; }
+html /deep/ naff-icon[name='beer']:before { content: "\f0fc"; }
+html /deep/ naff-icon[name='h-square']:before { content: "\f0fd"; }
+html /deep/ naff-icon[name='plus-square']:before { content: "\f0fe"; }
+html /deep/ naff-icon[name='angle-double-left']:before { content: "\f100"; }
+html /deep/ naff-icon[name='angle-double-right']:before { content: "\f101"; }
+html /deep/ naff-icon[name='angle-double-up']:before { content: "\f102"; }
+html /deep/ naff-icon[name='angle-double-down']:before { content: "\f103"; }
+html /deep/ naff-icon[name='angle-left']:before { content: "\f104"; }
+html /deep/ naff-icon[name='angle-right']:before { content: "\f105"; }
+html /deep/ naff-icon[name='angle-up']:before { content: "\f106"; }
+html /deep/ naff-icon[name='angle-down']:before { content: "\f107"; }
+html /deep/ naff-icon[name='desktop']:before { content: "\f108"; }
+html /deep/ naff-icon[name='laptop']:before { content: "\f109"; }
+html /deep/ naff-icon[name='tablet']:before { content: "\f10a"; }
+html /deep/ naff-icon[name='mobile-phone']:before, html /deep/ naff-icon[name='mobile']:before { content: "\f10b"; }
+html /deep/ naff-icon[name='circle-o']:before { content: "\f10c"; }
+html /deep/ naff-icon[name='quote-left']:before { content: "\f10d"; }
+html /deep/ naff-icon[name='quote-right']:before { content: "\f10e"; }
+html /deep/ naff-icon[name='spinner']:before { content: "\f110"; }
+html /deep/ naff-icon[name='circle']:before { content: "\f111"; }
+html /deep/ naff-icon[name='mail-reply']:before, html /deep/ naff-icon[name='reply']:before { content: "\f112"; }
+html /deep/ naff-icon[name='github-alt']:before { content: "\f113"; }
+html /deep/ naff-icon[name='folder-o']:before { content: "\f114"; }
+html /deep/ naff-icon[name='folder-open-o']:before { content: "\f115"; }
+html /deep/ naff-icon[name='smile-o']:before { content: "\f118"; }
+html /deep/ naff-icon[name='frown-o']:before { content: "\f119"; }
+html /deep/ naff-icon[name='meh-o']:before { content: "\f11a"; }
+html /deep/ naff-icon[name='gamepad']:before { content: "\f11b"; }
+html /deep/ naff-icon[name='keyboard-o']:before { content: "\f11c"; }
+html /deep/ naff-icon[name='flag-o']:before { content: "\f11d"; }
+html /deep/ naff-icon[name='flag-checkered']:before { content: "\f11e"; }
+html /deep/ naff-icon[name='terminal']:before { content: "\f120"; }
+html /deep/ naff-icon[name='code']:before { content: "\f121"; }
+html /deep/ naff-icon[name='mail-reply-all']:before, html /deep/ naff-icon[name='reply-all']:before { content: "\f122"; }
+html /deep/ naff-icon[name='star-half-empty']:before, html /deep/ naff-icon[name='star-half-full']:before, html /deep/ naff-icon[name='star-half-o']:before { content: "\f123"; }
+html /deep/ naff-icon[name='location-arrow']:before { content: "\f124"; }
+html /deep/ naff-icon[name='crop']:before { content: "\f125"; }
+html /deep/ naff-icon[name='code-fork']:before { content: "\f126"; }
+html /deep/ naff-icon[name='unlink']:before, html /deep/ naff-icon[name='chain-broken']:before { content: "\f127"; }
+html /deep/ naff-icon[name='question']:before { content: "\f128"; }
+html /deep/ naff-icon[name='info']:before { content: "\f129"; }
+html /deep/ naff-icon[name='exclamation']:before { content: "\f12a"; }
+html /deep/ naff-icon[name='superscript']:before { content: "\f12b"; }
+html /deep/ naff-icon[name='subscript']:before { content: "\f12c"; }
+html /deep/ naff-icon[name='eraser']:before { content: "\f12d"; }
+html /deep/ naff-icon[name='puzzle-piece']:before { content: "\f12e"; }
+html /deep/ naff-icon[name='microphone']:before { content: "\f130"; }
+html /deep/ naff-icon[name='microphone-slash']:before { content: "\f131"; }
+html /deep/ naff-icon[name='shield']:before { content: "\f132"; }
+html /deep/ naff-icon[name='calendar-o']:before { content: "\f133"; }
+html /deep/ naff-icon[name='fire-extinguisher']:before { content: "\f134"; }
+html /deep/ naff-icon[name='rocket']:before { content: "\f135"; }
+html /deep/ naff-icon[name='maxcdn']:before { content: "\f136"; }
+html /deep/ naff-icon[name='chevron-circle-left']:before { content: "\f137"; }
+html /deep/ naff-icon[name='chevron-circle-right']:before { content: "\f138"; }
+html /deep/ naff-icon[name='chevron-circle-up']:before { content: "\f139"; }
+html /deep/ naff-icon[name='chevron-circle-down']:before { content: "\f13a"; }
+html /deep/ naff-icon[name='html5']:before { content: "\f13b"; }
+html /deep/ naff-icon[name='css3']:before { content: "\f13c"; }
+html /deep/ naff-icon[name='anchor']:before { content: "\f13d"; }
+html /deep/ naff-icon[name='unlock-alt']:before { content: "\f13e"; }
+html /deep/ naff-icon[name='bullseye']:before { content: "\f140"; }
+html /deep/ naff-icon[name='ellipsis-h']:before { content: "\f141"; }
+html /deep/ naff-icon[name='ellipsis-v']:before { content: "\f142"; }
+html /deep/ naff-icon[name='rss-square']:before { content: "\f143"; }
+html /deep/ naff-icon[name='play-circle']:before { content: "\f144"; }
+html /deep/ naff-icon[name='ticket']:before { content: "\f145"; }
+html /deep/ naff-icon[name='minus-square']:before { content: "\f146"; }
+html /deep/ naff-icon[name='minus-square-o']:before { content: "\f147"; }
+html /deep/ naff-icon[name='level-up']:before { content: "\f148"; }
+html /deep/ naff-icon[name='level-down']:before { content: "\f149"; }
+html /deep/ naff-icon[name='check-square']:before { content: "\f14a"; }
+html /deep/ naff-icon[name='pencil-square']:before { content: "\f14b"; }
+html /deep/ naff-icon[name='external-link-square']:before { content: "\f14c"; }
+html /deep/ naff-icon[name='share-square']:before { content: "\f14d"; }
+html /deep/ naff-icon[name='compass']:before { content: "\f14e"; }
+html /deep/ naff-icon[name='toggle-down']:before, html /deep/ naff-icon[name='caret-square-o-down']:before { content: "\f150"; }
+html /deep/ naff-icon[name='toggle-up']:before, html /deep/ naff-icon[name='caret-square-o-up']:before { content: "\f151"; }
+html /deep/ naff-icon[name='toggle-right']:before, html /deep/ naff-icon[name='caret-square-o-right']:before { content: "\f152"; }
+html /deep/ naff-icon[name='euro']:before, html /deep/ naff-icon[name='eur']:before { content: "\f153"; }
+html /deep/ naff-icon[name='gbp']:before { content: "\f154"; }
+html /deep/ naff-icon[name='dollar']:before, html /deep/ naff-icon[name='usd']:before { content: "\f155"; }
+html /deep/ naff-icon[name='rupee']:before, html /deep/ naff-icon[name='inr']:before { content: "\f156"; }
+html /deep/ naff-icon[name='cny']:before, html /deep/ naff-icon[name='rmb']:before, html /deep/ naff-icon[name='yen']:before, html /deep/ naff-icon[name='jpy']:before { content: "\f157"; }
+html /deep/ naff-icon[name='ruble']:before, html /deep/ naff-icon[name='rouble']:before, html /deep/ naff-icon[name='rub']:before { content: "\f158"; }
+html /deep/ naff-icon[name='won']:before, html /deep/ naff-icon[name='krw']:before { content: "\f159"; }
+html /deep/ naff-icon[name='bitcoin']:before, html /deep/ naff-icon[name='btc']:before { content: "\f15a"; }
+html /deep/ naff-icon[name='file']:before { content: "\f15b"; }
+html /deep/ naff-icon[name='file-text']:before { content: "\f15c"; }
+html /deep/ naff-icon[name='sort-alpha-asc']:before { content: "\f15d"; }
+html /deep/ naff-icon[name='sort-alpha-desc']:before { content: "\f15e"; }
+html /deep/ naff-icon[name='sort-amount-asc']:before { content: "\f160"; }
+html /deep/ naff-icon[name='sort-amount-desc']:before { content: "\f161"; }
+html /deep/ naff-icon[name='sort-numeric-asc']:before { content: "\f162"; }
+html /deep/ naff-icon[name='sort-numeric-desc']:before { content: "\f163"; }
+html /deep/ naff-icon[name='thumbs-up']:before { content: "\f164"; }
+html /deep/ naff-icon[name='thumbs-down']:before { content: "\f165"; }
+html /deep/ naff-icon[name='youtube-square']:before { content: "\f166"; }
+html /deep/ naff-icon[name='youtube']:before { content: "\f167"; }
+html /deep/ naff-icon[name='xing']:before { content: "\f168"; }
+html /deep/ naff-icon[name='xing-square']:before { content: "\f169"; }
+html /deep/ naff-icon[name='youtube-play']:before { content: "\f16a"; }
+html /deep/ naff-icon[name='dropbox']:before { content: "\f16b"; }
+html /deep/ naff-icon[name='stack-overflow']:before { content: "\f16c"; }
+html /deep/ naff-icon[name='instagram']:before { content: "\f16d"; }
+html /deep/ naff-icon[name='flickr']:before { content: "\f16e"; }
+html /deep/ naff-icon[name='adn']:before { content: "\f170"; }
+html /deep/ naff-icon[name='bitbucket']:before { content: "\f171"; }
+html /deep/ naff-icon[name='bitbucket-square']:before { content: "\f172"; }
+html /deep/ naff-icon[name='tumblr']:before { content: "\f173"; }
+html /deep/ naff-icon[name='tumblr-square']:before { content: "\f174"; }
+html /deep/ naff-icon[name='long-arrow-down']:before { content: "\f175"; }
+html /deep/ naff-icon[name='long-arrow-up']:before { content: "\f176"; }
+html /deep/ naff-icon[name='long-arrow-left']:before { content: "\f177"; }
+html /deep/ naff-icon[name='long-arrow-right']:before { content: "\f178"; }
+html /deep/ naff-icon[name='apple']:before { content: "\f179"; }
+html /deep/ naff-icon[name='windows']:before { content: "\f17a"; }
+html /deep/ naff-icon[name='android']:before { content: "\f17b"; }
+html /deep/ naff-icon[name='linux']:before { content: "\f17c"; }
+html /deep/ naff-icon[name='dribbble']:before { content: "\f17d"; }
+html /deep/ naff-icon[name='skype']:before { content: "\f17e"; }
+html /deep/ naff-icon[name='foursquare']:before { content: "\f180"; }
+html /deep/ naff-icon[name='trello']:before { content: "\f181"; }
+html /deep/ naff-icon[name='female']:before { content: "\f182"; }
+html /deep/ naff-icon[name='male']:before { content: "\f183"; }
+html /deep/ naff-icon[name='gittip']:before, html /deep/ naff-icon[name='gratipay']:before { content: "\f184"; }
+html /deep/ naff-icon[name='sun-o']:before { content: "\f185"; }
+html /deep/ naff-icon[name='moon-o']:before { content: "\f186"; }
+html /deep/ naff-icon[name='archive']:before { content: "\f187"; }
+html /deep/ naff-icon[name='bug']:before { content: "\f188"; }
+html /deep/ naff-icon[name='vk']:before { content: "\f189"; }
+html /deep/ naff-icon[name='weibo']:before { content: "\f18a"; }
+html /deep/ naff-icon[name='renren']:before { content: "\f18b"; }
+html /deep/ naff-icon[name='pagelines']:before { content: "\f18c"; }
+html /deep/ naff-icon[name='stack-exchange']:before { content: "\f18d"; }
+html /deep/ naff-icon[name='arrow-circle-o-right']:before { content: "\f18e"; }
+html /deep/ naff-icon[name='arrow-circle-o-left']:before { content: "\f190"; }
+html /deep/ naff-icon[name='toggle-left']:before, html /deep/ naff-icon[name='caret-square-o-left']:before { content: "\f191"; }
+html /deep/ naff-icon[name='dot-circle-o']:before { content: "\f192"; }
+html /deep/ naff-icon[name='wheelchair']:before { content: "\f193"; }
+html /deep/ naff-icon[name='vimeo-square']:before { content: "\f194"; }
+html /deep/ naff-icon[name='turkish-lira']:before, html /deep/ naff-icon[name='try']:before { content: "\f195"; }
+html /deep/ naff-icon[name='plus-square-o']:before { content: "\f196"; }
+html /deep/ naff-icon[name='space-shuttle']:before { content: "\f197"; }
+html /deep/ naff-icon[name='slack']:before { content: "\f198"; }
+html /deep/ naff-icon[name='envelope-square']:before { content: "\f199"; }
+html /deep/ naff-icon[name='wordpress']:before { content: "\f19a"; }
+html /deep/ naff-icon[name='openid']:before { content: "\f19b"; }
+html /deep/ naff-icon[name='institution']:before, html /deep/ naff-icon[name='bank']:before, html /deep/ naff-icon[name='university']:before { content: "\f19c"; }
+html /deep/ naff-icon[name='mortar-board']:before, html /deep/ naff-icon[name='graduation-cap']:before { content: "\f19d"; }
+html /deep/ naff-icon[name='yahoo']:before { content: "\f19e"; }
+html /deep/ naff-icon[name='google']:before { content: "\f1a0"; }
+html /deep/ naff-icon[name='reddit']:before { content: "\f1a1"; }
+html /deep/ naff-icon[name='reddit-square']:before { content: "\f1a2"; }
+html /deep/ naff-icon[name='stumbleupon-circle']:before { content: "\f1a3"; }
+html /deep/ naff-icon[name='stumbleupon']:before { content: "\f1a4"; }
+html /deep/ naff-icon[name='delicious']:before { content: "\f1a5"; }
+html /deep/ naff-icon[name='digg']:before { content: "\f1a6"; }
+html /deep/ naff-icon[name='pied-piper']:before { content: "\f1a7"; }
+html /deep/ naff-icon[name='pied-piper-alt']:before { content: "\f1a8"; }
+html /deep/ naff-icon[name='drupal']:before { content: "\f1a9"; }
+html /deep/ naff-icon[name='joomla']:before { content: "\f1aa"; }
+html /deep/ naff-icon[name='language']:before { content: "\f1ab"; }
+html /deep/ naff-icon[name='fax']:before { content: "\f1ac"; }
+html /deep/ naff-icon[name='building']:before { content: "\f1ad"; }
+html /deep/ naff-icon[name='child']:before { content: "\f1ae"; }
+html /deep/ naff-icon[name='paw']:before { content: "\f1b0"; }
+html /deep/ naff-icon[name='spoon']:before { content: "\f1b1"; }
+html /deep/ naff-icon[name='cube']:before { content: "\f1b2"; }
+html /deep/ naff-icon[name='cubes']:before { content: "\f1b3"; }
+html /deep/ naff-icon[name='behance']:before { content: "\f1b4"; }
+html /deep/ naff-icon[name='behance-square']:before { content: "\f1b5"; }
+html /deep/ naff-icon[name='steam']:before { content: "\f1b6"; }
+html /deep/ naff-icon[name='steam-square']:before { content: "\f1b7"; }
+html /deep/ naff-icon[name='recycle']:before { content: "\f1b8"; }
+html /deep/ naff-icon[name='automobile']:before, html /deep/ naff-icon[name='car']:before { content: "\f1b9"; }
+html /deep/ naff-icon[name='cab']:before, html /deep/ naff-icon[name='taxi']:before { content: "\f1ba"; }
+html /deep/ naff-icon[name='tree']:before { content: "\f1bb"; }
+html /deep/ naff-icon[name='spotify']:before { content: "\f1bc"; }
+html /deep/ naff-icon[name='deviantart']:before { content: "\f1bd"; }
+html /deep/ naff-icon[name='soundcloud']:before { content: "\f1be"; }
+html /deep/ naff-icon[name='database']:before { content: "\f1c0"; }
+html /deep/ naff-icon[name='file-pdf-o']:before { content: "\f1c1"; }
+html /deep/ naff-icon[name='file-word-o']:before { content: "\f1c2"; }
+html /deep/ naff-icon[name='file-excel-o']:before { content: "\f1c3"; }
+html /deep/ naff-icon[name='file-powerpoint-o']:before { content: "\f1c4"; }
+html /deep/ naff-icon[name='file-photo-o']:before, html /deep/ naff-icon[name='file-picture-o']:before, html /deep/ naff-icon[name='file-image-o']:before { content: "\f1c5"; }
+html /deep/ naff-icon[name='file-zip-o']:before, html /deep/ naff-icon[name='file-archive-o']:before { content: "\f1c6"; }
+html /deep/ naff-icon[name='file-sound-o']:before, html /deep/ naff-icon[name='file-audio-o']:before { content: "\f1c7"; }
+html /deep/ naff-icon[name='file-movie-o']:before, html /deep/ naff-icon[name='file-video-o']:before { content: "\f1c8"; }
+html /deep/ naff-icon[name='file-code-o']:before { content: "\f1c9"; }
+html /deep/ naff-icon[name='vine']:before { content: "\f1ca"; }
+html /deep/ naff-icon[name='codepen']:before { content: "\f1cb"; }
+html /deep/ naff-icon[name='jsfiddle']:before { content: "\f1cc"; }
+html /deep/ naff-icon[name='life-bouy']:before, html /deep/ naff-icon[name='life-buoy']:before, html /deep/ naff-icon[name='life-saver']:before, html /deep/ naff-icon[name='support']:before, html /deep/ naff-icon[name='life-ring']:before { content: "\f1cd"; }
+html /deep/ naff-icon[name='circle-o-notch']:before { content: "\f1ce"; }
+html /deep/ naff-icon[name='ra']:before, html /deep/ naff-icon[name='rebel']:before { content: "\f1d0"; }
+html /deep/ naff-icon[name='ge']:before, html /deep/ naff-icon[name='empire']:before { content: "\f1d1"; }
+html /deep/ naff-icon[name='git-square']:before { content: "\f1d2"; }
+html /deep/ naff-icon[name='git']:before { content: "\f1d3"; }
+html /deep/ naff-icon[name='hacker-news']:before { content: "\f1d4"; }
+html /deep/ naff-icon[name='tencent-weibo']:before { content: "\f1d5"; }
+html /deep/ naff-icon[name='qq']:before { content: "\f1d6"; }
+html /deep/ naff-icon[name='wechat']:before, html /deep/ naff-icon[name='weixin']:before { content: "\f1d7"; }
+html /deep/ naff-icon[name='send']:before, html /deep/ naff-icon[name='paper-plane']:before { content: "\f1d8"; }
+html /deep/ naff-icon[name='send-o']:before, html /deep/ naff-icon[name='paper-plane-o']:before { content: "\f1d9"; }
+html /deep/ naff-icon[name='history']:before { content: "\f1da"; }
+html /deep/ naff-icon[name='genderless']:before, html /deep/ naff-icon[name='circle-thin']:before { content: "\f1db"; }
+html /deep/ naff-icon[name='header']:before { content: "\f1dc"; }
+html /deep/ naff-icon[name='paragraph']:before { content: "\f1dd"; }
+html /deep/ naff-icon[name='sliders']:before { content: "\f1de"; }
+html /deep/ naff-icon[name='share-alt']:before { content: "\f1e0"; }
+html /deep/ naff-icon[name='share-alt-square']:before { content: "\f1e1"; }
+html /deep/ naff-icon[name='bomb']:before { content: "\f1e2"; }
+html /deep/ naff-icon[name='soccer-ball-o']:before, html /deep/ naff-icon[name='futbol-o']:before { content: "\f1e3"; }
+html /deep/ naff-icon[name='tty']:before { content: "\f1e4"; }
+html /deep/ naff-icon[name='binoculars']:before { content: "\f1e5"; }
+html /deep/ naff-icon[name='plug']:before { content: "\f1e6"; }
+html /deep/ naff-icon[name='slideshare']:before { content: "\f1e7"; }
+html /deep/ naff-icon[name='twitch']:before { content: "\f1e8"; }
+html /deep/ naff-icon[name='yelp']:before { content: "\f1e9"; }
+html /deep/ naff-icon[name='newspaper-o']:before { content: "\f1ea"; }
+html /deep/ naff-icon[name='wifi']:before { content: "\f1eb"; }
+html /deep/ naff-icon[name='calculator']:before { content: "\f1ec"; }
+html /deep/ naff-icon[name='paypal']:before { content: "\f1ed"; }
+html /deep/ naff-icon[name='google-wallet']:before { content: "\f1ee"; }
+html /deep/ naff-icon[name='cc-visa']:before { content: "\f1f0"; }
+html /deep/ naff-icon[name='cc-mastercard']:before { content: "\f1f1"; }
+html /deep/ naff-icon[name='cc-discover']:before { content: "\f1f2"; }
+html /deep/ naff-icon[name='cc-amex']:before { content: "\f1f3"; }
+html /deep/ naff-icon[name='cc-paypal']:before { content: "\f1f4"; }
+html /deep/ naff-icon[name='cc-stripe']:before { content: "\f1f5"; }
+html /deep/ naff-icon[name='bell-slash']:before { content: "\f1f6"; }
+html /deep/ naff-icon[name='bell-slash-o']:before { content: "\f1f7"; }
+html /deep/ naff-icon[name='trash']:before { content: "\f1f8"; }
+html /deep/ naff-icon[name='copyright']:before { content: "\f1f9"; }
+html /deep/ naff-icon[name='at']:before { content: "\f1fa"; }
+html /deep/ naff-icon[name='eyedropper']:before { content: "\f1fb"; }
+html /deep/ naff-icon[name='paint-brush']:before { content: "\f1fc"; }
+html /deep/ naff-icon[name='birthday-cake']:before { content: "\f1fd"; }
+html /deep/ naff-icon[name='area-chart']:before { content: "\f1fe"; }
+html /deep/ naff-icon[name='pie-chart']:before { content: "\f200"; }
+html /deep/ naff-icon[name='line-chart']:before { content: "\f201"; }
+html /deep/ naff-icon[name='lastfm']:before { content: "\f202"; }
+html /deep/ naff-icon[name='lastfm-square']:before { content: "\f203"; }
+html /deep/ naff-icon[name='toggle-off']:before { content: "\f204"; }
+html /deep/ naff-icon[name='toggle-on']:before { content: "\f205"; }
+html /deep/ naff-icon[name='bicycle']:before { content: "\f206"; }
+html /deep/ naff-icon[name='bus']:before { content: "\f207"; }
+html /deep/ naff-icon[name='ioxhost']:before { content: "\f208"; }
+html /deep/ naff-icon[name='angellist']:before { content: "\f209"; }
+html /deep/ naff-icon[name='cc']:before { content: "\f20a"; }
+html /deep/ naff-icon[name='shekel']:before, html /deep/ naff-icon[name='sheqel']:before, html /deep/ naff-icon[name='ils']:before { content: "\f20b"; }
+html /deep/ naff-icon[name='meanpath']:before { content: "\f20c"; }
+html /deep/ naff-icon[name='buysellads']:before { content: "\f20d"; }
+html /deep/ naff-icon[name='connectdevelop']:before { content: "\f20e"; }
+html /deep/ naff-icon[name='dashcube']:before { content: "\f210"; }
+html /deep/ naff-icon[name='forumbee']:before { content: "\f211"; }
+html /deep/ naff-icon[name='leanpub']:before { content: "\f212"; }
+html /deep/ naff-icon[name='sellsy']:before { content: "\f213"; }
+html /deep/ naff-icon[name='shirtsinbulk']:before { content: "\f214"; }
+html /deep/ naff-icon[name='simplybuilt']:before { content: "\f215"; }
+html /deep/ naff-icon[name='skyatlas']:before { content: "\f216"; }
+html /deep/ naff-icon[name='cart-plus']:before { content: "\f217"; }
+html /deep/ naff-icon[name='cart-arrow-down']:before { content: "\f218"; }
+html /deep/ naff-icon[name='diamond']:before { content: "\f219"; }
+html /deep/ naff-icon[name='ship']:before { content: "\f21a"; }
+html /deep/ naff-icon[name='user-secret']:before { content: "\f21b"; }
+html /deep/ naff-icon[name='motorcycle']:before { content: "\f21c"; }
+html /deep/ naff-icon[name='street-view']:before { content: "\f21d"; }
+html /deep/ naff-icon[name='heartbeat']:before { content: "\f21e"; }
+html /deep/ naff-icon[name='venus']:before { content: "\f221"; }
+html /deep/ naff-icon[name='mars']:before { content: "\f222"; }
+html /deep/ naff-icon[name='mercury']:before { content: "\f223"; }
+html /deep/ naff-icon[name='transgender']:before { content: "\f224"; }
+html /deep/ naff-icon[name='transgender-alt']:before { content: "\f225"; }
+html /deep/ naff-icon[name='venus-double']:before { content: "\f226"; }
+html /deep/ naff-icon[name='mars-double']:before { content: "\f227"; }
+html /deep/ naff-icon[name='venus-mars']:before { content: "\f228"; }
+html /deep/ naff-icon[name='mars-stroke']:before { content: "\f229"; }
+html /deep/ naff-icon[name='mars-stroke-v']:before { content: "\f22a"; }
+html /deep/ naff-icon[name='mars-stroke-h']:before { content: "\f22b"; }
+html /deep/ naff-icon[name='neuter']:before { content: "\f22c"; }
+html /deep/ naff-icon[name='facebook-official']:before { content: "\f230"; }
+html /deep/ naff-icon[name='pinterest-p']:before { content: "\f231"; }
+html /deep/ naff-icon[name='whatsapp']:before { content: "\f232"; }
+html /deep/ naff-icon[name='server']:before { content: "\f233"; }
+html /deep/ naff-icon[name='user-plus']:before { content: "\f234"; }
+html /deep/ naff-icon[name='user-times']:before { content: "\f235"; }
+html /deep/ naff-icon[name='hotel']:before, html /deep/ naff-icon[name='bed']:before { content: "\f236"; }
+html /deep/ naff-icon[name='viacoin']:before { content: "\f237"; }
+html /deep/ naff-icon[name='train']:before { content: "\f238"; }
+html /deep/ naff-icon[name='subway']:before { content: "\f239"; }
+html /deep/ naff-icon[name='medium']:before { content: "\f23a"; }
 </style>
 
 <!-- LOGIC -->
-<script>
-(function()
-{
-	/* SETUP */
-
-	var naffIconProto = Object.create(HTMLElement.prototype);
-
-	/* ELEMENT */
-
-	document.registerElement('naff-icon', { prototype: naffIconProto });
-})()
-</script>
+<script>naff.registerElement({name: 'naff-icon'})</script>
 <style type="text/css">
-	naff-tag { display: inline-block; padding: 6px 8px; background: #ddd; color: #222;}
-	naff-tag[size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
-	naff-tag[size='small'] { padding: 4px 6px; font-size: 12px; line-height: 12px; }
-	naff-tag[size='medium'] { padding: 6px 8px; font-size: 14px; line-height: 16px; }
-	naff-tag[size='large'] { padding: 8px 12px; font-size: 18px; line-height: 18px; }
-	naff-tag[size='extra-large'] { padding: 10px 14px; font-size: 22px; line-height: 22px; }
-	naff-tag[shape='round'] { border-radius: 100px; }
-	naff-tag[shape='rounded'] { border-radius: 5px; }
-	naff-tag[shape='oval'] { border-radius: 75% / 77%; }
-	naff-tag[color='grey'] { background: #ddd; color: #222; }
-	naff-tag[color='blue'] { background: rgb(74, 74, 255); color: #fff; }
-	naff-tag[color='red'] { background: rgb(255, 44, 44); color: #fff; }
-	naff-tag[color='green'] { background: rgb(18, 163, 18); color: #fff; }
-	naff-tag[color='orange'] { background: rgb(255, 136, 26); color: #fff; }
-	naff-tag[color='black'] { background: #222; color: #fff; }
-	naff-tag[color='pink'] { background: #D729D5; color: #fff; }
-	naff-tag[color='purple'] { background: #8913D4; color: #fff; }
-	naff-tag[color='yellow'] { background: #E5E522; color: #444; }
-	naff-tag[color='aqua'] { background: #31AEDB; color: #FFF; }
-	naff-tag[color='white'] { background: #FFFFFF; color: #444; }
+	html /deep/ naff-tag { display: inline-block; padding: 6px 8px; background: #ddd; color: #222;}
+	html /deep/ naff-tag[size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
+	html /deep/ naff-tag[size='small'] { padding: 4px 6px; font-size: 12px; line-height: 12px; }
+	html /deep/ naff-tag[size='medium'] { padding: 6px 8px; font-size: 14px; line-height: 16px; }
+	html /deep/ naff-tag[size='large'] { padding: 8px 12px; font-size: 18px; line-height: 18px; }
+	html /deep/ naff-tag[size='extra-large'] { padding: 10px 14px; font-size: 22px; line-height: 22px; }
+	html /deep/ naff-tag[shape='round'] { border-radius: 100px; }
+	html /deep/ naff-tag[shape='rounded'] { border-radius: 5px; }
+	html /deep/ naff-tag[shape='oval'] { border-radius: 75% / 77%; }
+	html /deep/ naff-tag[color='grey'] { background: #ddd; color: #222; }
+	html /deep/ naff-tag[color='blue'] { background: rgb(74, 74, 255); color: #fff; }
+	html /deep/ naff-tag[color='red'] { background: rgb(255, 44, 44); color: #fff; }
+	html /deep/ naff-tag[color='green'] { background: rgb(18, 163, 18); color: #fff; }
+	html /deep/ naff-tag[color='orange'] { background: rgb(255, 136, 26); color: #fff; }
+	html /deep/ naff-tag[color='black'] { background: #222; color: #fff; }
+	html /deep/ naff-tag[color='pink'] { background: #D729D5; color: #fff; }
+	html /deep/ naff-tag[color='purple'] { background: #8913D4; color: #fff; }
+	html /deep/ naff-tag[color='yellow'] { background: #E5E522; color: #444; }
+	html /deep/ naff-tag[color='aqua'] { background: #31AEDB; color: #FFF; }
+	html /deep/ naff-tag[color='white'] { background: #FFFFFF; color: #444; }
 </style>
 
 <!-- LOGIC -->
-<script>
-(function()
-{
-	/* SETUP */
-
-	var naffTagProto = Object.create(HTMLElement.prototype);
-
-	/* ELEMENT */
-
-	document.registerElement('naff-tag', { prototype: naffTagProto });
-})()
-</script>
+<script>naff.registerElement({name: 'naff-tag'})</script>
 <style type="text/css">
-	button[is='naff-x-button'] { opacity: 0.8; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
-	button[is='naff-x-button'], button[is='naff-x-button']:focus { opacity: 1; }
-	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
-	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
-	button[is='naff-x-button'][size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
-	button[is='naff-x-button'][size=small] { padding: 4px 8px; font-size: 12px; line-height: 12px; }
-	button[is='naff-x-button'][size=medium] { padding: 6px 12px; font-size: 14px; line-height: 16px; }
-	button[is='naff-x-button'][size=large] { padding: 8px 16px; font-size: 18px; line-height: 18px; }
-	button[is='naff-x-button'][size='extra-large'] { padding: 10px 20px; font-size: 22px; line-height: 22px; }
-	button[is='naff-x-button'][shape=round] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
-	button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
-	button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
-	button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
-	button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
-	button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
-	button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
-	button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
-	button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
-	button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
-	button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
-	button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+	html /deep/ button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	html /deep/ button[is='naff-x-button']:focus { opacity: 1; outline: none; }
+	html /deep/ button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
+	html /deep/ button[is='naff-x-button'][disabled], html /deep/ button[is='naff-x-button'][disabled]:hover, html /deep/ button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	html /deep/ button[is='naff-x-button'][size='extra-small'] { padding: 4px 4px; font-size: 10px; line-height: 10px; }
+	html /deep/ button[is='naff-x-button'][size='small'] { padding: 5px 8px; font-size: 12px; line-height: 13px; }
+	html /deep/ button[is='naff-x-button'][size='medium'] { padding: 7px 8px; font-size: 14px; line-height: 14px; }
+	html /deep/ button[is='naff-x-button'][size='large'] { padding: 8px 12px; font-size: 17px; line-height: 17px; }
+	html /deep/ button[is='naff-x-button'][size='extra-large'] { padding: 9px 14px; font-size: 20px; line-height: 20px; }
+	html /deep/ button[is='naff-x-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	html /deep/ button[is='naff-x-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+	html /deep/ button[is='naff-x-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
+	html /deep/ button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	html /deep/ button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	html /deep/ button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	html /deep/ button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	html /deep/ button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
 </style>
 
 <!-- LOGIC -->
+<script>naff.registerElement({name: 'naff-x-button', extends: 'button'})</script>
+
+
+<!-- STYLE - Encapsulate all css to tag name to stop bleed out of component style, use deep to ensure both normal or shadow dom usage -->
+<style type="text/css">
+	html /deep/ button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	html /deep/ button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
+	html /deep/ button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }
+	html /deep/ button[is='naff-x-icon-button'][disabled], html /deep/ button[is='naff-x-icon-button'][disabled]:hover, html /deep/ button[is='naff-x-icon-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	html /deep/ button[is='naff-x-icon-button'][size='extra-small'] { width: 20px; height: 20px; font-size: 9px; }
+	html /deep/ button[is='naff-x-icon-button'][size='small'] { width: 25px; height: 25px; font-size: 12px; }
+	html /deep/ button[is='naff-x-icon-button'][size='medium'] { width: 30px; height: 30px; font-size: 14px; }
+	html /deep/ button[is='naff-x-icon-button'][size='large'] { width: 35px; height: 35px; font-size: 18px; }
+	html /deep/ button[is='naff-x-icon-button'][size='extra-large'] { width: 40px; height: 40px; font-size: 22px; }
+	html /deep/ button[is='naff-x-icon-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	html /deep/ button[is='naff-x-icon-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+	html /deep/ button[is='naff-x-icon-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
+	html /deep/ button[is='naff-x-icon-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	html /deep/ button[is='naff-x-icon-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	html /deep/ button[is='naff-x-icon-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	html /deep/ button[is='naff-x-icon-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	html /deep/ button[is='naff-x-icon-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-x-icon-button">
+	<naff-icon></naff-icon>
+</template>
+
+<!-- LOGIC -->
 <script>
-(function()
-{
-	/* SETUP */
+	// build scope
+	naff.registerElement({
+		name: 'naff-x-icon-button',
+		extends: 'button',		
 
-	var naffXButtonProto = Object.create(HTMLElement.prototype);
+		created: function()
+		{		
+			// set initial value of icon from parent attributes
+			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
+			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
+			if (this.host.hasAttribute('pulse')) this.template.querySelector('naff-icon').setAttribute('pulse', 'pulse');
+		},
 
-	/* ELEMENT */
-
-	document.registerElement('naff-x-button', { prototype: naffXButtonProto, extends: 'button'});
-})()
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			// iterate over changes
+			switch (name)
+			{
+				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
+				case 'spin': 
+				case 'pulse':
+					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
+					else this.template.querySelector('naff-icon').removeAttribute(name); 
+				break;
+			}
+		}
+	});
 </script></head><body><div hidden="">
+
 
 </div></body></html>
