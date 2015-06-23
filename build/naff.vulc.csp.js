@@ -5,7 +5,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 	// build scope
 	naff.registerElement({
 		name: 'naff-x-icon-button',
-		extends: 'button',		
+		extends: 'button',
 
 		created: function()
 		{		

@@ -10,7 +10,7 @@
 		<script src="../../webcomponentsjs/webcomponents.min.js"></script>
 
 		<!-- Load the naff helper library used by the web components -->
-		<script src="../../razor-naff/build/naff.min.js"></script>
+		<script src="../../razor-naff/build/naff.bundled.min.js"></script>
     
     	<!-- single import from vulcanized file -->
 		<link rel="import" href="../build/naff.vulc.html">
@@ -60,6 +60,26 @@
 			function updateClicks()
 			{
 				var clicked = document.querySelector('#naff-x-button-clicked');
+				var times = parseInt(clicked.innerText);
+				clicked.innerHTML = times += 1;
+			}
+		</script>
+
+		<hr>
+
+ 		<h2>Extended Icon Button [is="naff-x-icon-button"]</h2>
+ 		<p>Clicked <span id="naff-x-icon-button-clicked">0</span> times</p>
+		<button onclick="updateIconClicks()" is="naff-x-icon-button" name="check" size="extra-small"></button>
+		<button onclick="updateIconClicks()" is="naff-x-icon-button" name="times" color="red" size="small"></button>
+		<button onclick="updateIconClicks()" is="naff-x-icon-button" name="user" color="blue" size="medium"></button>
+		<button onclick="updateIconClicks()" is="naff-x-icon-button" name="building" color="green" size="medium"></button>
+		<button onclick="updateIconClicks()" is="naff-x-icon-button" name="spinner" color="orange" size="large" pulse></button>
+		<button onclick="updateIconClicks()" is="naff-x-icon-button" name="refresh" color="black" size="extra-large" spin></button>
+
+		<script type="text/javascript">
+			function updateIconClicks()
+			{
+				var clicked = document.querySelector('#naff-x-icon-button-clicked');
 				var times = parseInt(clicked.innerText);
 				clicked.innerHTML = times += 1;
 			}
