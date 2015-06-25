@@ -38,7 +38,7 @@ module.exports = function(grunt) {
           excludes: {
             imports: [
               "naff-base.html",
-              "naff-extended.html"
+              "naff-form.html"
             ]
           },
           "strip-excludes": false
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         files: {
           // Target-specific file lists and/or options go here. dest: source
           'build/naff-base.vulc.html': 'src/naff-base.html',
-          'build/naff-extended.vulc.html': 'src/naff-extended.html'
+          'build/naff-form.vulc.html': 'src/naff-form.html'
         }
       },    
 
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
           excludes: {
             imports: [
               "naff-base.html",
-              "naff-extended.html"
+              "naff-form.html"
             ]
           },
           "strip-excludes": false
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
         files: {
           // Target-specific file lists and/or options go here. dest: source
           'build/naff-base.vulc.csp.html': 'src/naff-base.html',
-          'build/naff-extended.vulc.csp.html': 'src/naff-extended.html'
+          'build/naff-form.vulc.csp.html': 'src/naff-form.html'
         }
       }
     },
@@ -78,7 +78,7 @@ module.exports = function(grunt) {
         overwrite: true,                 // overwrite matched source files
         replacements: [
           {from: "src/naff-base.html", to: "build/naff-base.vulc.html"},
-          {from: "src/naff-extended.html", to: "build/naff-extended.vulc.html"}
+          {from: "src/naff-form.html", to: "build/naff-form.vulc.html"}
         ]
       }
     }

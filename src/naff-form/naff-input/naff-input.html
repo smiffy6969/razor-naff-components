@@ -1,6 +1,36 @@
-naff.registerElement({name: 'naff-icon'});
-naff.registerElement({name: 'naff-tag'});
+<!--
+* razor-naff-components
+* naff-input - Form input with user feedback
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
 
+<!-- DEPENDANCIES -->
+<link rel="import" href="../../naff-base.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-input .-input-group input { padding: 2px 5px; border: none; border-bottom: 2px solid #999; outline: none; font-size: 15px; }
+	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
+	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
+	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
+	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 10px; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-input">
+	<div class="-input-group">
+		<input>
+		<div class="-input-error">
+			<naff-icon name="warning"></naff-icon>
+			<span class="-input-error-message"></span>
+		</div>
+	</div>
+</template>
+
+<!-- LOGIC -->
+<script>
 	// build scope
 	naff.registerElement({
 		name: 'naff-input',
@@ -101,84 +131,4 @@ naff.registerElement({name: 'naff-tag'});
 			}
 		}
 	});
-;
-
-	// build scope
-	naff.registerElement({
-		name: 'naff-switch',
-
-		properties: { 
-			status: 'off',
-			disabled: false 
-		},
-
-		created: function()
-		{		
-			// Initial setup
-			if (this.host.hasAttribute('disabled')) this.properties.disabled = true;
-			if (this.host.hasAttribute('status')) this.toggleSwitch(this.host.getAttribute('status'));
-			else this.toggleSwitch('off');
-		},
-
-		attached: function()
-		{
-			this.template.querySelector('naff-icon').addEventListener('click', this.click);
-		},
-
-		detached: function()
-		{
-			this.template.querySelector('naff-icon').removeEventListener('click', this.click);
-		},
-
-		attributeChanged: function(name, oldVal, newVal)
-		{
-			if (name == 'status') this.toggleSwitch(newVal);
-			if (name == 'disabled' && newVal) this.properties.disabled = true;
-			else this.properties.disabled = false;
-		},
-
-		click: function()
-		{
-			var scope = naff.getScope(this);
-			if (scope.properties.disabled) return;
-			scope.host.setAttribute('status', scope.properties.status != 'on' ? 'on' : 'off');
-		},
-
-		toggleSwitch: function(status)
-		{
-			this.fire('toggle');
-			this.properties.status = typeof status == 'string' ? (status == 'on' ? 'on' : 'off') : (this.properties.status != 'on' ? 'on' : 'off');
-			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + this.properties.status);
-			this.fire('toggled');
-		}
-	});
-;
-naff.registerElement({name: 'naff-x-button', extends: 'button'});
-
-	// build scope
-	naff.registerElement({
-		name: 'naff-x-icon-button',
-		extends: 'button',
-
-		created: function()
-		{		
-			// set initial value of icon from parent attributes
-			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
-			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
-			if (this.host.hasAttribute('pulse')) this.template.querySelector('naff-icon').setAttribute('pulse', 'pulse');
-		},
-
-		attributeChanged: function(name, oldVal, newVal)
-		{
-			// iterate over changes
-			switch (name)
-			{
-				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
-				case 'spin': 
-				case 'pulse':
-					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
-					else this.template.querySelector('naff-icon').removeAttribute(name); 
-				break;
-			}
-		}
-	});
+</script>

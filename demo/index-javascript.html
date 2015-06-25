@@ -84,5 +84,62 @@
 				clicked.innerHTML = times += 1;
 			}
 		</script>
+
+		<hr>
+
+ 		<h2>Input</h2>
+
+		<div class="naff-input-box" style="display: inline-block; width: 200px;">
+			<p>Live Binding: <span class="live-value"></span></p>
+			<br>
+			<naff-input placeholder="Type Something" name="testName"></naff-input>
+		</div>
+		<div class="naff-input-box" style="display: inline-block; width: 200px;">
+			<p>Password: <span class="live-value"></span></p>
+			<br>
+			<naff-input placeholder="Password" name="testName" type="password"></naff-input>
+		</div>
+		<div class="naff-input-box" style="display: inline-block; width: 200px;">
+			<p>Disabled</p>
+			<br>
+			<naff-input name="testName2" value="Cannot change me" disabled></naff-input>
+		</div>
+		<div class="naff-input-box" style="display: inline-block; width: 200px;">
+			<p>Validate Numbers: <span class="live-value-or-error"></span></p>
+			<br>
+			<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validateMessage="Numbers only dude!"></naff-input>
+		</div>
+
+		<hr>
+
+ 		<h2>Switch</h2>
+
+		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+			<p>Status: <span class="live-value">off</span></p>
+			<naff-switch></naff-switch>
+		</div>
+		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+			<p>Status: <span class="live-value">on</span></p>
+			<naff-switch status="on"></naff-switch>
+		</div>
+		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+			<p>Status: <span class="live-value">off</span></p>
+			<naff-switch disabled></naff-switch>
+		</div>
+		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+			<p>Status: <span class="live-value">on</span></p>
+			<naff-switch status="on" disabled></naff-switch>
+		</div>
+
+		<script type="text/javascript">
+			var wrappers = document.querySelectorAll('.naff-switch-wrapper');
+
+			for (var i = 0; i < wrappers.length; i++) {
+				wrappers[i].querySelector('naff-switch').addEventListener('toggle', function(event)
+				{
+					event.target.parentNode.querySelector('.live-value').innerText = event.target.getAttribute('status'); // or event.target.scope.properties.status
+				});
+			};
+		</script>
 	</body>
 </html>

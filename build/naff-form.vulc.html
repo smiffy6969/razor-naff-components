@@ -1,0 +1,292 @@
+<!--
+* razor-naff-components
+* naff-form
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+--><html><head><link rel="import" href="../build/naff-base.vulc.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-input .-input-group input { padding: 2px 5px; border: none; border-bottom: 2px solid #999; outline: none; font-size: 15px; }
+	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
+	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
+	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
+	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 10px; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-input">
+	<div class="-input-group">
+		<input>
+		<div class="-input-error">
+			<naff-icon name="warning"></naff-icon>
+			<span class="-input-error-message"></span>
+		</div>
+	</div>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-input',
+
+		properties: { 
+			error: null,
+			value: null,
+			validate: null,
+			validateMessage: null 
+		},
+
+		created: function()
+		{		
+			// Initial setup
+			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
+			if (this.host.hasAttribute('type')) this.template.querySelector('input').setAttribute('type', this.host.getAttribute('type'));
+			if (this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.getAttribute('value'));
+			if (this.host.hasAttribute('disabled')) this.template.querySelector('input').setAttribute('disabled', '');
+			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
+			if (this.host.hasAttribute('validate')) this.properties.validate = this.host.getAttribute('validate');
+			if (this.host.hasAttribute('validateMessage')) 
+			{
+				this.properties.validateMessage = this.host.getAttribute('validateMessage');
+				this.template.querySelector('.-input-error-message').innerText = this.properties.validateMessage;
+			}
+		},
+
+		attached: function()
+		{
+			this.template.querySelector('input').addEventListener('input', this.onInputChanged);
+			this.template.querySelector('input').addEventListener('keypress', this.onKeyPressed);
+		},
+
+		detached: function()
+		{
+			this.template.querySelector('input').removeEventListener('input', this.onInputChanged);
+			this.template.querySelector('input').removeEventListener('keypress', this.onKeyPressed);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'name': 
+				case 'type': 
+				case 'value': 
+				case 'placeholder': 
+					if (newVal) this.template.querySelector('input').setAttribute(name, newVal);
+					else this.template.querySelector('input').removeAttribute(name);
+				break;
+				case 'disabled':
+					if (newVal) this.template.querySelector('input').setAttribute('disabled', '');
+					else this.template.querySelector('input').removeAttribute('disabled');
+				break;
+				case 'validate':
+					this.properties[name] = newVal;
+				break;
+				case 'validateMessage':
+					this.properties.validateMessage = newVal;
+					this.template.querySelector('.-input-error-message').innerText = newVal;
+				break;
+			}
+		},
+
+		onInputChanged: function()
+		{
+			var scope = naff.getScope(this);
+			scope.fire('change');
+			scope.properties.value = this.value;
+			scope.host.setAttribute('value', this.value);
+			scope.checkError(this.value);
+			scope.fire('changed');
+		},
+
+		onKeyPressed: function(event)
+		{
+			naff.getScope(this).fire('keypress', event);
+		},
+
+		checkError: function(value)
+		{
+			if (!this.properties.validate) return;
+
+			// validate input
+			var regexp = new RegExp(this.properties.validate);
+			this.properties.error = regexp.test(value);
+
+			if (this.properties.error) 
+			{
+				this.template.querySelector('.-input-error').style.visibility = 'hidden';
+				this.host.removeAttribute('error');
+			}
+			else 
+			{
+				this.fire('error', this.properties.validateMessage);
+				this.template.querySelector('.-input-error').style.visibility = 'visible';
+				this.host.setAttribute('error', '');
+			}
+		}
+	});
+</script>
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-switch[disabled] naff-icon { opacity: 0.5; cursor: not-allowed;}
+	naff-switch naff-icon { font-size: 30px; line-height: 30px; cursor: pointer; }
+	naff-switch[status='on'] naff-icon { color: green; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-switch">
+	<naff-icon></naff-icon>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-switch',
+
+		properties: { 
+			status: 'off',
+			disabled: false 
+		},
+
+		created: function()
+		{		
+			// Initial setup
+			if (this.host.hasAttribute('disabled')) this.properties.disabled = true;
+			if (this.host.hasAttribute('status')) this.toggleSwitch(this.host.getAttribute('status'));
+			else this.toggleSwitch('off');
+		},
+
+		attached: function()
+		{
+			this.template.querySelector('naff-icon').addEventListener('click', this.click);
+		},
+
+		detached: function()
+		{
+			this.template.querySelector('naff-icon').removeEventListener('click', this.click);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'status') this.toggleSwitch(newVal);
+			if (name == 'disabled' && newVal) this.properties.disabled = true;
+			else this.properties.disabled = false;
+		},
+
+		click: function()
+		{
+			var scope = naff.getScope(this);
+			if (scope.properties.disabled) return;
+			scope.host.setAttribute('status', scope.properties.status != 'on' ? 'on' : 'off');
+		},
+
+		toggleSwitch: function(status)
+		{
+			this.fire('toggle');
+			this.properties.status = typeof status == 'string' ? (status == 'on' ? 'on' : 'off') : (this.properties.status != 'on' ? 'on' : 'off');
+			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + this.properties.status);
+			this.fire('toggled');
+		}
+	});
+</script>
+<style type="text/css">
+	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
+	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
+	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	button[is='naff-x-button'][size='extra-small'] { padding: 4px 4px; font-size: 10px; line-height: 10px; }
+	button[is='naff-x-button'][size='small'] { padding: 5px 8px; font-size: 12px; line-height: 13px; }
+	button[is='naff-x-button'][size='medium'] { padding: 7px 8px; font-size: 14px; line-height: 14px; }
+	button[is='naff-x-button'][size='large'] { padding: 8px 12px; font-size: 17px; line-height: 17px; }
+	button[is='naff-x-button'][size='extra-large'] { padding: 9px 14px; font-size: 20px; line-height: 20px; }
+	button[is='naff-x-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	button[is='naff-x-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+	button[is='naff-x-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
+	button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+</style>
+
+<!-- LOGIC -->
+<script>naff.registerElement({name: 'naff-x-button', extends: 'button'})</script>
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style type="text/css">
+	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
+	button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }
+	button[is='naff-x-icon-button'][disabled], button[is='naff-x-icon-button'][disabled]:hover, button[is='naff-x-icon-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	button[is='naff-x-icon-button'][size='extra-small'] { width: 20px; height: 20px; font-size: 9px; }
+	button[is='naff-x-icon-button'][size='small'] { width: 25px; height: 25px; font-size: 12px; }
+	button[is='naff-x-icon-button'][size='medium'] { width: 30px; height: 30px; font-size: 14px; }
+	button[is='naff-x-icon-button'][size='large'] { width: 35px; height: 35px; font-size: 18px; }
+	button[is='naff-x-icon-button'][size='extra-large'] { width: 40px; height: 40px; font-size: 22px; }
+	button[is='naff-x-icon-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	button[is='naff-x-icon-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+	button[is='naff-x-icon-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
+	button[is='naff-x-icon-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	button[is='naff-x-icon-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	button[is='naff-x-icon-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	button[is='naff-x-icon-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	button[is='naff-x-icon-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	button[is='naff-x-icon-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	button[is='naff-x-icon-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	button[is='naff-x-icon-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	button[is='naff-x-icon-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	button[is='naff-x-icon-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	button[is='naff-x-icon-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-x-icon-button">
+	<naff-icon></naff-icon>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-x-icon-button',
+		extends: 'button',
+
+		created: function()
+		{		
+			// set initial value of icon from parent attributes
+			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
+			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
+			if (this.host.hasAttribute('pulse')) this.template.querySelector('naff-icon').setAttribute('pulse', 'pulse');
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			// iterate over changes
+			switch (name)
+			{
+				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
+				case 'spin': 
+				case 'pulse':
+					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
+					else this.template.querySelector('naff-icon').removeAttribute(name); 
+				break;
+			}
+		}
+	});
+</script></head><body><div hidden="">
+
+
+</div></body></html>

@@ -1,0 +1,75 @@
+<!--
+* razor-naff-components
+* naff-switch - Toggle switch
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- DEPENDANCIES -->
+<link rel="import" href="../../naff-base.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-switch[disabled] naff-icon { opacity: 0.5; cursor: not-allowed;}
+	naff-switch naff-icon { font-size: 30px; line-height: 30px; cursor: pointer; }
+	naff-switch[status='on'] naff-icon { color: green; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-switch">
+	<naff-icon></naff-icon>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-switch',
+
+		properties: { 
+			status: 'off',
+			disabled: false 
+		},
+
+		created: function()
+		{		
+			// Initial setup
+			if (this.host.hasAttribute('disabled')) this.properties.disabled = true;
+			if (this.host.hasAttribute('status')) this.toggleSwitch(this.host.getAttribute('status'));
+			else this.toggleSwitch('off');
+		},
+
+		attached: function()
+		{
+			this.template.querySelector('naff-icon').addEventListener('click', this.click);
+		},
+
+		detached: function()
+		{
+			this.template.querySelector('naff-icon').removeEventListener('click', this.click);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'status') this.toggleSwitch(newVal);
+			if (name == 'disabled' && newVal) this.properties.disabled = true;
+			else this.properties.disabled = false;
+		},
+
+		click: function()
+		{
+			var scope = naff.getScope(this);
+			if (scope.properties.disabled) return;
+			scope.host.setAttribute('status', scope.properties.status != 'on' ? 'on' : 'off');
+		},
+
+		toggleSwitch: function(status)
+		{
+			this.fire('toggle');
+			this.properties.status = typeof status == 'string' ? (status == 'on' ? 'on' : 'off') : (this.properties.status != 'on' ? 'on' : 'off');
+			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + this.properties.status);
+			this.fire('toggled');
+		}
+	});
+</script>

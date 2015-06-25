@@ -1,6 +1,9 @@
 # Razor NAFF Web Components 
 
 
+__Browser Support__ - IE9+, Chrome, FF, Safari, Opera
+
+
 Razor NAFF Web Components are a set of web components aimed at simplifying the development of web sites/applications. They consist of sets of native custom web components that utilise the razor-naff helper library, they can be used as simply as adding the component import (.html), then using the new custom element wherever and whenever you like in your html.
 
 The web components are not built on top of any framework, they are built natively using JS and only require webcomponentsjs [https://github.com/webcomponents/webcomponentsjs] for polyfilling support for web components and the naff helper library [TBD] for internal workings of the component (this can also be used to build your page application too!).
@@ -37,18 +40,18 @@ following the instructions to build your bower.json, alternatively you can just 
 ## Setup
 
 
-In order to use the web components, it is first best practice to include the polyfills for unsupported API's by browsers, and the razor-naff helper library. This is done through the webcomponentsjs suite of polyfills (or you can find your own maybe like x-tags), as you installed razor-naff-components via bower, you will already have this pulled into the project, so all the hard work is done, just include it in your head section of your HTML along with polymer (this too was pulled in).
+In order to use the web components, it is first best practice to include the polyfills for unsupported API's by browsers, and the razor-naff helper library. This is done through the webcomponentsjs suite of polyfills (or you can find your own maybe like x-tags), as you installed razor-naff-components via bower, you will already have this pulled into the project, so all the hard work is done, just include it in your head section of your HTML along with polymer (this too was pulled in). You will need to include the bundled version of naff to include support for data binding
 
 
 ```html
 <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-<script src="bower_components/razor-naff/naff.min.js"></script>
+<script src="bower_components/razor-naff/naff.bundled.min.js"></script>
 ```
 
 
 Now we have the polyfills and helper library in place, it is your choice as to how you import the web components you need. We are going to do this using the spiffy new HTML import, which imports HTML files and get this, it only does it once regardless of how many times you add the import. This is great as we can specify dependencies in each component to ensure we have what we need for it, without impacting on performance or double loading of dependencies.
 
-The web components are split into groups, so we can either import the whole lot in one fell swoop without the need to worry about if you have imported something (great for dev work), or we import a group as we need it...
+The web components are split into groups, so we can either import the whole lot in one fell swoop without the need to worry about if you have imported something (great for dev work), or we import a group as we need it on a per app/page basis...
 
 
 ```html
@@ -56,7 +59,7 @@ The web components are split into groups, so we can either import the whole lot 
 ```
 
 
-Now you can just use any component you like, each dependency will only be loaded once (if you use the vulc file as i did above, this is all components pulled into a single file for less http requests, i.e. for production). If you want to be a little more selective to save on bandwidth and boost performance, you can import by group or by component on a per import basis...
+Now you can just use any component you like, each dependency will only be loaded once, where components use other components. If you only want one component or group of compoents, you can import the group.
 
 
 ```html
@@ -64,65 +67,14 @@ Now you can just use any component you like, each dependency will only be loaded
 ```
 
 
-or if you only want one component, you can import direct from source
-
-
-```html
-<link rel="import" href="components/razor-naff-components/src/naff-base/naff-icon/naff-icon.html">
-```
-
-
-Whilst importing from source is perfectly fine, it is recommended to import at least the group vulcanized import, this will keep http requests down (as some components have a dependancy on another). It is as simple as that, load what you need and you are ready to get using your web components
-
-
 # Usage
 
 
-Using the web components is as simple as writing HTML, all the components come with there own encapsulated logic and style, with all access and usage being through the attributes and innerHTML of the web component. razor-web-components are supported as far as polymer is supported through the webcomponentsjs suite of polyfills, IE10+, Chrome, Firefox, Safari 8+, Chrome (android), Safari (IOS) as per [polyer support](https://www.polymer-project.org/0.5/resources/compatibility.html). Whilst IE9 is not supported, some things do work, in a fashion. 
+Using the web components is as simple as writing HTML, all the components come with there own logic and style, with all access and usage being through the attributes or the 'scope' property on the element. razor-naff-components not designed to be used with other web component frameworks, however they will function just fine in any environment that does not apply any shadow dom to its host element (as styling logic will not bleed in). This is due to limitations with polyfills for shadow dom and the lack of native shadow dom support at present.
 
-For details on how to use the web components, please see the applicable index file in demo folder. All web components can be manipulated via html attribute or JS by altering raw html element (use [0] on jquery selector, $("#something")[0]).
+For details on how to use the web components, please see the applicable index file in demo folder. All web components can be manipulated via html attribute or JS by altering raw html element scope `document.querySelector('naff-test').scope`.
 
-The components are split into groups, with a distinction between extended components that simply extend an exisiting element using the is="" attribute, and custom components. All extended components use the -x- naming convention to help distinguish between these two types when using.
-
-
-## Extended Components
-
-
-### naff-x-button (naff-extended)
-
-
-```html
-<button is="naff-x-button" size="" color="" shape="" disabled></button>
-```
-
-
-A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
-
-
-* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
-* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
-* __shape__ - Shapes include square, round, rounded and oval.
-* __disabled__ - Disables the button.
-
-
-### naff-x-icon-button (naff-extended)
-
-
-```html
-<button is="naff-x-icon-button" name="" size="" color="" shape="" spin pulse disabled></button>
-```
-
-
-A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
-
-
-* __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name).
-* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
-* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
-* __shape__ - Shapes include square, round, rounded and oval.
-* __spin__ - Make the icon spin.
-* __pulse__ - Make the icon spin in steps.
-* __disabled__ - Disables the button.
+The components are split into groups, with a distinction between extended components that simply extend an exisiting element using the is="" attribute, and custom components.
 
 
 ## Base Components
@@ -165,6 +117,97 @@ Adds a tag with the contents being shown in a colored box in several shapes, use
 * __shape__ - The shape as round, rounded, oval or square.
 * __color__ - The color as grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
 
+
+## Form Components
+
+
+### is="naff-x-button" (naff-form)
+
+
+```html
+<button is="naff-x-button" size="" color="" shape="" disabled></button>
+```
+
+
+A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
+
+
+* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
+* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
+* __shape__ - Shapes include square, round, rounded and oval.
+* __disabled__ - Disables the button.
+
+
+### is="naff-x-icon-button" (naff-form)
+
+
+```html
+<button is="naff-x-icon-button" name="" size="" color="" shape="" spin pulse disabled></button>
+```
+
+
+A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
+
+
+* __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name).
+* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
+* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
+* __shape__ - Shapes include square, round, rounded and oval.
+* __spin__ - Make the icon spin.
+* __pulse__ - Make the icon spin in steps.
+* __disabled__ - Disables the button.
+
+
+### naff-input (naff-form)
+
+
+```html
+<naff-input name="testName" type="text" value="hello" placeholder="Type Something" validate="^(\s*|[0-9-]+)$" validateMessage="Numbers only dude!" disabled error></naff-input>
+```
+
+
+A more advanced input with intgral error checking, validating values entered to regex supplied and outputting a message under the input on failure.
+
+
+* __name__ - The name of the form input.
+* __type__ - The type of form input just like a normal input element.
+* __value__ - The value of of the live input just like a normal input element.
+* __placeholder__ - Text to show in the input box when empty.
+* __validate__ - A regex to validate to.
+* __validateMessage__ - Message to show under input when error happens.
+* __disabled__ - Disables the input.
+* __error__ - Shows up when an error happens in real time.
+
+
+__events__
+
+
+* __change__ - Fired when a change to the input value happens.
+* __changed__ - Fired when a change to the input value is complete.
+* __keypress__ - Fired when a key is pressed, returning the event of the keypress.
+* __error__ - Fired when an error in validation occurs, returning the validation error message.
+
+
+### naff-switch (naff-form)
+
+
+```html
+<naff-switch status="on" disabled></naff-switch>
+```
+
+
+A nice toggle switch giving an off or on status, can be disabled and toggled manually.
+
+
+* __status__ - The status of the switch in real time as 'off' or 'on'.
+* __disabled__ - Disables the switch.
+
+
+__events__
+
+
+* __toggle__ - Fired when a switch is going to toggle.
+* __toggled__ - Fired when a switch has toggled.
 
 
 __WIP... TO BE CONTINUED...__

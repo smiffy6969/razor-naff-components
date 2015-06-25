@@ -1,0 +1,73 @@
+<!--
+* razor-naff-components
+* naff-x-icon-button - Cleaner, simpler button with various sizes and shapes
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- DEPENDANCIES -->
+<link rel="import" href="../../naff-base.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style type="text/css">
+	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
+	button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }
+	button[is='naff-x-icon-button'][disabled], button[is='naff-x-icon-button'][disabled]:hover, button[is='naff-x-icon-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	button[is='naff-x-icon-button'][size='extra-small'] { width: 20px; height: 20px; font-size: 9px; }
+	button[is='naff-x-icon-button'][size='small'] { width: 25px; height: 25px; font-size: 12px; }
+	button[is='naff-x-icon-button'][size='medium'] { width: 30px; height: 30px; font-size: 14px; }
+	button[is='naff-x-icon-button'][size='large'] { width: 35px; height: 35px; font-size: 18px; }
+	button[is='naff-x-icon-button'][size='extra-large'] { width: 40px; height: 40px; font-size: 22px; }
+	button[is='naff-x-icon-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	button[is='naff-x-icon-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+	button[is='naff-x-icon-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
+	button[is='naff-x-icon-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	button[is='naff-x-icon-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	button[is='naff-x-icon-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	button[is='naff-x-icon-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	button[is='naff-x-icon-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	button[is='naff-x-icon-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	button[is='naff-x-icon-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	button[is='naff-x-icon-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	button[is='naff-x-icon-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	button[is='naff-x-icon-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	button[is='naff-x-icon-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+</style>
+
+<!-- TEMPLATE --> 
+<template id="naff-x-icon-button">
+	<naff-icon></naff-icon>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-x-icon-button',
+		extends: 'button',
+
+		created: function()
+		{		
+			// set initial value of icon from parent attributes
+			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
+			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
+			if (this.host.hasAttribute('pulse')) this.template.querySelector('naff-icon').setAttribute('pulse', 'pulse');
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			// iterate over changes
+			switch (name)
+			{
+				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
+				case 'spin': 
+				case 'pulse':
+					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
+					else this.template.querySelector('naff-icon').removeAttribute(name); 
+				break;
+			}
+		}
+	});
+</script>
