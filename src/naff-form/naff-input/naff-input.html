@@ -36,25 +36,30 @@
 		name: 'naff-input',
 
 		properties: { 
-			error: null,
-			value: null,
 			validate: null,
 			validateMessage: null 
 		},
 
 		created: function()
-		{		
+		{				
+			var scope = this;
+			Object.observe(this.host, function(changes)
+			{
+				for (var i = 0; i < changes.length; i++) scope.attributeChanged(changes[i].name, changes[i].oldValue, changes[i].object.value);
+			});	
+
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('type')) this.template.querySelector('input').setAttribute('type', this.host.getAttribute('type'));
-			if (this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.getAttribute('value'));
+			console.log(this.host.value);
+			if (this.host.value || this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.value || this.host.getAttribute('value'));
 			if (this.host.hasAttribute('disabled')) this.template.querySelector('input').setAttribute('disabled', '');
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
 			if (this.host.hasAttribute('validate')) this.properties.validate = this.host.getAttribute('validate');
-			if (this.host.hasAttribute('validateMessage')) 
+			if (this.host.hasAttribute('validate-message')) 
 			{
-				this.properties.validateMessage = this.host.getAttribute('validateMessage');
-				this.template.querySelector('.-input-error-message').innerText = this.properties.validateMessage;
+				this.properties.validateMessage = this.host.getAttribute('validate-message');
+				this.template.querySelector('.-input-error-message').innerHTML = this.properties.validateMessage;
 			}
 		},
 
@@ -88,7 +93,7 @@
 				case 'validate':
 					this.properties[name] = newVal;
 				break;
-				case 'validateMessage':
+				case 'validate-message':
 					this.properties.validateMessage = newVal;
 					this.template.querySelector('.-input-error-message').innerText = newVal;
 				break;
@@ -99,7 +104,7 @@
 		{
 			var scope = naff.getScope(this);
 			scope.fire('change');
-			scope.properties.value = this.value;
+			scope.host.value = this.value;
 			scope.host.setAttribute('value', this.value);
 			scope.checkError(this.value);
 			scope.fire('changed');
@@ -116,9 +121,9 @@
 
 			// validate input
 			var regexp = new RegExp(this.properties.validate);
-			this.properties.error = regexp.test(value);
+			this.host.error = regexp.test(value);
 
-			if (this.properties.error) 
+			if (this.host.error) 
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.removeAttribute('error');

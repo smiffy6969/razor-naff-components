@@ -17,7 +17,8 @@
   "author": "Paul Smith (smiffy6969)",
   "dependencies": {
     "razor-naff": "smiffy6969/razor-naff",
-    "webcomponentsjs": "webcomponents/webcomponentsjs"
+    "webcomponentsjs": "webcomponents/webcomponentsjs",
+    "object.observe": "MaxArt2501/object-observe"
   },
-  "version": "1.0.4"
+  "version": "1.0.5"
 }

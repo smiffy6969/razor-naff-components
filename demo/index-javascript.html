@@ -6,8 +6,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>razorNAFF Web Components</title>
 
-		<!-- Polyfill native API's with web components plugin -->
-		<script src="../../webcomponentsjs/webcomponents.min.js"></script>
+		<!-- Polyfill native API's if missing -->
+		<script type="text/javascript" src="../../webcomponentsjs/webcomponents.min.js"></script>
+		<script type="text/javascript" src="../../object.observe/dist/object-observe.min.js"></script>
 
 		<!-- Load the naff helper library used by the web components -->
 		<script src="../../razor-naff/build/naff.bundled.min.js"></script>
@@ -60,7 +61,7 @@
 			function updateClicks()
 			{
 				var clicked = document.querySelector('#naff-x-button-clicked');
-				var times = parseInt(clicked.innerText);
+				var times = parseInt(clicked.innerHTML) | 0;
 				clicked.innerHTML = times += 1;
 			}
 		</script>
@@ -80,7 +81,7 @@
 			function updateIconClicks()
 			{
 				var clicked = document.querySelector('#naff-x-icon-button-clicked');
-				var times = parseInt(clicked.innerText);
+				var times = parseInt(clicked.innerHTML) | 0;
 				clicked.innerHTML = times += 1;
 			}
 		</script>
@@ -90,24 +91,24 @@
  		<h2>Input</h2>
 
 		<div class="naff-input-box" style="display: inline-block; width: 200px;">
-			<p>Live Binding: <span class="live-value"></span></p>
+			<p>Basic input</p>
 			<br>
 			<naff-input placeholder="Type Something" name="testName"></naff-input>
 		</div>
 		<div class="naff-input-box" style="display: inline-block; width: 200px;">
-			<p>Password: <span class="live-value"></span></p>
+			<p>Password input</p>
 			<br>
 			<naff-input placeholder="Password" name="testName" type="password"></naff-input>
 		</div>
 		<div class="naff-input-box" style="display: inline-block; width: 200px;">
-			<p>Disabled</p>
+			<p>Disabled input</p>
 			<br>
 			<naff-input name="testName2" value="Cannot change me" disabled></naff-input>
 		</div>
 		<div class="naff-input-box" style="display: inline-block; width: 200px;">
-			<p>Validate Numbers: <span class="live-value-or-error"></span></p>
+			<p>Validate numbers or empty</p>
 			<br>
-			<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validateMessage="Numbers only dude!"></naff-input>
+			<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validate-message="Numbers only dude!"></naff-input>
 		</div>
 
 		<hr>
@@ -115,29 +116,29 @@
  		<h2>Switch</h2>
 
 		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-			<p>Status: <span class="live-value">off</span></p>
+			<p>Status: <span class="live-value">0</span></p>
 			<naff-switch></naff-switch>
 		</div>
 		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-			<p>Status: <span class="live-value">on</span></p>
-			<naff-switch status="on"></naff-switch>
+			<p>Status: <span class="live-value">1</span></p>
+			<naff-switch value="1"></naff-switch>
 		</div>
 		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-			<p>Status: <span class="live-value">off</span></p>
+			<p>Status: <span class="live-value">0</span></p>
 			<naff-switch disabled></naff-switch>
 		</div>
 		<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-			<p>Status: <span class="live-value">on</span></p>
-			<naff-switch status="on" disabled></naff-switch>
+			<p>Status: <span class="live-value">1</span></p>
+			<naff-switch value="1" disabled></naff-switch>
 		</div>
 
 		<script type="text/javascript">
 			var wrappers = document.querySelectorAll('.naff-switch-wrapper');
 
 			for (var i = 0; i < wrappers.length; i++) {
-				wrappers[i].querySelector('naff-switch').addEventListener('toggle', function(event)
+				wrappers[i].querySelector('naff-switch').addEventListener('change', function(event)
 				{
-					event.target.parentNode.querySelector('.live-value').innerText = event.target.getAttribute('status'); // or event.target.scope.properties.status
+					event.target.parentNode.querySelector('.live-value').innerHTML = event.target.getAttribute('value'); // or event.target.scope.properties.status
 				});
 			};
 		</script>

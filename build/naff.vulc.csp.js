@@ -6,25 +6,30 @@ naff.registerElement({name: 'naff-tag'});
 		name: 'naff-input',
 
 		properties: { 
-			error: null,
-			value: null,
 			validate: null,
 			validateMessage: null 
 		},
 
 		created: function()
-		{		
+		{				
+			var scope = this;
+			Object.observe(this.host, function(changes)
+			{
+				for (var i = 0; i < changes.length; i++) scope.attributeChanged(changes[i].name, changes[i].oldValue, changes[i].object.value);
+			});	
+
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('type')) this.template.querySelector('input').setAttribute('type', this.host.getAttribute('type'));
-			if (this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.getAttribute('value'));
+			console.log(this.host.value);
+			if (this.host.value || this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.value || this.host.getAttribute('value'));
 			if (this.host.hasAttribute('disabled')) this.template.querySelector('input').setAttribute('disabled', '');
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
 			if (this.host.hasAttribute('validate')) this.properties.validate = this.host.getAttribute('validate');
-			if (this.host.hasAttribute('validateMessage')) 
+			if (this.host.hasAttribute('validate-message')) 
 			{
-				this.properties.validateMessage = this.host.getAttribute('validateMessage');
-				this.template.querySelector('.-input-error-message').innerText = this.properties.validateMessage;
+				this.properties.validateMessage = this.host.getAttribute('validate-message');
+				this.template.querySelector('.-input-error-message').innerHTML = this.properties.validateMessage;
 			}
 		},
 
@@ -58,7 +63,7 @@ naff.registerElement({name: 'naff-tag'});
 				case 'validate':
 					this.properties[name] = newVal;
 				break;
-				case 'validateMessage':
+				case 'validate-message':
 					this.properties.validateMessage = newVal;
 					this.template.querySelector('.-input-error-message').innerText = newVal;
 				break;
@@ -69,7 +74,7 @@ naff.registerElement({name: 'naff-tag'});
 		{
 			var scope = naff.getScope(this);
 			scope.fire('change');
-			scope.properties.value = this.value;
+			scope.host.value = this.value;
 			scope.host.setAttribute('value', this.value);
 			scope.checkError(this.value);
 			scope.fire('changed');
@@ -86,9 +91,9 @@ naff.registerElement({name: 'naff-tag'});
 
 			// validate input
 			var regexp = new RegExp(this.properties.validate);
-			this.properties.error = regexp.test(value);
+			this.host.error = regexp.test(value);
 
-			if (this.properties.error) 
+			if (this.host.error) 
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.removeAttribute('error');
@@ -108,16 +113,25 @@ naff.registerElement({name: 'naff-tag'});
 		name: 'naff-switch',
 
 		properties: { 
-			status: 'off',
 			disabled: false 
 		},
 
 		created: function()
-		{		
+		{			
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.properties.disabled = true;
-			if (this.host.hasAttribute('status')) this.toggleSwitch(this.host.getAttribute('status'));
-			else this.toggleSwitch('off');
+			if (this.host.hasAttribute('value')) this.host.value = this.host.getAttribute('value');
+			this.setSwitch();
+			
+			var scope = this;
+			Object.observe(this.host, function(changes)
+			{
+				for (var i = 0; i < changes.length; i++) 
+				{
+					if (changes[i].name != 'value') continue; 
+					scope.setSwitch();
+				}
+			});	
 		},
 
 		attached: function()
@@ -132,24 +146,23 @@ naff.registerElement({name: 'naff-tag'});
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
-			if (name == 'status') this.toggleSwitch(newVal);
-			if (name == 'disabled' && newVal) this.properties.disabled = true;
-			else this.properties.disabled = false;
+			if (name == 'disabled') this.properties.disabled = !newValue ? false: true;
+			if (name =='value' && newVal != this.host.value) this.host.value = newVal == 1 ? 1 : 0;
 		},
 
 		click: function()
 		{
 			var scope = naff.getScope(this);
 			if (scope.properties.disabled) return;
-			scope.host.setAttribute('status', scope.properties.status != 'on' ? 'on' : 'off');
+			scope.host.value = scope.host.value == 1 ? 0 : 1;
+			scope.host.setAttribute('value', scope.host.value);
 		},
 
-		toggleSwitch: function(status)
+		setSwitch: function()
 		{
-			this.fire('toggle');
-			this.properties.status = typeof status == 'string' ? (status == 'on' ? 'on' : 'off') : (this.properties.status != 'on' ? 'on' : 'off');
-			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + this.properties.status);
-			this.fire('toggled');
+			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.host.value == 1 ? 'on' : 'off'));
+			this.host.setAttribute('value', this.host.value);
+			this.fire('change');
 		}
 	});
 ;
