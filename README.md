@@ -45,7 +45,6 @@ In order to use the web components, it is first best practice to include the pol
 
 ```html
 <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-<script src="bower_components/object.observe/dist/object-observe.min.js"></script>
 <script src="bower_components/razor-naff/naff.bundled.min.js"></script>
 ```
 
@@ -139,6 +138,12 @@ A nice set of buttons that extend the default button element that allow us to co
 * __disabled__ - Disables the button.
 
 
+__events__
+
+
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
 ### is="naff-x-icon-button" (naff-form)
 
 
@@ -157,6 +162,12 @@ A nice set of buttons that extend the default button element that allow us to co
 * __spin__ - Make the icon spin.
 * __pulse__ - Make the icon spin in steps.
 * __disabled__ - Disables the button.
+
+
+__events__
+
+
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
 ### naff-input (naff-form)
@@ -183,42 +194,45 @@ A more advanced input with intgral error checking, validating values entered to 
 __events__
 
 
-* __change__ - Fired when a change to the input value happens.
 * __changed__ - Fired when a change to the input value is complete.
 * __keypress__ - Fired when a key is pressed, returning the event of the keypress.
 * __error__ - Fired when an error in validation occurs, returning the validation error message.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
 __properties__
 
-* __.value__ - The value as it would be on a normal input element
-* __.error__ - Is there an error with the input
+* __.scope.value__ - The value as it would be on a normal input element
+* __.scope.error__ - Is there an error with the input
 
 
 ### naff-switch (naff-form)
 
 
 ```html
-<naff-switch value="1" disabled></naff-switch>
+<naff-switch status="1" disabled></naff-switch>
 ```
 
 
 A nice toggle switch giving an off or on status, can be disabled and toggled manually.
 
 
-* __value__ - The status of the switch in real time as 0 or 1.
+* __status__ - The status of the switch in real time as 0 or 1.
 * __disabled__ - Disables the switch.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
 __events__
 
 
 * __change__ - Fired when a switch has toggled.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
 __properties__
 
-* __.value__ - The status of the switch
+
+* __.scope.status__ - The status of the switch as 0 or 1.
 
 
 __WIP... TO BE CONTINUED...__

@@ -18,7 +18,7 @@
 	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 10px; }
 </style>
 
-<!-- TEMPLATE --> 
+<!-- TEMPLATE -->
 <template id="naff-input">
 	<div class="-input-group">
 		<input>
@@ -35,31 +35,29 @@
 	naff.registerElement({
 		name: 'naff-input',
 
-		properties: { 
+		// public properties
+		value: null,
+		error: null,
+
+		// private properties
+		private: {
 			validate: null,
-			validateMessage: null 
+			validateMessage: null
 		},
 
 		created: function()
-		{				
-			var scope = this;
-			Object.observe(this.host, function(changes)
-			{
-				for (var i = 0; i < changes.length; i++) scope.attributeChanged(changes[i].name, changes[i].oldValue, changes[i].object.value);
-			});	
-
+		{
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('type')) this.template.querySelector('input').setAttribute('type', this.host.getAttribute('type'));
-			console.log(this.host.value);
-			if (this.host.value || this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.value || this.host.getAttribute('value'));
+			if (this.host.value || this.host.hasAttribute('value')) this.value = this.template.querySelector('input').value = this.host.value || this.host.getAttribute('value');
 			if (this.host.hasAttribute('disabled')) this.template.querySelector('input').setAttribute('disabled', '');
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
-			if (this.host.hasAttribute('validate')) this.properties.validate = this.host.getAttribute('validate');
-			if (this.host.hasAttribute('validate-message')) 
+			if (this.host.hasAttribute('validate')) this.private.validate = this.host.getAttribute('validate');
+			if (this.host.hasAttribute('validate-message'))
 			{
-				this.properties.validateMessage = this.host.getAttribute('validate-message');
-				this.template.querySelector('.-input-error-message').innerHTML = this.properties.validateMessage;
+				this.private.validateMessage = this.host.getAttribute('validate-message');
+				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
 			}
 		},
 
@@ -79,22 +77,25 @@
 		{
 			switch (name)
 			{
-				case 'name': 
-				case 'type': 
-				case 'value': 
-				case 'placeholder': 
+				case 'name':
+				case 'type':
+				case 'placeholder':
 					if (newVal) this.template.querySelector('input').setAttribute(name, newVal);
 					else this.template.querySelector('input').removeAttribute(name);
+				break;
+				case 'value':
+					this.host.value = this.value = newVal;
+					this.template.querySelector('input').value = newVal;
 				break;
 				case 'disabled':
 					if (newVal) this.template.querySelector('input').setAttribute('disabled', '');
 					else this.template.querySelector('input').removeAttribute('disabled');
 				break;
 				case 'validate':
-					this.properties[name] = newVal;
+					this.private[name] = newVal;
 				break;
 				case 'validate-message':
-					this.properties.validateMessage = newVal;
+					this.private.validateMessage = newVal;
 					this.template.querySelector('.-input-error-message').innerText = newVal;
 				break;
 			}
@@ -103,10 +104,9 @@
 		onInputChanged: function()
 		{
 			var scope = naff.getScope(this);
-			scope.fire('change');
-			scope.host.value = this.value;
-			scope.host.setAttribute('value', this.value);
 			scope.checkError(this.value);
+			scope.host.value = scope.value = this.value; // have to push changes to host value too for data binders
+			scope.host.setAttribute('value', this.value);
 			scope.fire('changed');
 		},
 
@@ -117,22 +117,22 @@
 
 		checkError: function(value)
 		{
-			if (!this.properties.validate) return;
+			if (!this.private.validate) return;
 
 			// validate input
-			var regexp = new RegExp(this.properties.validate);
-			this.host.error = regexp.test(value);
+			var regexp = new RegExp(this.private.validate);
+			this.error = regexp.test(value);
 
-			if (this.host.error) 
+			if (this.error)
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.removeAttribute('error');
 			}
-			else 
+			else
 			{
-				this.fire('error', this.properties.validateMessage);
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', '');
+				this.fire('error', this.private.validateMessage);
 			}
 		}
 	});

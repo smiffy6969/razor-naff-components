@@ -5,31 +5,29 @@ naff.registerElement({name: 'naff-tag'});
 	naff.registerElement({
 		name: 'naff-input',
 
-		properties: { 
+		// public properties
+		value: null,
+		error: null,
+
+		// private properties
+		private: {
 			validate: null,
-			validateMessage: null 
+			validateMessage: null
 		},
 
 		created: function()
-		{				
-			var scope = this;
-			Object.observe(this.host, function(changes)
-			{
-				for (var i = 0; i < changes.length; i++) scope.attributeChanged(changes[i].name, changes[i].oldValue, changes[i].object.value);
-			});	
-
+		{
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('type')) this.template.querySelector('input').setAttribute('type', this.host.getAttribute('type'));
-			console.log(this.host.value);
-			if (this.host.value || this.host.hasAttribute('value')) this.template.querySelector('input').setAttribute('value', this.host.value || this.host.getAttribute('value'));
+			if (this.host.value || this.host.hasAttribute('value')) this.value = this.template.querySelector('input').value = this.host.value || this.host.getAttribute('value');
 			if (this.host.hasAttribute('disabled')) this.template.querySelector('input').setAttribute('disabled', '');
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
-			if (this.host.hasAttribute('validate')) this.properties.validate = this.host.getAttribute('validate');
-			if (this.host.hasAttribute('validate-message')) 
+			if (this.host.hasAttribute('validate')) this.private.validate = this.host.getAttribute('validate');
+			if (this.host.hasAttribute('validate-message'))
 			{
-				this.properties.validateMessage = this.host.getAttribute('validate-message');
-				this.template.querySelector('.-input-error-message').innerHTML = this.properties.validateMessage;
+				this.private.validateMessage = this.host.getAttribute('validate-message');
+				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
 			}
 		},
 
@@ -49,22 +47,25 @@ naff.registerElement({name: 'naff-tag'});
 		{
 			switch (name)
 			{
-				case 'name': 
-				case 'type': 
-				case 'value': 
-				case 'placeholder': 
+				case 'name':
+				case 'type':
+				case 'placeholder':
 					if (newVal) this.template.querySelector('input').setAttribute(name, newVal);
 					else this.template.querySelector('input').removeAttribute(name);
+				break;
+				case 'value':
+					this.host.value = this.value = newVal;
+					this.template.querySelector('input').value = newVal;
 				break;
 				case 'disabled':
 					if (newVal) this.template.querySelector('input').setAttribute('disabled', '');
 					else this.template.querySelector('input').removeAttribute('disabled');
 				break;
 				case 'validate':
-					this.properties[name] = newVal;
+					this.private[name] = newVal;
 				break;
 				case 'validate-message':
-					this.properties.validateMessage = newVal;
+					this.private.validateMessage = newVal;
 					this.template.querySelector('.-input-error-message').innerText = newVal;
 				break;
 			}
@@ -73,10 +74,9 @@ naff.registerElement({name: 'naff-tag'});
 		onInputChanged: function()
 		{
 			var scope = naff.getScope(this);
-			scope.fire('change');
-			scope.host.value = this.value;
-			scope.host.setAttribute('value', this.value);
 			scope.checkError(this.value);
+			scope.host.value = scope.value = this.value; // have to push changes to host value too for data binders
+			scope.host.setAttribute('value', this.value);
 			scope.fire('changed');
 		},
 
@@ -87,22 +87,22 @@ naff.registerElement({name: 'naff-tag'});
 
 		checkError: function(value)
 		{
-			if (!this.properties.validate) return;
+			if (!this.private.validate) return;
 
 			// validate input
-			var regexp = new RegExp(this.properties.validate);
-			this.host.error = regexp.test(value);
+			var regexp = new RegExp(this.private.validate);
+			this.error = regexp.test(value);
 
-			if (this.host.error) 
+			if (this.error)
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.removeAttribute('error');
 			}
-			else 
+			else
 			{
-				this.fire('error', this.properties.validateMessage);
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', '');
+				this.fire('error', this.private.validateMessage);
 			}
 		}
 	});
@@ -112,26 +112,17 @@ naff.registerElement({name: 'naff-tag'});
 	naff.registerElement({
 		name: 'naff-switch',
 
-		properties: { 
-			disabled: false 
-		},
+		// Public properties
+		status: 0,
+		disabled: false,
 
 		created: function()
-		{			
+		{
 			// Initial setup
-			if (this.host.hasAttribute('disabled')) this.properties.disabled = true;
-			if (this.host.hasAttribute('value')) this.host.value = this.host.getAttribute('value');
+			if (this.host.hasAttribute('disabled')) this.disabled = true;
+			if (this.host.hasAttribute('status')) this.status = this.host.getAttribute('status');
+			else this.host.setAttribute('status', this.status);
 			this.setSwitch();
-			
-			var scope = this;
-			Object.observe(this.host, function(changes)
-			{
-				for (var i = 0; i < changes.length; i++) 
-				{
-					if (changes[i].name != 'value') continue; 
-					scope.setSwitch();
-				}
-			});	
 		},
 
 		attached: function()
@@ -146,22 +137,24 @@ naff.registerElement({name: 'naff-tag'});
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
-			if (name == 'disabled') this.properties.disabled = !newValue ? false: true;
-			if (name =='value' && newVal != this.host.value) this.host.value = newVal == 1 ? 1 : 0;
+			if (name == 'disabled') this.disabled = !newValue ? false: true;
+			if (name =='status')
+			{
+				this.status = newVal == 1 ? 1 : 0;
+				this.setSwitch();
+			}
 		},
 
 		click: function()
 		{
 			var scope = naff.getScope(this);
-			if (scope.properties.disabled) return;
-			scope.host.value = scope.host.value == 1 ? 0 : 1;
-			scope.host.setAttribute('value', scope.host.value);
+			if (scope.disabled) return;
+			scope.host.setAttribute('status', scope.status == 1 ? 0 : 1);
 		},
 
 		setSwitch: function()
 		{
-			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.host.value == 1 ? 'on' : 'off'));
-			this.host.setAttribute('value', this.host.value);
+			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.status == 1 ? 'on' : 'off'));
 			this.fire('change');
 		}
 	});

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>razorNAFF Application Demo</title>
+
+		<!-- Polyfill native API's if missing -->
+		<script type="text/javascript" src="../../webcomponentsjs/webcomponents.min.js"></script>
+
+		<!-- Load the naff helper library used by the web components -->
+		<script type="text/javascript" src="../../razor-naff/build/naff.bundled.min.js"></script>
+
+		<!-- Load app specific logic and style -->
+		<link rel="stylesheet" type="text/css" href="naff-app.css">
+		<script type="text/javascript" src="naff-app.js"></script>
+
+    	<!-- Single import for naff components -->
+		<link rel="import" href="../build/naff.vulc.html">
+	</head>
+	<body>
+		<naff-app resolve>
+			<h2>Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
+			<naff-icon name="check"></naff-icon>
+			<naff-icon name="check" style="background-color: #444" inverse></naff-icon>
+			<naff-icon name="bed" size="2" style="color: red"></naff-icon>
+			<naff-icon name="bed" size="2" style="color: red" flip="horizontal"></naff-icon>
+			<naff-icon name="refresh" size="3" style="color: blue" spin></naff-icon>
+			<naff-icon name="spinner" size="4" style="color: orange" pulse></naff-icon>
+			<naff-icon name="suitcase" size="5" style="color: green" rotate="90"></naff-icon>
+
+			<hr>
+
+	 		<h2>Tag [naff-tag]</h2>
+			<p>
+				<naff-tag size="extra-small">Extra Small Tag</naff-tag>
+				<naff-tag size="small">Small Tag</naff-tag>
+				<naff-tag size="medium" color="red">Medium Tag</naff-tag>
+				<naff-tag shape="rounded" size="medium" color="blue">Medium Rounded Tag</naff-tag>
+				<naff-tag shape="round" size="medium" color="orange">Medium Round Tag</naff-tag>
+				<naff-tag shape="oval" size="medium" color="green">Medium Oval Tag</naff-tag>
+				<naff-tag size="large" color="black">Large Round Tag</naff-tag>
+				<naff-tag size="extra-large">Extra Large Round Tag</naff-tag>
+			</p>
+
+			<hr>
+
+	 		<h2>Extended Button [is="naff-x-button"]</h2>
+	 		<p>Clicked {{private.buttonClicks}} times</p>
+			<button is="naff-x-button" naff-on-click="buttonTestClick()" size="extra-small">Extra Small Button</button>
+			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="red" size="small" disabled>Small Disabled button</button>
+			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="blue" size="medium">Default/Medium button</button>
+			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="green" size="medium">Default/Medium button</button>
+			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="orange" size="large">Large button</button>
+			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="black" size="extra-large">Extra Large Button</button>
+
+			<hr>
+
+	 		<h2>Extended Icon Button [is="naff-x-icon-button"]</h2>
+	 		<p>Clicked {{private.iconButtonClicks}} times</p>
+			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="check" size="extra-small"></button>
+			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="times" color="red" size="small" disabled></button>
+			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="user" color="blue" size="medium"></button>
+			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="building" color="green" size="medium"></button>
+			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="spinner" color="orange" size="large" pulse></button>
+			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" spin></button>
+
+			<hr>
+
+	 		<h2>Input [naff-input]</h2>
+
+			<div class="naff-input-box" style="display: inline-block; width: 250px;">
+				<p>Basic input: {{private.inputText1}}</p>
+				<br>
+				<naff-input placeholder="Type Something" name="testName" naff-value="private.inputText1"></naff-input>
+			</div>
+			<div class="naff-input-box" style="display: inline-block; width: 250px;">
+				<p>Password input: {{private.inputText2}}</p>
+				<br>
+				<naff-input placeholder="Password" name="testName" type="password" naff-value="private.inputText2"></naff-input>
+			</div>
+			<div class="naff-input-box" style="display: inline-block; width: 250px;">
+				<p>Disabled input</p>
+				<br>
+				<naff-input name="testName2" value="Cannot change me" disabled></naff-input>
+			</div>
+			<div class="naff-input-box" style="display: inline-block; width: 250px;">
+				<p>Validate numbers or empty: {{private.inputText3}}</p>
+				<br>
+				<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validate-message="Numbers only dude!" naff-value="private.inputText3"></naff-input>
+			</div>
+
+			<hr>
+
+	 		<h2>Switch [naff-switch]</h2>
+
+			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+				<p>Status: <span class="live-value">{{private.switchStatus1}}</span></p>
+				<naff-switch naff-status="private.switchStatus1"></naff-switch>
+			</div>
+			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+				<p>Status: <span class="live-value">{{private.switchStatus2}}</span></p>
+				<naff-switch naff-status="private.switchStatus2"></naff-switch>
+			</div>
+			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+				<p>Status: <span class="live-value">0</span></p>
+				<naff-switch disabled></naff-switch>
+			</div>
+			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+				<p>Status: <span class="live-value">1</span></p>
+				<naff-switch status="1" disabled></naff-switch>
+			</div>
+		</naff-app>
+	</body>
+</html>
