@@ -111,15 +111,15 @@
 		name: 'naff-switch',
 
 		// Public properties
-		status: 0,
+		toggle: 0,
 		disabled: false,
 
 		created: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
-			if (this.host.hasAttribute('status')) this.status = this.host.getAttribute('status');
-			else this.host.setAttribute('status', this.status);
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
+			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
 		},
 
@@ -136,9 +136,9 @@
 		attributeChanged: function(name, oldVal, newVal)
 		{
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
-			if (name =='status')
+			if (name =='toggle')
 			{
-				this.status = newVal == 1 ? 1 : 0;
+				this.toggle = newVal == 1 ? 1 : 0;
 				this.setSwitch();
 			}
 		},
@@ -147,12 +147,12 @@
 		{
 			var scope = naff.getScope(this);
 			if (scope.disabled) return;
-			scope.host.setAttribute('status', scope.status == 1 ? 0 : 1);
+			scope.host.setAttribute('toggle', scope.toggle == 1 ? 0 : 1);
 		},
 
 		setSwitch: function()
 		{
-			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.status == 1 ? 'on' : 'off'));
+			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.toggle == 1 ? 'on' : 'off'));
 			this.fire('change');
 		}
 	});
@@ -165,7 +165,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 		extends: 'button',
 
 		created: function()
-		{		
+		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
@@ -178,10 +178,10 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			switch (name)
 			{
 				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
-				case 'spin': 
+				case 'spin':
 				case 'pulse':
 					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
-					else this.template.querySelector('naff-icon').removeAttribute(name); 
+					else this.template.querySelector('naff-icon').removeAttribute(name);
 				break;
 			}
 		}

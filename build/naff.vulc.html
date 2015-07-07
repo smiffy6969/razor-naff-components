@@ -782,15 +782,15 @@
 		name: 'naff-switch',
 
 		// Public properties
-		status: 0,
+		toggle: 0,
 		disabled: false,
 
 		created: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
-			if (this.host.hasAttribute('status')) this.status = this.host.getAttribute('status');
-			else this.host.setAttribute('status', this.status);
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
+			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
 		},
 
@@ -807,9 +807,9 @@
 		attributeChanged: function(name, oldVal, newVal)
 		{
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
-			if (name =='status')
+			if (name =='toggle')
 			{
-				this.status = newVal == 1 ? 1 : 0;
+				this.toggle = newVal == 1 ? 1 : 0;
 				this.setSwitch();
 			}
 		},
@@ -818,12 +818,12 @@
 		{
 			var scope = naff.getScope(this);
 			if (scope.disabled) return;
-			scope.host.setAttribute('status', scope.status == 1 ? 0 : 1);
+			scope.host.setAttribute('toggle', scope.toggle == 1 ? 0 : 1);
 		},
 
 		setSwitch: function()
 		{
-			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.status == 1 ? 'on' : 'off'));
+			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.toggle == 1 ? 'on' : 'off'));
 			this.fire('change');
 		}
 	});
@@ -887,7 +887,7 @@
 	button[is='naff-x-icon-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
 </style>
 
-<!-- TEMPLATE --> 
+<!-- TEMPLATE -->
 <template id="naff-x-icon-button">
 	<naff-icon></naff-icon>
 </template>
@@ -900,7 +900,7 @@
 		extends: 'button',
 
 		created: function()
-		{		
+		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
@@ -913,16 +913,235 @@
 			switch (name)
 			{
 				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
-				case 'spin': 
+				case 'spin':
 				case 'pulse':
 					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
-					else this.template.querySelector('naff-icon').removeAttribute(name); 
+					else this.template.querySelector('naff-icon').removeAttribute(name);
 				break;
 			}
 		}
 	});
 </script>
+
+<style>
+	naff-message { padding: 10px; position: fixed; opacity: 0; text-align: center; background-color: #444; color: #fff; font-size: 14px; display: none; max-width: 80%; z-index: 1000; -webkit-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -moz-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -ms-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -o-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -0-border-radius: 2px; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
+	naff-message[position='top'] { top: 20px; left: 50%; text-align: center; }
+	naff-message[position='bottom'] { bottom: 20px; left: 50%; text-align: center; }
+	naff-message[position='top-left'] { top: 20px; left: 20px; text-align: left; }
+	naff-message[position='top-right'] { top: 20px; right: 20px; text-align: right; }
+	naff-message[position='bottom-left'] { bottom: 20px; left: 20px; text-align: left; }
+	naff-message[position='bottom-right'] { bottom: 20px; right: 20px; text-align: right; }
+	naff-message[color='red'] { background-color: rgb(255, 44, 44); }
+	naff-message[color='blue'] { background-color: rgb(74, 74, 255); }
+	naff-message[color='green'] { background-color: rgb(18, 163, 18); }
+	naff-message[color='orange'] { background-color: rgb(255, 136, 26); }
+	naff-message[color='white'] { background-color: #f4f4f4; color: #444; }
+	naff-message.-jiggle { -webkit-animation-name: -naff-message-jiggle; -webkit-animation-duration: 0.4s; -webkit-animation-iteration-count: 1; -webkit-animation-timing-function: linear; -webkit-transform-origin: 50% 100%; -moz-animation-name: -naff-message-jiggle; -moz-animation-duration: 0.4s; -moz-animation-iteration-count: 1; -moz-animation-timing-function: linear; -moz-transform-origin: 50% 100%; -ms-animation-name: -naff-message-jiggle; -ms-animation-duration: 0.4s; -ms-animation-iteration-count: 1; -ms-animation-timing-function: linear; -ms-transform-origin: 50% 100%; -o-animation-name: -naff-message-jiggle; -o-animation-duration: 0.4s; -o-animation-iteration-count: 1; -o-animation-timing-function: linear; -o-transform-origin: 50% 100%; animation-name: -naff-message-jiggle; animation-duration: 0.4s; animation-iteration-count: 1; animation-timing-function: linear; transform-origin: 50% 100%; }
+	@-webkit-keyframes -naff-message-jiggle { 0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 10% { -webkit-transform: translate(-1px, -2px) rotate(-2deg); }	20% { -webkit-transform: translate(-3px, 0px) rotate(3deg); } 30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); } 70% { -webkit-transform: translate(2px, 1px) rotate(-2deg); } 80% { -webkit-transform: translate(-1px, -1px) rotate(4deg); } 90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }	}
+	@-moz-keyframes -naff-message-jiggle { 0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 10% { -moz-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -moz-transform: translate(-3px, 0px) rotate(3deg); } 30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -moz-transform: translate(-3px, 1px) rotate(0deg); } 70% { -moz-transform: translate(2px, 1px) rotate(-2deg); } 80% { -moz-transform: translate(-1px, -1px) rotate(4deg); } 90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-ms-keyframes -naff-message-jiggle { 0% { -ms-transform: translate(2px, 1px) rotate(0deg); } 10% { -ms-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -ms-transform: translate(-3px, 0px) rotate(3deg); } 30% { -ms-transform: translate(0px, 2px) rotate(0deg); } 40% { -ms-transform: translate(1px, -1px) rotate(1deg); } 50% { -ms-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -ms-transform: translate(-3px, 1px) rotate(0deg); } 70% { -ms-transform: translate(2px, 1px) rotate(-2deg); } 80% { -ms-transform: translate(-1px, -1px) rotate(4deg); } 90% { -ms-transform: translate(2px, 2px) rotate(0deg); } 100% { -ms-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-o-keyframes -naff-message-jiggle { 0% { -o-transform: translate(2px, 1px) rotate(0deg); } 10% { -o-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -o-transform: translate(-3px, 0px) rotate(3deg); } 30% { -o-transform: translate(0px, 2px) rotate(0deg); } 40% { -o-transform: translate(1px, -1px) rotate(1deg); } 50% { -o-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -o-transform: translate(-3px, 1px) rotate(0deg); } 70% { -o-transform: translate(2px, 1px) rotate(-2deg); } 80% { -o-transform: translate(-1px, -1px) rotate(4deg); } 90% { -o-transform: translate(2px, 2px) rotate(0deg); } 100% { -o-transform: translate(1px, -2px) rotate(-1deg); } }
+	@keyframes -naff-message-jiggle { 0% { transform: translate(2px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-2deg); } 20% { transform: translate(-3px, 0px) rotate(3deg); } 30% { transform: translate(0px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(2px, 1px) rotate(-2deg); } 80% { transform: translate(-1px, -1px) rotate(4deg); } 90% { transform: translate(2px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-message">
+	<content></content>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-message',
+
+		toggle: 0,
+
+		private: {
+			delay: 4,
+			opacityTimer: null,
+			displayTimer: null,
+			messageTimer: null
+		},
+
+		created: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('delay')) this.private.delay = parseInt(this.host.getAttribute('delay'));
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
+			else this.host.setAttribute('toggle', this.toggle);
+			this.show(true);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'delay') this.private.delay = parseInt(newVal);
+			if (name =='toggle')
+			{
+				this.toggle = newVal == 1 ? 1 : 0;
+				this.show(true);
+			}
+		},
+
+		show: function(internal)
+		{
+			var scope = this;
+			if (internal && scope.toggle != 1) return;
+			scope.fire('show');
+			scope.host.setAttribute('toggle', 0);
+
+			// jiggle toast if re-thrown or show for first time
+			if (!!scope.private.messageTimer)
+			{
+				clearTimeout(scope.private.messageTimer);
+				clearTimeout(scope.private.displayTimer);
+
+				setTimeout(function()
+				{
+					scope.fire('jiggle');
+					scope.host.className += " -jiggle";
+
+					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
+				}, 1);
+			}
+			else
+			{
+				scope.host.style.display = "block";
+				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+				scope.host.style.opacity = 1;
+			}
+
+			// set timing of show/hide
+			scope.private.messageTimer = setTimeout(function()
+			{
+				scope.host.style.opacity = 0;
+				scope.private.displayTimer = setTimeout(function()
+				{
+					scope.host.style.display = "none";
+					scope.private.messageTimer = null;
+					scope.private.displayTimer = null;
+					scope.host.setAttribute('toggle', 0);
+					scope.fire('hide');
+				}, 300);
+			}, scope.private.delay * 1000);
+		}
+	});
+</script>
+
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-modal { display: none; opacity: 0; position: fixed; width: 50%; max-width: 95%; top: 50%; left: 50%; background-color: white; box-shadow: 0 0 40px -10px #888; border: 1px solid #ccc; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
+	@media (max-width:500px) { naff-modal { width: 97% !important; } }
+	naff-modal .-heading { padding: 10px; border-bottom: 1px solid #ddd; min-height: 20px; }
+	naff-modal .-heading heading { padding: 0px 40px 0px 0px; font-size: 20px; line-height: 20px; font-weight: bold; color: #555;}
+	naff-modal .-heading .-close { font-size: 25px; color: #555; cursor: pointer; opacity: 0.8; position: absolute; top: 7px; right: 9px; }
+	naff-modal .-heading .-close:hover { opacity: 1; }
+	naff-modal main { display: block; padding: 10px; overflow: auto; box-sizing: border-box; width: 99.9%; max-height: 500px; }
+	naff-modal footer { display: block; padding: 10px; border-top: 1px solid #ddd; text-align: right; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-modal">
+	<div class="-heading">
+		<content select="heading"></content>
+		<naff-icon class="-close" name="times-circle" naff-on-click="hide()"></naff-icon>
+	</div>
+	<content select="main"></content>
+	<content select="footer"></content>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-modal',
+		dataBind: true,
+
+		toggle: 0,
+
+		private: {
+			resize: null
+		},
+
+		created: function()
+		{
+			this.private.resize = this.resize.bind(this);
+
+			// Initial setup
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
+			else this.host.setAttribute('toggle', this.toggle);
+			this.show(true);
+		},
+
+		attached: function()
+		{
+			if (!this.template.querySelector('heading'))
+			{
+				var heading = this.template.querySelector('.-heading');
+				heading.parentNode.removeChild(heading);
+			}
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='toggle')
+			{
+				this.toggle = newVal == 1 ? 1 : 0;
+				this.show(true);
+			}
+		},
+
+		show: function(internal)
+		{
+			if (internal && this.toggle != 1) return;
+			var scope = this;
+
+			window.addEventListener('resize', scope.private.resize);
+
+			scope.host.style.display = "block";
+
+			setTimeout(function(){
+				scope.host.style.opacity = 1;
+				document.body.style.overflow = 'hidden';
+				scope.resize();
+				scope.fire('show');
+			}, 0);
+		},
+
+		hide: function()
+		{
+			var scope = this;
+
+			window.removeEventListener('resize', scope.private.resize);
+
+			scope.host.style.opacity = 0;
+
+			setTimeout(function(){
+				scope.host.style.display = "none";
+				document.body.style.overflow = 'auto';
+				scope.host.setAttribute('toggle', 0);
+				scope.fire('hide');
+			}, 300);
+		},
+
+		resize: function()
+		{
+			var main = this.template.querySelector('main');
+			if (main) main.style.maxHeight = ((window.innerHeight + main.offsetHeight - this.host.offsetHeight) / 100) * 90 + 'px';
+
+			var marginTop = (this.host.offsetHeight - (this.host.offsetHeight * 2)) / 2;
+			var marginLeft = (this.host.offsetWidth - (this.host.offsetWidth * 2)) / 2;
+			this.host.style.margin = marginTop + 'px 0 0 ' + marginLeft + 'px';
+		}
+	});
+</script>
+
+
 </head><body><div hidden="">
+
+
 
 
 

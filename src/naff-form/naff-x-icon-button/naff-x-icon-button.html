@@ -36,7 +36,7 @@
 	button[is='naff-x-icon-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
 </style>
 
-<!-- TEMPLATE --> 
+<!-- TEMPLATE -->
 <template id="naff-x-icon-button">
 	<naff-icon></naff-icon>
 </template>
@@ -49,7 +49,7 @@
 		extends: 'button',
 
 		created: function()
-		{		
+		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
 			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
@@ -62,10 +62,10 @@
 			switch (name)
 			{
 				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
-				case 'spin': 
+				case 'spin':
 				case 'pulse':
 					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
-					else this.template.querySelector('naff-icon').removeAttribute(name); 
+					else this.template.querySelector('naff-icon').removeAttribute(name);
 				break;
 			}
 		}

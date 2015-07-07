@@ -9,13 +9,20 @@ naff.registerApplication({
 	name: 'naff-app',
 
 	private: {
-		buttonClicks: 0,
-		iconButtonClicks: 0,
-		inputText1: '',
-		inputText2: '',
-		inputText3: '',
-		switchStatus1: 0,
-		switchStatus2: 1
+		// button click counters
+		buttonClicks: 0, iconButtonClicks: 0,
+
+		// input text binds
+		inputText1: '', inputText2: '', inputText3: '',
+
+		// switch controls
+		switchStatus1: 0, switchStatus2: 1,
+
+		// message controls
+		message1: 0, message2: 0, message3: 0, message4: 0, message5: 0,
+
+		// modal controls
+		modal1: 0, modal2: 0, modal3: 0
 	},
 
 	ready: function()
@@ -23,13 +30,25 @@ naff.registerApplication({
 
 	},
 
-	buttonTestClick: function()
-	{
-		this.properties.buttonClicks++;
-	},
+	/**
+	 * Increment button clicks
+	 */
+	buttonTestClick: function() { this.private.buttonClicks++; },
 
-	iconButtonTestClick: function()
-	{
-		this.properties.iconButtonClicks++;
-	}
+	/**
+	 * Increment icon button clicks
+	 */
+	iconButtonTestClick: function() { this.private.iconButtonClicks++; },
+
+	/**
+	 * Show something
+	 * @param string ref The property to toggle.
+	 */
+	show: function(ev, ref) { this.private[ref] = 1; },
+
+	/**
+	 * Hide something
+	 * @param string ref The property to toggle.
+	 */
+	hide: function(ev, ref) { this.private[ref] = 0; }
 });

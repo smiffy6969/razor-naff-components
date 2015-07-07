@@ -1,4 +1,4 @@
-# Razor NAFF Web Components 
+# Razor NAFF Web Components
 
 
 __Browser Support__ - IE9+, Chrome, FF, Safari, Opera
@@ -210,16 +210,15 @@ __properties__
 
 
 ```html
-<naff-switch status="1" disabled></naff-switch>
+<naff-switch toggle="1" disabled></naff-switch>
 ```
 
 
-A nice toggle switch giving an off or on status, can be disabled and toggled manually.
+A nice toggle switch giving an off or on status, can be disabled and toggled manually by changing the toggle attribute.
 
 
-* __status__ - The status of the switch in real time as 0 or 1.
+* __toggle__ - The status of the switch in real time as 0 or 1. Change this value to toggle the switch.
 * __disabled__ - Disables the switch.
-* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
 __events__
@@ -229,10 +228,83 @@ __events__
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
-__properties__
+### naff-message (naff-overlay)
 
 
-* __.scope.status__ - The status of the switch as 0 or 1.
+```html
+<naff-message position="bottom-right" color="blue" toggle="1">Something happened</naff-message>
+```
+
+
+A notification message that can be displayed in various positions around the screen and in various colours, auto hides after 'delay' amount of seconds. If fired whilst already in view, promotes the message to jiggle, resetting the delay timer to prolong the visibility. To trigger a message to be shown, set toggle attribute to 1 or hit show function on scope.
+
+
+* __toggle__ - The visibility of the message in real time as 0 or 1. Change this value to show or hide the message.
+* __position__ - Set to bottom, bottom-left, bottom-right, top, top-left or top-right to position the message when shown.
+* __color__ - The colour of the message to help set message types, red, blue, green, orange, white or black [default].
+* __delay__ - The delay amount in seconds.
+
+
+__events__
+
+
+* __show__ - Fired when message is shown.
+* __jiggle__ - Fired when message is shown whilst still visible.
+* __hide__ - Fired when message auto hides.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__methods__
+
+
+* __scope.show()__ - Show the message, which then auto hides after 'delay' seconds.
+
+
+### naff-modal (naff-overlay)
+
+
+```html
+<naff-modal toggle="1">
+    <heading>
+        Heading with close icon
+    </heading>
+    <main>
+        Main Content
+    </main>
+    <footer>
+        Footer content
+    </footer>
+</naff-modal>
+```
+
+
+A modal box positioned centrally on the screen that auto adjusts height, setting width to 50% of the window (and 90% when mobile view). When visible, the modal will show at 50% width by default (or you can change in css) with height auto set to wrap contents or add scroll bar when reaching the limit of the browser window, adapting this to mobiles with a force full on devices less than 500px wide. You can place optional heading content to apply a heading to the modal with a close icon, or footer content. Main content is required and will auto size based on contents.
+
+
+* __toggle__ - The visibility of the modal in real time as 0 or 1. Change this value to show or hide the modal.
+
+
+__content__
+
+
+* __heading__ - Any content you want to show as a heading, also shows close icon.
+* __main__ - Any content you want to show in the main area of the modal with scroll on large content.
+* __footer__ - Any content you want to show in the footer area of the modal.
+
+
+__events__
+
+
+* __show__ - Fired when modal is shown.
+* __hide__ - Fired when modal is hidden.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__methods__
+
+
+* __scope.show()__ - Show the modal.
+* __scope.hide()__ - Hide the modal.
 
 
 __WIP... TO BE CONTINUED...__
