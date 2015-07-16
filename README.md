@@ -40,11 +40,12 @@ following the instructions to build your bower.json, alternatively you can just 
 ## Setup
 
 
-In order to use the web components, it is first best practice to include the polyfills for unsupported API's in browsers, and the razor-naff helper library. This is done through the webcomponentsjs suite of polyfills (or you can find your own maybe like x-tags) and object.observe polyfill, as you installed razor-naff-components via bower, you will already have these pulled into the project, so all the hard work is done, just include it in your head section of your HTML along with polymer (this too was pulled in). You will need to include the bundled version of naff to include support for data binding
+In order to use the web components, it is first best practice to include the polyfills for unsupported API's in browsers, and the razor-naff helper library. This is done through the webcomponentsjs suite of polyfills (or you can find your own maybe like x-tags) and promise polyfill, as you installed razor-naff-components via bower, you will already have these pulled into the project, so all the hard work is done, just include it in your head section of your HTML along with polymer (this too was pulled in). You will need to include the bundled version of naff to include support for data binding
 
 
 ```html
 <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+<script src="bower_components/promise-polyfill/Promise.min.js"></script>
 <script src="bower_components/razor-naff/naff.bundled.min.js"></script>
 ```
 

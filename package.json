@@ -1,14 +1,15 @@
 {
   "name": "razor-naff-components",
-  "version": "1.0.7",
-  "description": "razorNAFF web components written using razor-naff, includes various web components for use with web applications.",
-  "homepage": "http://ulsmith.net/razor-naff/razor-naff-components",
+  "description": "razorNAFF HTML web components created using the razorNAFF helper library.",
   "author": "Paul Smith (smiffy6969)",
+  "version": "1.0.8",
+  "homepage": "http://ulsmith.net/razor-naff/razor-naff-components",
+  "license": "MIT",
   "dependencies": {
     "razor-naff": "smiffy6969/razor-naff",
-    "webcomponentsjs": "webcomponents/webcomponentsjs"
+    "webcomponentsjs": "webcomponents/webcomponentsjs",
+    "promise-polyfill": "taylorhakes/promise-polyfill"
   },
-  "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-jshint": "~0.10.0",
