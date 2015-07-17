@@ -308,4 +308,43 @@ __methods__
 * __scope.hide()__ - Hide the modal.
 
 
+### naff-partial (naff-resource)
+
+
+```html
+<naff-partial basepath="application/my-partials" partial="partial-one"></naff-partial>
+```
+
+
+A partial loader to load content from a html file (html extension only) and render the contents in the element. On change of attributes, reload of partial happens meaning this can be used in conjunction with routing to create single page apps with multiple traversable app pages (without reload, see naff getLocation/setLocation for app routing). Only works for same domain loading and requires javascript embedded tags to be swapped for html import with embedded script tags to promote loading of script from partial.
+
+example of partial dependancy resolution, inside your partial html file (load js as html import with js embedded inside html script tags)
+
+```html
+<!-- partial dependancies -->
+<link rel="stylesheet" type="text/css" href="....../style.css">
+<link rel="import" href="...../logic.js.html">
+
+<div>
+    <!-- stuff here in partial -->
+</div>
+```
+
+
+* __basepath__ - The base path for all your partials.
+* __partial__ - The partial to load (without the .html part) this must resolve to a .html file and can include sub folders
+
+
+__events__
+
+
+* __loaded__ - Fired when partial hase finished being rendered onto screen.
+
+
+__methods__
+
+
+* __scope.load()__ - Loads the modal based on internal reference of basepath and partial, use attributes to change these values and prmote auto load.
+
+
 __WIP... TO BE CONTINUED...__
