@@ -1,0 +1,17 @@
+<!--
+* razor-naff-components
+* naff-page - Works along side naff-menu to provide a place to build content alongside the naff-menu
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	body { overflow: hidden; margin: 0; padding: 0; }
+	naff-page { padding: 10px 10px 10px 235px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
+	@media (max-width: 600px) { body { overflow: initial; margin: 0; padding: 30px 0px 0px 0px; } naff-page { padding: 10px; height: auto; overflow: initial; } }
+</style>
+
+<!-- LOGIC -->
+<script>naff.registerElement({name: 'naff-page'})</script>

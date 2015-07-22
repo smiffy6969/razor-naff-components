@@ -1,0 +1,168 @@
+<!--
+* razor-naff-components
+* naff-structure
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+--><html><head><link rel="import" href="../build/naff-base.vulc.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-menu * { color: #555; }
+	naff-menu { display: block; margin: 0px; padding: 5px; box-sizing: border-box; width: 225px; height: 100%; background-color: #eee; color: #222; position: fixed; top: 0px; z-index: 1000; }
+	naff-menu[position="left"] { left: 0px; }
+	naff-menu[position="right"] { right: 0px; }
+	naff-menu ul { margin: 0px; padding: 0px; color: inherit; list-style-type: none; }
+	naff-menu * { color: inherit; }
+	naff-menu ul li span { display: inherit; font-size: 14px; line-height: 25px; cursor: pointer; color: inherit; opacity: 0.8; }
+	naff-menu ul li span naff-icon { text-align: center; color: inherit; width: 1.5em; }
+	naff-menu ul li[selected] > span { background-color: rgba(0, 0, 0, 0.1); }
+	naff-menu ul li:hover > span { opacity: 1; }
+	naff-menu ul li ul { padding-left: 10px; }
+	naff-menu naff-icon[name="bars"] { display: none; }
+	naff-menu[children="expandable"] ul li ul { display: none; }
+	naff-menu[children="expandable"] ul li[selected] > ul, naff-menu[children="expandable"] ul li ul[active] { display: block; }
+	naff-menu ._logo-text { display: inline-block; min-height: 20px; line-height: 20px; opacity: 0.8; cursor: pointer; }
+	@media (max-width:600px) { naff-menu { width: 100%; height: auto; top: 0px; left: 0px; } naff-menu ul { opacity: 0.9; } naff-menu naff-icon[name="bars"] { font-size: 18px; line-height: 30px; opacity: 0.8; display: block; position: absolute; top: 0px; right: 8px; cursor: pointer; } naff-menu naff-icon[name="bars"]:hover, naff-menu naff-icon[name="bars"]:active, naff-menu naff-icon[name="bars"]:focus { opacity: 1; } }
+	@media (min-width:601px) { naff-menu > ul { display: block !important; } naff-menu ._logo-text { display: inline !important; } }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-menu">
+	<span class="_logo-text" naff-text="private.logoText" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default=""></span>
+	<ul naff-show="toggle">
+		<li naff-each-item="menuItems" naff-route="item.route" naff-on-click="changeRoute()">
+			<span><naff-icon naff-name="item.icon" naff-if="item.icon"></naff-icon>{{item.label}}</span>
+			<ul naff-if="item.menuItems">
+				<li naff-each-item2="item.menuItems" naff-route="item2.route" naff-on-click="changeRoute()">
+					<span><naff-icon naff-name="item2.icon" naff-if="item2.icon"></naff-icon>{{item2.label}}</span>
+					<ul naff-if="item2.menuItems">
+						<li naff-each-item3="item2.menuItems" naff-route="item3.route" naff-on-click="changeRoute()">
+							<span><naff-icon naff-name="item3.icon" naff-if="item3.icon"></naff-icon>{{item3.label}}</span>
+							<ul naff-if="item3.menuItems">
+								<li naff-each-item4="item3.menuItems" naff-route="item4.route" naff-on-click="changeRoute()">
+									<span><naff-icon naff-name="item4.icon" naff-if="item4.icon"></naff-icon>{{item4.label}}</span>
+									<ul naff-if="item4.menuItems">
+										<li naff-each-item5="item4.menuItems" naff-route="item5.route" naff-on-click="changeRoute()">
+											<span><naff-icon naff-name="item5.icon" naff-if="item5.icon"></naff-icon>{{item5.label}}</span>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<naff-icon name="bars" naff-on-click="toggleMenu()"></naff-icon>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-menu',
+		dataBind: true,
+
+		menuItems: [],
+		toggle: false,
+
+		private: {
+			route: null,
+			defaultRoute: '',
+			logoText: null
+		},
+
+		created: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('logo-text')) this.private.logoText = this.host.getAttribute('logo-text');
+			if (this.host.hasAttribute('menu-items')) this.setMenuItems(this.host.getAttribute('menu-items'));
+			if (this.host.hasAttribute('default-route')) this.private.defaultRoute = this.host.getAttribute('default-route');
+
+			var location = naff.getLocation();
+			if (this.host.hasAttribute('default-route') && location.route.length < 1) {
+				this.private.route = this.host.getAttribute('default-route');
+				naff.setLocation({route: this.private.route});
+			} else {
+				this.private.route = location.route;
+				this.host.setAttribute('route', this.private.route);
+			}
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'menu-items': this.setMenuItems(newVal); break;
+				case 'route': this.private.route = newVal; break;
+				case 'logo-text': this.private.logoText = newVal; break;
+				case 'default-route': this.private.defaultRoute = newVal; break;
+			}
+			this.updateSelected();
+		},
+
+		location: function(newLoc, oldLoc)
+		{
+			if (oldLoc) this.host.setAttribute('route', newLoc.route);
+		},
+
+		changeRoute: function(event)
+		{
+			var parent = event.target;
+			while (parent.tagName != 'LI' && !parent.hasAttribute('default')) parent = parent.parentNode;
+			if (parent.hasAttribute('route')) {
+				naff.setLocation({route: parent.getAttribute('route')});
+				this.toggle = false;
+			} else {
+				var list = parent.querySelector('ul');
+				if (list.hasAttribute('active')) list.removeAttribute('active');
+				else list.setAttribute('active', '');
+			}
+
+			event.stopPropagation();
+		},
+
+		toggleMenu: function()
+		{
+			this.toggle = !this.toggle;
+		},
+
+		updateSelected: function()
+		{
+			var items = this.template.querySelectorAll('li');
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].getAttribute('route') == this.private.route) items[i].setAttribute('selected', '');
+				else items[i].removeAttribute('selected');
+			}
+
+			var list = this.template.querySelectorAll('ul');
+			for (var i = 0; i < list.length; i++) {
+				if (list[i].querySelectorAll('li[selected]').length > 0) list[i].setAttribute('active', '');
+				else list[i].removeAttribute('active');
+			}
+		},
+
+		setMenuItems: function(menuItems)
+		{
+			try {
+				this.menuItems = typeof menuItems == 'object' ? menuItems : JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
+			} catch (e) {
+				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
+			}
+		}
+	});
+</script>
+
+<style>
+	body { overflow: hidden; margin: 0; padding: 0; }
+	naff-page { padding: 10px 10px 10px 235px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
+	@media (max-width: 600px) { body { overflow: initial; margin: 0; padding: 30px 0px 0px 0px; } naff-page { padding: 10px; height: auto; overflow: initial; } }
+</style>
+
+<!-- LOGIC -->
+<script>naff.registerElement({name: 'naff-page'})</script>
+
+</head><body><div hidden="">
+</div></body></html>

@@ -339,12 +339,55 @@ __events__
 
 
 * __loaded__ - Fired when partial hase finished being rendered onto screen.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
 __methods__
 
 
 * __scope.load()__ - Loads the modal based on internal reference of basepath and partial, use attributes to change these values and prmote auto load.
+
+
+### naff-menu (naff-structure)
+
+
+```html
+<naff-menu logo-text="hello" children="expandable" position="left" default-route="one" menu-items='[{"route":"one","label":"One long menu item","icon":"trash","menuItems":[]},...'></naff-menu>
+```
+
+
+Displays a mobile friendly left/right hand menu that takes up full length of the screen. When screen shrinks to mobile layout, menu changes to top menu with toggle menu icon. Menus can be nested up to 5 children and can also have navigable or benign parents (by omiting the route completely). To finsh off, you can add logo text that will automatically direct the user to default-route. Style the menu directly to have alter color, font etc. Data can either be set on menu-items attribute as a valid JSON string (by using single quotes as the menu-items attribute quotes, e.g. menu-items='[{...}]') or can be set by altering the elements scope.menuItems to a valid array containing objects for each menu item. Use this in conjunction with naff-page to create a basic page structure of menu and page area.
+
+
+* __logo-text__ - Any logo text to display over the menu, can be clicked togo to default route.
+* __children__ - Set to expandable to have child menu items hidden until parent is clicked.
+* __position__ - Place menu on left or right side of the screen.
+* __default-route__ - The default route to go to when none is set i.e. your home page.
+* __menu-items__ - The menu items to display as a JSON string, use single quotes for menu-items='' to ensure you get a valid JSON string.
+
+
+__events__
+
+
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__properties__
+
+
+* __scope.toggle__ - The status of the menu icon toggle when in mobile view.
+* __scope.menuItems__ - The menu items to display as an array of objects containing label, route [optional], icon [optional], menuItems [optional] (use same structure for child menus).
+
+
+### naff-page (naff-structure)
+
+
+```html
+<naff-page></naff-page>
+```
+
+
+Works along side naff-menu to provide an area for page/application content to be placed. Places content in a scrollable area that adapts to mobile views along with naff-menu.
 
 
 __WIP... TO BE CONTINUED...__

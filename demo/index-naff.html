@@ -22,195 +22,219 @@
 	</head>
 	<body>
 		<naff-app resolve>
-			<h2>Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
-			<naff-icon name="check"></naff-icon>
-			<naff-icon name="check" style="background-color: #444" inverse></naff-icon>
-			<naff-icon name="bed" size="2" style="color: red"></naff-icon>
-			<naff-icon name="bed" size="2" style="color: red" flip="horizontal"></naff-icon>
-			<naff-icon name="refresh" size="3" style="color: blue" spin></naff-icon>
-			<naff-icon name="spinner" size="4" style="color: orange" pulse></naff-icon>
-			<naff-icon name="suitcase" size="5" style="color: green" rotate="90"></naff-icon>
+			<naff-menu logo-text="hello" children="expandable" position="left" default-route="one" menu-items='[
+				{"route":"one","label":"One long menu item","icon":"trash","menuItems":[
+					{"route":"aaa","label":"AAA","icon":"spinner"},
+					{"label":"BBB","icon":"car","menuItems":[
+						{"route":"1111","label":"1111","icon":"cog"},
+						{"route":"2222","label":"2222","icon":"home"}
+					]}
+				]},
+				{"route":"two","label":"Two","icon":"refresh"},
+				{"route":"three","label":"Three","icon":"user"}
+			]'></naff-menu>
 
-			<hr>
+			<naff-page>
+				<h2>Menu (naff-menu)</h2>
+				<p>The menu that is used on this page!</p>
 
-	 		<h2>Tag [naff-tag]</h2>
-			<p>
-				<naff-tag size="extra-small">Extra Small Tag</naff-tag>
-				<naff-tag size="small">Small Tag</naff-tag>
-				<naff-tag size="medium" color="red">Medium Tag</naff-tag>
-				<naff-tag shape="rounded" size="medium" color="blue">Medium Rounded Tag</naff-tag>
-				<naff-tag shape="round" size="medium" color="orange">Medium Round Tag</naff-tag>
-				<naff-tag shape="oval" size="medium" color="green">Medium Oval Tag</naff-tag>
-				<naff-tag size="large" color="black">Large Round Tag</naff-tag>
-				<naff-tag size="extra-large">Extra Large Round Tag</naff-tag>
-			</p>
+				<hr>
 
-			<hr>
+				<h2>Page (naff-page)</h2>
+				<p>The page area all this content is in on this page!</p>
 
-	 		<h2>Extended Button [is="naff-x-button"]</h2>
-	 		<p>Clicked {{private.buttonClicks}} times</p>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" size="extra-small">Extra Small Button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="red" size="small" disabled>Small Disabled button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="blue" size="medium">Default/Medium button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="green" size="medium" shape="rounded">Default/Medium button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="pink" size="medium" shape="round">Default/Medium button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="purple" size="medium" shape="oval">Default/Medium button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="orange" size="large">Large button</button>
-			<button is="naff-x-button" naff-on-click="buttonTestClick()" color="black" size="extra-large">Extra Large Button</button>
+				<hr>
 
-			<hr>
+				<h2>Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
+				<naff-icon name="check"></naff-icon>
+				<naff-icon name="check" style="background-color: #444" inverse></naff-icon>
+				<naff-icon name="bed" size="2" style="color: red"></naff-icon>
+				<naff-icon name="bed" size="2" style="color: red" flip="horizontal"></naff-icon>
+				<naff-icon name="refresh" size="3" style="color: blue" spin></naff-icon>
+				<naff-icon name="spinner" size="4" style="color: orange" pulse></naff-icon>
+				<naff-icon name="suitcase" size="5" style="color: green" rotate="90"></naff-icon>
 
-	 		<h2>Extended Icon Button [is="naff-x-icon-button"]</h2>
-	 		<p>Clicked {{private.iconButtonClicks}} times</p>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="check" size="extra-small"></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="times" color="red" size="small" disabled></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="user" color="blue" size="medium"></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="building" color="green" size="medium"></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="spinner" color="orange" size="large" pulse></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" spin></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" shape="rounded" spin></button>
-			<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" shape="round" spin></button>
+				<hr>
 
-			<hr>
+		 		<h2>Tag [naff-tag]</h2>
+				<p>
+					<naff-tag size="extra-small">Extra Small Tag</naff-tag>
+					<naff-tag size="small">Small Tag</naff-tag>
+					<naff-tag size="medium" color="red">Medium Tag</naff-tag>
+					<naff-tag shape="rounded" size="medium" color="blue">Medium Rounded Tag</naff-tag>
+					<naff-tag shape="round" size="medium" color="orange">Medium Round Tag</naff-tag>
+					<naff-tag shape="oval" size="medium" color="green">Medium Oval Tag</naff-tag>
+					<naff-tag size="large" color="black">Large Round Tag</naff-tag>
+					<naff-tag size="extra-large">Extra Large Round Tag</naff-tag>
+				</p>
 
-	 		<h2>Input [naff-input]</h2>
+				<hr>
 
-			<div class="naff-input-box" style="display: inline-block; width: 250px;">
-				<p>Basic input: {{private.inputText1}}</p>
-				<br>
-				<naff-input placeholder="Type Something" name="testName" naff-value="private.inputText1"></naff-input>
-			</div>
-			<div class="naff-input-box" style="display: inline-block; width: 250px;">
-				<p>Password input: {{private.inputText2}}</p>
-				<br>
-				<naff-input placeholder="Password" name="testName" type="password" naff-value="private.inputText2"></naff-input>
-			</div>
-			<div class="naff-input-box" style="display: inline-block; width: 250px;">
-				<p>Disabled input</p>
-				<br>
-				<naff-input name="testName2" value="Cannot change me" disabled></naff-input>
-			</div>
-			<div class="naff-input-box" style="display: inline-block; width: 250px;">
-				<p>Validate numbers or empty: {{private.inputText3}}</p>
-				<br>
-				<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validate-message="Numbers only dude!" naff-value="private.inputText3"></naff-input>
-			</div>
+		 		<h2>Extended Button [is="naff-x-button"]</h2>
+		 		<p>Clicked {{private.buttonClicks}} times</p>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" size="extra-small">Extra Small Button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="red" size="small" disabled>Small Disabled button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="blue" size="medium">Default/Medium button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="green" size="medium" shape="rounded">Default/Medium button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="pink" size="medium" shape="round">Default/Medium button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="purple" size="medium" shape="oval">Default/Medium button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="orange" size="large">Large button</button>
+				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="black" size="extra-large">Extra Large Button</button>
 
-			<hr>
+				<hr>
 
-	 		<h2>Switch [naff-switch]</h2>
+		 		<h2>Extended Icon Button [is="naff-x-icon-button"]</h2>
+		 		<p>Clicked {{private.iconButtonClicks}} times</p>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="check" size="extra-small"></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="times" color="red" size="small" disabled></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="user" color="blue" size="medium"></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="building" color="green" size="medium"></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="spinner" color="orange" size="large" pulse></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" spin></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" shape="rounded" spin></button>
+				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" shape="round" spin></button>
 
-			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-				<p>Status: <span class="live-value">{{private.switchStatus1}}</span></p>
-				<naff-switch naff-toggle="private.switchStatus1"></naff-switch>
-			</div>
-			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-				<p>Status: <span class="live-value">{{private.switchStatus2}}</span></p>
-				<naff-switch naff-toggle="private.switchStatus2"></naff-switch>
-			</div>
-			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-				<p>Status: <span class="live-value">0</span></p>
-				<naff-switch disabled></naff-switch>
-			</div>
-			<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
-				<p>Status: <span class="live-value">1</span></p>
-				<naff-switch toggle="1" disabled></naff-switch>
-			</div>
+				<hr>
 
-			<hr>
+		 		<h2>Input [naff-input]</h2>
 
-			<h2>Message [naff-message]</h2>
+				<div class="naff-input-box" style="display: inline-block; width: 250px;">
+					<p>Basic input: {{private.inputText1}}</p>
+					<br>
+					<naff-input placeholder="Type Something" name="testName" naff-value="private.inputText1"></naff-input>
+				</div>
+				<div class="naff-input-box" style="display: inline-block; width: 250px;">
+					<p>Password input: {{private.inputText2}}</p>
+					<br>
+					<naff-input placeholder="Password" name="testName" type="password" naff-value="private.inputText2"></naff-input>
+				</div>
+				<div class="naff-input-box" style="display: inline-block; width: 250px;">
+					<p>Disabled input</p>
+					<br>
+					<naff-input name="testName2" value="Cannot change me" disabled></naff-input>
+				</div>
+				<div class="naff-input-box" style="display: inline-block; width: 250px;">
+					<p>Validate numbers or empty: {{private.inputText3}}</p>
+					<br>
+					<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validate-message="Numbers only dude!" naff-value="private.inputText3"></naff-input>
+				</div>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('message1')">Show Large Message</button>
-			<naff-message naff-toggle="private.message1" position="bottom">
-				<h4>This is a message</h4>
-				<p>With some really long text in it that does not really say a lot but it's there nonetheless.</p>
-				<p>There is also a second line here with some more stuff in it.</p>
-			</naff-message>
+				<hr>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('message2')">Show Bad Message</button>
-			<naff-message position="top" color="red" naff-toggle="private.message2" >
-				<naff-iconname="exclamation-triangle" color="white"></naff-icon>
-				Something bad happened
-			</naff-message>
+		 		<h2>Switch [naff-switch]</h2>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('message3')">Show Warning Message</button>
-			<naff-message position="top-left" color="orange" naff-toggle="private.message3">
-				<naff-icon name="exclamation-circle" color="white"></naff-icon>
-				You need to know something important
-			</naff-message>
+				<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+					<p>Status: <span class="live-value">{{private.switchStatus1}}</span></p>
+					<naff-switch naff-toggle="private.switchStatus1"></naff-switch>
+				</div>
+				<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+					<p>Status: <span class="live-value">{{private.switchStatus2}}</span></p>
+					<naff-switch naff-toggle="private.switchStatus2"></naff-switch>
+				</div>
+				<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+					<p>Status: <span class="live-value">0</span></p>
+					<naff-switch disabled></naff-switch>
+				</div>
+				<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
+					<p>Status: <span class="live-value">1</span></p>
+					<naff-switch toggle="1" disabled></naff-switch>
+				</div>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('message4')">Show Good Message</button>
-			<naff-message position="bottom" color="green" naff-toggle="private.message4">
-				<naff-icon name="check" color="white"></naff-icon>
-				Something good happened
-			</naff-message>
+				<hr>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('message5')">Show Message</button>
-			<naff-message position="bottom-right" color="blue" naff-toggle="private.message5">
-				<naff-icon name="info-circle" color="white"></naff-icon>
-				Something happened
-			</naff-message>
+				<h2>Message [naff-message]</h2>
 
-			<hr>
+				<button is="naff-x-button" size="medium" naff-on-click="show('message1')">Show Large Message</button>
+				<naff-message naff-toggle="private.message1" position="bottom">
+					<h4>This is a message</h4>
+					<p>With some really long text in it that does not really say a lot but it's there nonetheless.</p>
+					<p>There is also a second line here with some more stuff in it.</p>
+				</naff-message>
 
-			<h2>Modal [naff-modal]</h2>
+				<button is="naff-x-button" size="medium" naff-on-click="show('message2')">Show Bad Message</button>
+				<naff-message position="top" color="red" naff-toggle="private.message2" >
+					<naff-iconname="exclamation-triangle" color="white"></naff-icon>
+					Something bad happened
+				</naff-message>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('modal1')">Show Basic Modal</button>
-			<naff-modal naff-toggle="private.modal1">
-				<main>
-					<div class="test">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					</div>
-				</main>
-				<footer>
-					<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
-					<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal1')"></button>
-				</footer>
-			</naff-modal>
+				<button is="naff-x-button" size="medium" naff-on-click="show('message3')">Show Warning Message</button>
+				<naff-message position="top-left" color="orange" naff-toggle="private.message3">
+					<naff-icon name="exclamation-circle" color="white"></naff-icon>
+					You need to know something important
+				</naff-message>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('modal2')">Show Modal with Heading</button>
-			<naff-modal naff-toggle="private.modal2">
-				<heading>Modal Test with Heading</heading>
-				<main>
-					<div class="test">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					</div>
-				</main>
-				<footer>
-					<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
-					<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal2')"></button>
-				</footer>
-			</naff-modal>
+				<button is="naff-x-button" size="medium" naff-on-click="show('message4')">Show Good Message</button>
+				<naff-message position="bottom" color="green" naff-toggle="private.message4">
+					<naff-icon name="check" color="white"></naff-icon>
+					Something good happened
+				</naff-message>
 
-			<button is="naff-x-button" size="medium" naff-on-click="show('modal3')">Show Long Modal</button>
-			<naff-modal naff-toggle="private.modal3" style="width: 80%;">
-				<heading>Modal Test Large Main Content</heading>
-				<main>
-					<div class="test">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					</div>
-				</main>
-				<footer>
-					<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
-					<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal3')"></button>
-				</footer>
-			</naff-modal>
+				<button is="naff-x-button" size="medium" naff-on-click="show('message5')">Show Message</button>
+				<naff-message position="bottom-right" color="blue" naff-toggle="private.message5">
+					<naff-icon name="info-circle" color="white"></naff-icon>
+					Something happened
+				</naff-message>
 
-			<hr>
+				<hr>
 
-			<h2>Partial [naff-partial]</h2>
+				<h2>Modal [naff-modal]</h2>
 
-			<p>This text is loaded on the root page!</p>
-			<naff-partial partial="partial-file"></naff-partial>
+				<button is="naff-x-button" size="medium" naff-on-click="show('modal1')">Show Basic Modal</button>
+				<naff-modal naff-toggle="private.modal1">
+					<main>
+						<div class="test">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						</div>
+					</main>
+					<footer>
+						<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
+						<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal1')"></button>
+					</footer>
+				</naff-modal>
+
+				<button is="naff-x-button" size="medium" naff-on-click="show('modal2')">Show Modal with Heading</button>
+				<naff-modal naff-toggle="private.modal2">
+					<heading>Modal Test with Heading</heading>
+					<main>
+						<div class="test">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						</div>
+					</main>
+					<footer>
+						<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
+						<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal2')"></button>
+					</footer>
+				</naff-modal>
+
+				<button is="naff-x-button" size="medium" naff-on-click="show('modal3')">Show Long Modal</button>
+				<naff-modal naff-toggle="private.modal3" style="width: 80%;">
+					<heading>Modal Test Large Main Content</heading>
+					<main>
+						<div class="test">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						</div>
+					</main>
+					<footer>
+						<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
+						<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal3')"></button>
+					</footer>
+				</naff-modal>
+
+				<hr>
+
+				<h2>Partial [naff-partial]</h2>
+
+				<p>This text is loaded on the root page!</p>
+				<naff-partial partial="partial-file"></naff-partial>
+			</naff-page>
 		</naff-app>
 	</body>
 </html>

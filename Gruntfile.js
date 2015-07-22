@@ -40,7 +40,8 @@ module.exports = function(grunt) {
               "naff-base.html",
               "naff-form.html",
               "naff-overlay.html",
-              "naff-resource.html"
+              "naff-resource.html",
+              "naff-structure.html"
             ]
           },
           "strip-excludes": false
@@ -50,7 +51,8 @@ module.exports = function(grunt) {
           'build/naff-base.vulc.html': 'src/naff-base.html',
           'build/naff-form.vulc.html': 'src/naff-form.html',
           'build/naff-overlay.vulc.html': 'src/naff-overlay.html',
-          'build/naff-resource.vulc.html': 'src/naff-resource.html'
+          'build/naff-resource.vulc.html': 'src/naff-resource.html',
+          'build/naff-structure.vulc.html': 'src/naff-structure.html'
         }
       },
 
@@ -64,7 +66,8 @@ module.exports = function(grunt) {
               "naff-base.html",
               "naff-form.html",
               "naff-overlay.html",
-              "naff-resource.html"
+              "naff-resource.html",
+              "naff-structure.html"
             ]
           },
           "strip-excludes": false
@@ -74,7 +77,8 @@ module.exports = function(grunt) {
           'build/naff-base.vulc.csp.html': 'src/naff-base.html',
           'build/naff-form.vulc.csp.html': 'src/naff-form.html',
           'build/naff-overlay.vulc.csp.html': 'src/naff-overlay.html',
-          'build/naff-resource.vulc.csp.html': 'src/naff-resource.html'
+          'build/naff-resource.vulc.csp.html': 'src/naff-resource.html',
+          'build/naff-structure.vulc.csp.html': 'src/naff-structure.html'
         }
       }
     },
@@ -88,7 +92,8 @@ module.exports = function(grunt) {
           {from: "src/naff-base.html", to: "build/naff-base.vulc.html"},
           {from: "src/naff-form.html", to: "build/naff-form.vulc.html"},
           {from: "src/naff-overlay.html", to: "build/naff-overlay.vulc.html"},
-          {from: "src/naff-resource.html", to: "build/naff-resource.vulc.html"}
+          {from: "src/naff-resource.html", to: "build/naff-resource.vulc.html"},
+          {from: "src/naff-structure.html", to: "build/naff-structure.vulc.html"}
         ]
       }
     }
