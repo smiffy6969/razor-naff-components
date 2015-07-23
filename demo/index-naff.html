@@ -22,19 +22,29 @@
 	</head>
 	<body>
 		<naff-app resolve>
-			<naff-menu logo-text="hello" children="expandable" position="left" default-route="one" menu-items='[
-				{"route":"one","label":"One long menu item","icon":"trash","menuItems":[
-					{"route":"aaa","label":"AAA","icon":"spinner"},
-					{"label":"BBB","icon":"car","menuItems":[
-						{"route":"1111","label":"1111","icon":"cog"},
-						{"route":"2222","label":"2222","icon":"home"}
-					]}
-				]},
-				{"route":"two","label":"Two","icon":"refresh"},
-				{"route":"three","label":"Three","icon":"user"}
-			]'></naff-menu>
+			<naff-menu
+				side-logo="../demo/blade-dark-green-50-circle.png"
+				top-logo="../demo/blade-dark-green-200-circle.png"
+				side-logo-text="side hello"
+				top-logo-text="top hello"
+				children="expandable"
+				position="left"
+				default-route="one"
+				menu-items='[
+					{"route":"one","label":"One long menu item","icon":"trash","menuItems":[
+						{"route":"aaa","label":"AAA","icon":"spinner"},
+						{"label":"BBB","icon":"car","menuItems":[
+							{"route":"1111","label":"1111","icon":"cog"},
+							{"route":"2222","label":"2222","icon":"home"}
+						]}
+					]},
+					{"route":"two","label":"Two","icon":"refresh"},
+					{"route":"three","label":"Three","icon":"user"}
+				]'>
+			</naff-menu>
 
-			<naff-page>
+			<naff-page position="right">
+
 				<h2>Menu (naff-menu)</h2>
 				<p>The menu that is used on this page!</p>
 

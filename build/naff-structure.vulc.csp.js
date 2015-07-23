@@ -10,13 +10,19 @@
 		private: {
 			route: null,
 			defaultRoute: '',
-			logoText: null
+			sideLogoText: null,
+			topLogoText: null,
+			sideLogo: null,
+			topLogo: null
 		},
 
 		created: function()
 		{
 			// Initial setup
-			if (this.host.hasAttribute('logo-text')) this.private.logoText = this.host.getAttribute('logo-text');
+			if (this.host.hasAttribute('side-logo')) this.private.sideLogo = this.host.getAttribute('side-logo');
+			if (this.host.hasAttribute('top-logo')) this.private.topLogo = this.host.getAttribute('top-logo');
+			if (this.host.hasAttribute('side-logo-text')) this.private.sideLogoText = this.host.getAttribute('side-logo-text');
+			if (this.host.hasAttribute('top-logo-text')) this.private.topLogoText = this.host.getAttribute('top-logo-text');
 			if (this.host.hasAttribute('menu-items')) this.setMenuItems(this.host.getAttribute('menu-items'));
 			if (this.host.hasAttribute('default-route')) this.private.defaultRoute = this.host.getAttribute('default-route');
 
@@ -36,7 +42,10 @@
 			{
 				case 'menu-items': this.setMenuItems(newVal); break;
 				case 'route': this.private.route = newVal; break;
-				case 'logo-text': this.private.logoText = newVal; break;
+				case 'side-logo': this.private.sideLogo = newVal; break;
+				case 'top-logo': this.private.topLogo = newVal; break;
+				case 'side-logo-text': this.private.sideLogoText = newVal; break;
+				case 'top-logo-text': this.private.topLogoText = newVal; break;
 				case 'default-route': this.private.defaultRoute = newVal; break;
 			}
 			this.updateSelected();
