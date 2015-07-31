@@ -207,6 +207,33 @@ __properties__
 * __.scope.error__ - Is there an error with the input
 
 
+### naff-select (naff-form)
+
+
+```html
+<naff-select disabled deselector placeholder="Select Value" options='[{"id": 1, "label": "One"},{"id": 2, "label": "Two"}]' option-id="id" option-label="label" value="1"></naff-select>
+```
+
+
+A nice select box that goes with the input box, allowing you to build a select box up just from throwing some JSON at it, or by setting the scope.attributes.options to an object. Can also be used with naff-options="object.something" to dynamically bind an object to the options. Add in a placeholder, deselect option and also set the value to a preset, along with chosing the object keys you wish to use as value and label (leave blank for simple array of data).
+
+
+* __value__ - The selected value, use naff-value for binding from app.
+* __disabled__ - Disables the select box.
+* __deselector__ - Adds a deselector option to the list.
+* __placeholder__ - Adds a non selectable placeholder that is auto selected on first load with no value set.
+* __options__ - The options for your select box, as a JSON string, or by binding directly via naff-options from an app.
+* __option-id__ - If your options are array of objects, choose your id (option value).
+* __option-label__ - If your options are array of objects, choose your label (option html contents).
+
+
+__events__
+
+
+* __change__ - Fired when a select is changed.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
 ### naff-switch (naff-form)
 
 

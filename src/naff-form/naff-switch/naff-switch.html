@@ -62,7 +62,7 @@
 
 		click: function()
 		{
-			var scope = naff.getScope(this);
+			var scope = this.parentNode.scope;
 			if (scope.disabled) return;
 			scope.host.setAttribute('toggle', scope.toggle == 1 ? 0 : 1);
 		},

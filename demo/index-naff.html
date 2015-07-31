@@ -23,13 +23,13 @@
 	<body>
 		<naff-app resolve>
 			<naff-menu
+				children="expandable"
+				position="left"
+				default-route="one"
 				side-logo="../demo/blade-dark-green-50-circle.png"
 				top-logo="../demo/blade-dark-green-200-circle.png"
 				side-logo-text="side hello"
 				top-logo-text="top hello"
-				children="expandable"
-				position="left"
-				default-route="one"
 				menu-items='[
 					{"route":"one","label":"One long menu item","icon":"trash","menuItems":[
 						{"route":"aaa","label":"AAA","icon":"spinner"},
@@ -74,8 +74,8 @@
 					<naff-tag shape="rounded" size="medium" color="blue">Medium Rounded Tag</naff-tag>
 					<naff-tag shape="round" size="medium" color="orange">Medium Round Tag</naff-tag>
 					<naff-tag shape="oval" size="medium" color="green">Medium Oval Tag</naff-tag>
-					<naff-tag size="large" color="black">Large Round Tag</naff-tag>
-					<naff-tag size="extra-large">Extra Large Round Tag</naff-tag>
+					<naff-tag size="large" color="black">Large Tag</naff-tag>
+					<naff-tag size="extra-large">Extra Large Tag</naff-tag>
 				</p>
 
 				<hr>
@@ -127,6 +127,22 @@
 					<p>Validate numbers or empty: {{private.inputText3}}</p>
 					<br>
 					<naff-input placeholder="Type Something" name="testName" validate="^(\s*|[0-9-]+)$" validate-message="Numbers only dude!" naff-value="private.inputText3"></naff-input>
+				</div>
+
+				<hr>
+
+		 		<h2>Select [naff-x-select]</h2>
+
+				<div class="naff-select-box" style="display: inline-block; width: 250px;">
+					<p>Select Binding: {{private.selected}}</p>
+					<br>
+					<naff-select deselector placeholder="Select Value" naff-options="private.selectOptions" option-id="id" option-label="label" naff-value="private.selected"></naff-select>
+				</div>
+
+				<div class="naff-select-box" style="display: inline-block; width: 250px;">
+					<p>Select from JSON options</p>
+					<br>
+					<naff-select placeholder="JSON Select" options='["This is", "JSON data"]'></naff-select>
 				</div>
 
 				<hr>

@@ -110,6 +110,88 @@ naff.registerElement({name: 'naff-tag'});
 
 	// build scope
 	naff.registerElement({
+		name: 'naff-select',
+		dataBind: true,
+
+		// public properties
+		value: null,
+
+		// private properties
+		private: {
+			attId: null,
+			attLabel: null,
+			placeholder: null,
+			deselector: false,
+			disabled: false
+		},
+
+		created: function()
+		{
+			if (this.host.hasAttribute('options'))
+			{
+				try {
+					var options = JSON.parse(this.host.getAttribute('options'));
+					if (!this.attributes) this.attributes = {};
+					if (!this.attributes.options) this.attributes.options = options;
+				} catch (e) {}
+			}
+		},
+
+		attached: function()
+		{
+			if (this.host.hasAttribute('option-id')) this.private.attId = this.host.getAttribute('option-id');
+			if (this.host.hasAttribute('option-label')) this.private.attLabel = this.host.getAttribute('option-label');
+			if (this.host.hasAttribute('deselector')) this.private.deselector = true;
+			if (this.host.hasAttribute('disabled')) this.private.disabled = true;
+			if (this.host.hasAttribute('placeholder'))
+			{
+				this.private.placeholder = this.host.getAttribute('placeholder');
+				this.host.querySelector('option[placeholder]').setAttribute("selected", "");
+			}
+			if (this.host.value) this.value = this.host.value;
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'value':
+					this.host.value = this.value = newVal;
+				break;
+				case 'options':
+					try { this.attributes.options = JSON.parse(newVal); } catch (e) {}
+				break;
+				case 'option-id':
+					this.private.attId = newVal;
+				break;
+				case 'option-label':
+					this.private.attLabel = newVal;
+				break;
+				case 'placeholder':
+					this.private.placeholder = newVal;
+				break;
+				case 'deselector':
+					if (this.host.hasAttribute('deselector')) this.private.deselector = true;
+					else this.private.deselector = false;
+				break;
+				case 'disabled':
+					if (this.host.hasAttribute('disabled')) this.private.disabled = true;
+					else this.private.disabled = false;
+				break;
+			}
+		},
+
+		changed: function()
+		{
+			this.host.value = this.value;
+			this.host.setAttribute('value', this.value);
+			this.fire('change');
+		}
+	});
+;
+
+	// build scope
+	naff.registerElement({
 		name: 'naff-switch',
 
 		// Public properties
@@ -147,7 +229,7 @@ naff.registerElement({name: 'naff-tag'});
 
 		click: function()
 		{
-			var scope = naff.getScope(this);
+			var scope = this.parentNode.scope;
 			if (scope.disabled) return;
 			scope.host.setAttribute('toggle', scope.toggle == 1 ? 0 : 1);
 		},

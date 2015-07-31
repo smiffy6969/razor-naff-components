@@ -15,6 +15,9 @@ naff.registerApplication({
 		// input text binds
 		inputText1: '', inputText2: '', inputText3: '',
 
+		// select binds
+		selected: 1, selectOptions: [{'id': 1, 'label': 'One (id = 1)'},{'id': 2, 'label': 'Two (id = 2)'},{'id': 3, 'label': 'Three (id = 3)'}],
+
 		// switch controls
 		switchStatus1: 0, switchStatus2: 1,
 
