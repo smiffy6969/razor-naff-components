@@ -4,7 +4,6 @@
 		name: 'naff-menu',
 		dataBind: true,
 
-		menuItems: [],
 		toggle: false,
 
 		private: {
@@ -34,6 +33,11 @@
 				this.private.route = location.route;
 				this.host.setAttribute('route', this.private.route);
 			}
+
+			var scope = this;
+			sightglass(this.attributes, 'menu-items', function() {
+			  	scope.updateSelected();
+			});
 		},
 
 		attributeChanged: function(name, oldVal, newVal)
@@ -94,8 +98,10 @@
 
 		setMenuItems: function(menuItems)
 		{
+			if (menuItems.indexOf('object bound') == 0) return;
+
 			try {
-				this.menuItems = typeof menuItems == 'object' ? menuItems : JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
+				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
 			}

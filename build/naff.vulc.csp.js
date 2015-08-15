@@ -367,7 +367,8 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			// Initial setup
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
-			this.show(true);
+			if (this.toggle == 1) this.show(true);
+			else this.hide();
 		},
 
 		attached: function()
@@ -384,13 +385,13 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			if (name =='toggle')
 			{
 				this.toggle = newVal == 1 ? 1 : 0;
-				this.show(true);
+				if (this.toggle == 1) this.show(true);
+				else this.hide();
 			}
 		},
 
 		show: function(internal)
 		{
-			if (internal && this.toggle != 1) return;
 			var scope = this;
 
 			window.addEventListener('resize', scope.private.resize);
@@ -492,7 +493,6 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 		name: 'naff-menu',
 		dataBind: true,
 
-		menuItems: [],
 		toggle: false,
 
 		private: {
@@ -522,6 +522,11 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 				this.private.route = location.route;
 				this.host.setAttribute('route', this.private.route);
 			}
+
+			var scope = this;
+			sightglass(this.attributes, 'menu-items', function() {
+			  	scope.updateSelected();
+			});
 		},
 
 		attributeChanged: function(name, oldVal, newVal)
@@ -582,8 +587,10 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 
 		setMenuItems: function(menuItems)
 		{
+			if (menuItems.indexOf('object bound') == 0) return;
+
 			try {
-				this.menuItems = typeof menuItems == 'object' ? menuItems : JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
+				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
 			}

@@ -1172,7 +1172,8 @@
 			// Initial setup
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
-			this.show(true);
+			if (this.toggle == 1) this.show(true);
+			else this.hide();
 		},
 
 		attached: function()
@@ -1189,13 +1190,13 @@
 			if (name =='toggle')
 			{
 				this.toggle = newVal == 1 ? 1 : 0;
-				this.show(true);
+				if (this.toggle == 1) this.show(true);
+				else this.hide();
 			}
 		},
 
 		show: function(internal)
 		{
-			if (internal && this.toggle != 1) return;
 			var scope = this;
 
 			window.addEventListener('resize', scope.private.resize);
@@ -1336,7 +1337,7 @@
 		<span class="_top-logo-text" naff-text="private.topLogoText" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default=""></span>
 	</div>
 	<ul naff-show="toggle">
-		<li naff-each-item="menuItems" naff-route="item.route" naff-on-click="changeRoute()">
+		<li naff-each-item="attributes.menu-items" naff-route="item.route" naff-on-click="changeRoute()">
 			<span><naff-icon naff-name="item.icon" naff-if="item.icon"></naff-icon>{{item.label}}</span>
 			<ul naff-if="item.menuItems">
 				<li naff-each-item2="item.menuItems" naff-route="item2.route" naff-on-click="changeRoute()">
@@ -1370,7 +1371,6 @@
 		name: 'naff-menu',
 		dataBind: true,
 
-		menuItems: [],
 		toggle: false,
 
 		private: {
@@ -1400,6 +1400,11 @@
 				this.private.route = location.route;
 				this.host.setAttribute('route', this.private.route);
 			}
+
+			var scope = this;
+			sightglass(this.attributes, 'menu-items', function() {
+			  	scope.updateSelected();
+			});
 		},
 
 		attributeChanged: function(name, oldVal, newVal)
@@ -1460,8 +1465,10 @@
 
 		setMenuItems: function(menuItems)
 		{
+			if (menuItems.indexOf('object bound') == 0) return;
+
 			try {
-				this.menuItems = typeof menuItems == 'object' ? menuItems : JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
+				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
 			}

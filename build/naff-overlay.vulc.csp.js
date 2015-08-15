@@ -94,7 +94,8 @@
 			// Initial setup
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
-			this.show(true);
+			if (this.toggle == 1) this.show(true);
+			else this.hide();
 		},
 
 		attached: function()
@@ -111,13 +112,13 @@
 			if (name =='toggle')
 			{
 				this.toggle = newVal == 1 ? 1 : 0;
-				this.show(true);
+				if (this.toggle == 1) this.show(true);
+				else this.hide();
 			}
 		},
 
 		show: function(internal)
 		{
-			if (internal && this.toggle != 1) return;
 			var scope = this;
 
 			window.addEventListener('resize', scope.private.resize);

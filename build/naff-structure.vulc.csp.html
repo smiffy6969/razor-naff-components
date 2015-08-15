@@ -45,7 +45,7 @@
 		<span class="_top-logo-text" naff-text="private.topLogoText" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default=""></span>
 	</div>
 	<ul naff-show="toggle">
-		<li naff-each-item="menuItems" naff-route="item.route" naff-on-click="changeRoute()">
+		<li naff-each-item="attributes.menu-items" naff-route="item.route" naff-on-click="changeRoute()">
 			<span><naff-icon naff-name="item.icon" naff-if="item.icon"></naff-icon>{{item.label}}</span>
 			<ul naff-if="item.menuItems">
 				<li naff-each-item2="item.menuItems" naff-route="item2.route" naff-on-click="changeRoute()">
