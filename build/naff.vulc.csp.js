@@ -23,6 +23,7 @@ naff.registerElement({name: 'naff-tag'});
 			if (this.host.value || this.host.hasAttribute('value')) this.value = this.template.querySelector('input').value = this.host.value || this.host.getAttribute('value');
 			if (this.host.hasAttribute('disabled')) this.template.querySelector('input').setAttribute('disabled', '');
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
+			if (this.host.hasAttribute('required')) this.template.querySelector('input').setAttribute('required', '');
 			if (this.host.hasAttribute('validate')) this.private.validate = this.host.getAttribute('validate');
 			if (this.host.hasAttribute('validate-message'))
 			{
@@ -58,8 +59,9 @@ naff.registerElement({name: 'naff-tag'});
 					this.template.querySelector('input').value = newVal;
 				break;
 				case 'disabled':
-					if (newVal) this.template.querySelector('input').setAttribute('disabled', '');
-					else this.template.querySelector('input').removeAttribute('disabled');
+				case 'required':
+					if (newVal) this.template.querySelector('input').setAttribute(name, '');
+					else this.template.querySelector('input').removeAttribute(name);
 				break;
 				case 'validate':
 					this.private[name] = newVal;
@@ -104,6 +106,11 @@ naff.registerElement({name: 'naff-tag'});
 				this.host.setAttribute('error', '');
 				this.fire('error', this.private.validateMessage);
 			}
+		},
+
+		focus: function()
+		{
+			return this.template.querySelector('input').focus();
 		}
 	});
 ;
@@ -328,8 +335,12 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			else
 			{
 				scope.host.style.display = "block";
-				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
-				scope.host.style.opacity = 1;
+				
+				setTimeout(function()
+				{
+					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+					scope.host.style.opacity = 1;
+				}, 1);
 			}
 
 			// set timing of show/hide

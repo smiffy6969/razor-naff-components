@@ -88,8 +88,12 @@
 			else
 			{
 				scope.host.style.display = "block";
-				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
-				scope.host.style.opacity = 1;
+				
+				setTimeout(function()
+				{
+					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+					scope.host.style.opacity = 1;
+				}, 1);
 			}
 
 			// set timing of show/hide

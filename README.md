@@ -203,8 +203,15 @@ __events__
 
 __properties__
 
+
 * __.scope.value__ - The value as it would be on a normal input element
 * __.scope.error__ - Is there an error with the input
+
+
+__methods__
+
+
+* __.scope.focus__ - Sets focus on the element
 
 
 ### naff-select (naff-form)
