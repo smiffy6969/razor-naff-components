@@ -15,7 +15,8 @@
 	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
 	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
-	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 10px; }
+	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 11px; line-height: 10px; }
+	naff-input .-input-group .-input-error naff-icon, naff-input .-input-group .-input-error .-input-error-message { color: red; font-size: 11px; line-height: 10px}
 </style>
 
 <!-- TEMPLATE -->
@@ -42,7 +43,9 @@
 		// private properties
 		private: {
 			validate: null,
-			validateMessage: null
+			validateMessage: 'Fails validation',
+			match: null,
+			matchMessage: 'Does not match'
 		},
 
 		created: function()
@@ -55,11 +58,9 @@
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
 			if (this.host.hasAttribute('required')) this.template.querySelector('input').setAttribute('required', '');
 			if (this.host.hasAttribute('validate')) this.private.validate = this.host.getAttribute('validate');
-			if (this.host.hasAttribute('validate-message'))
-			{
-				this.private.validateMessage = this.host.getAttribute('validate-message');
-				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
-			}
+			if (this.host.hasAttribute('validate-message')) this.private.validateMessage = this.host.getAttribute('validate-message');
+			if (this.host.hasAttribute('match')) this.private.match = this.host.getAttribute('match');
+			if (this.host.hasAttribute('match-message')) this.private.matchMessage = this.host.getAttribute('match-message');
 		},
 
 		attached: function()
@@ -94,6 +95,8 @@
 					else this.template.querySelector('input').removeAttribute(name);
 				break;
 				case 'validate':
+				case 'match':
+				case 'match-message':
 					this.private[name] = newVal;
 				break;
 				case 'validate-message':
@@ -123,18 +126,28 @@
 
 			// validate input
 			var regexp = new RegExp(this.private.validate);
-			this.error = regexp.test(value);
+			this.error = !regexp.test(value);
 
 			if (this.error)
 			{
-				this.template.querySelector('.-input-error').style.visibility = 'hidden';
-				this.host.removeAttribute('error');
+				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
+				this.template.querySelector('.-input-error').style.visibility = 'visible';
+				this.host.setAttribute('error', 1);
+				this.fire('error', this.private.validateMessage);
+			}
+			else if (this.private.match != null && this.private.match != value)
+			{
+				this.error = true;
+				this.template.querySelector('.-input-error-message').innerHTML = this.private.matchMessage;
+				this.template.querySelector('.-input-error').style.visibility = 'visible';
+				this.host.setAttribute('error', 1);
+				this.fire('error', this.private.matchMessage);
 			}
 			else
 			{
-				this.template.querySelector('.-input-error').style.visibility = 'visible';
-				this.host.setAttribute('error', '');
-				this.fire('error', this.private.validateMessage);
+				this.template.querySelector('.-input-error').style.visibility = 'hidden';
+				this.host.setAttribute('error', 0);
+				this.fire('ok');
 			}
 		},
 

@@ -136,13 +136,9 @@
 				<div class="naff-select-box" style="display: inline-block; width: 250px;">
 					<p>Select Binding: {{private.selected}}</p>
 					<br>
-					<naff-select deselector placeholder="Select Value" naff-options="private.selectOptions" option-id="id" option-label="label" naff-value="private.selected"></naff-select>
-				</div>
-
-				<div class="naff-select-box" style="display: inline-block; width: 250px;">
-					<p>Select from JSON options</p>
-					<br>
-					<naff-select placeholder="JSON Select" options='["This is", "JSON data"]'></naff-select>
+					<select is="naff-x-select" naff-value="private.selected">
+						<option naff-each-option="private.selectOptions" naff-value="option.id">{{option.label}}</option>
+					</select>
 				</div>
 
 				<hr>

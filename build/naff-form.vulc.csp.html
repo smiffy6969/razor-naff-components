@@ -12,7 +12,8 @@
 	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
 	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
-	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 10px; }
+	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 11px; line-height: 10px; }
+	naff-input .-input-group .-input-error naff-icon, naff-input .-input-group .-input-error .-input-error-message { color: red; font-size: 11px; line-height: 10px}
 </style>
 
 <!-- TEMPLATE -->
@@ -24,24 +25,6 @@
 			<span class="-input-error-message"></span>
 		</div>
 	</div>
-</template>
-
-<!-- LOGIC -->
-
-
-<style>
-	naff-select select { padding: 2px 5px; border: none; border-bottom: 2px solid #999; outline: none; font-size: 15px; background: transparent; }
-	naff-select select:focus:not([disabled]), naff-select select:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
-	naff-select select[disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
-</style>
-
-<!-- TEMPLATE -->
-<template id="naff-select">
-	<select naff-value="value" naff-on-change="changed()" naff-disabled="private.disabled">
-		<option placeholder="" naff-text="private.placeholder" naff-if="private.placeholder" disabled=""></option>
-		<option deselector="" naff-if="private.deselector" value=""></option>
-		<option naff-each-option="attributes.options" naff-value="option | key private.attId">{{option | key private.attLabel}}</option>
-	</select>
 </template>
 
 <!-- LOGIC -->
@@ -95,6 +78,8 @@
 
 
 
+
+
 <!-- STYLE - Encapsulate all css to tag name -->
 <style type="text/css">
 	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
@@ -130,7 +115,17 @@
 <!-- LOGIC -->
 
 
+<style>
+	select[is="naff-x-select"] { padding: 2px 5px; border: none; border-bottom: 2px solid #999; outline: none; font-size: 15px; background: transparent; }
+	select[is="naff-x-select"]:focus:not([disabled]), select[is="naff-x-select"]:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
+	select[is="naff-x-select"][disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
+</style>
+
+<!-- LOGIC -->
+
+
 </head><body><div hidden="">
+
 
 
 

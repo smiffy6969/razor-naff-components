@@ -1,0 +1,59 @@
+<!--
+* razor-naff-components
+* naff-x-form - Extends a standard form to incorprate error checking consolidation
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-x-form',
+		extends: 'form',
+		error: false,
+
+		private: {
+			matches: []
+		},
+
+		created: function()
+		{
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+		},
+
+		attached: function()
+		{
+			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
+		},
+
+		detached: function()
+		{
+			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].removeEventListener('changed', this.checkError);
+		},
+
+		checkError: function(event, scope)
+		{
+			var scope = scope || naff.getParentScope(this, 'naff-x-form');
+			var error = false;
+			for (var i = 0; i < scope.private.matches.length; i++)
+			{
+				if (scope.private.matches[i].hasAttribute('disabled')) continue;
+				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || scope.private.matches[i].scope.error) error = true;
+			}
+			scope.error = error;
+
+			if (!!error)
+			{
+				scope.host.setAttribute('error', 1);
+				scope.fire('error');
+			}
+			else
+			{
+				scope.host.setAttribute('error', 0);
+				scope.fire('ok');
+			}
+		}
+	});
+</script>

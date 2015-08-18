@@ -10,7 +10,9 @@
 		// private properties
 		private: {
 			validate: null,
-			validateMessage: null
+			validateMessage: 'Fails validation',
+			match: null,
+			matchMessage: 'Does not match'
 		},
 
 		created: function()
@@ -23,11 +25,9 @@
 			if (this.host.hasAttribute('placeholder')) this.template.querySelector('input').setAttribute('placeholder', this.host.getAttribute('placeholder'));
 			if (this.host.hasAttribute('required')) this.template.querySelector('input').setAttribute('required', '');
 			if (this.host.hasAttribute('validate')) this.private.validate = this.host.getAttribute('validate');
-			if (this.host.hasAttribute('validate-message'))
-			{
-				this.private.validateMessage = this.host.getAttribute('validate-message');
-				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
-			}
+			if (this.host.hasAttribute('validate-message')) this.private.validateMessage = this.host.getAttribute('validate-message');
+			if (this.host.hasAttribute('match')) this.private.match = this.host.getAttribute('match');
+			if (this.host.hasAttribute('match-message')) this.private.matchMessage = this.host.getAttribute('match-message');
 		},
 
 		attached: function()
@@ -62,6 +62,8 @@
 					else this.template.querySelector('input').removeAttribute(name);
 				break;
 				case 'validate':
+				case 'match':
+				case 'match-message':
 					this.private[name] = newVal;
 				break;
 				case 'validate-message':
@@ -91,106 +93,34 @@
 
 			// validate input
 			var regexp = new RegExp(this.private.validate);
-			this.error = regexp.test(value);
+			this.error = !regexp.test(value);
 
 			if (this.error)
 			{
-				this.template.querySelector('.-input-error').style.visibility = 'hidden';
-				this.host.removeAttribute('error');
+				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
+				this.template.querySelector('.-input-error').style.visibility = 'visible';
+				this.host.setAttribute('error', 1);
+				this.fire('error', this.private.validateMessage);
+			}
+			else if (this.private.match != null && this.private.match != value)
+			{
+				this.error = true;
+				this.template.querySelector('.-input-error-message').innerHTML = this.private.matchMessage;
+				this.template.querySelector('.-input-error').style.visibility = 'visible';
+				this.host.setAttribute('error', 1);
+				this.fire('error', this.private.matchMessage);
 			}
 			else
 			{
-				this.template.querySelector('.-input-error').style.visibility = 'visible';
-				this.host.setAttribute('error', '');
-				this.fire('error', this.private.validateMessage);
+				this.template.querySelector('.-input-error').style.visibility = 'hidden';
+				this.host.setAttribute('error', 0);
+				this.fire('ok');
 			}
 		},
 
 		focus: function()
 		{
 			return this.template.querySelector('input').focus();
-		}
-	});
-;
-
-	// build scope
-	naff.registerElement({
-		name: 'naff-select',
-		dataBind: true,
-
-		// public properties
-		value: null,
-
-		// private properties
-		private: {
-			attId: null,
-			attLabel: null,
-			placeholder: null,
-			deselector: false,
-			disabled: false
-		},
-
-		created: function()
-		{
-			if (this.host.hasAttribute('options'))
-			{
-				try {
-					var options = JSON.parse(this.host.getAttribute('options'));
-					if (!this.attributes) this.attributes = {};
-					if (!this.attributes.options) this.attributes.options = options;
-				} catch (e) {}
-			}
-		},
-
-		attached: function()
-		{
-			if (this.host.hasAttribute('option-id')) this.private.attId = this.host.getAttribute('option-id');
-			if (this.host.hasAttribute('option-label')) this.private.attLabel = this.host.getAttribute('option-label');
-			if (this.host.hasAttribute('deselector')) this.private.deselector = true;
-			if (this.host.hasAttribute('disabled')) this.private.disabled = true;
-			if (this.host.hasAttribute('placeholder'))
-			{
-				this.private.placeholder = this.host.getAttribute('placeholder');
-				this.host.querySelector('option[placeholder]').setAttribute("selected", "");
-			}
-			if (this.host.value) this.value = this.host.value;
-		},
-
-		attributeChanged: function(name, oldVal, newVal)
-		{
-			switch (name)
-			{
-				case 'value':
-					this.host.value = this.value = newVal;
-				break;
-				case 'options':
-					try { this.attributes.options = JSON.parse(newVal); } catch (e) {}
-				break;
-				case 'option-id':
-					this.private.attId = newVal;
-				break;
-				case 'option-label':
-					this.private.attLabel = newVal;
-				break;
-				case 'placeholder':
-					this.private.placeholder = newVal;
-				break;
-				case 'deselector':
-					if (this.host.hasAttribute('deselector')) this.private.deselector = true;
-					else this.private.deselector = false;
-				break;
-				case 'disabled':
-					if (this.host.hasAttribute('disabled')) this.private.disabled = true;
-					else this.private.disabled = false;
-				break;
-			}
-		},
-
-		changed: function()
-		{
-			this.host.value = this.value;
-			this.host.setAttribute('value', this.value);
-			this.fire('change');
 		}
 	});
 ;
@@ -250,6 +180,56 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 
 	// build scope
 	naff.registerElement({
+		name: 'naff-x-form',
+		extends: 'form',
+		error: false,
+
+		private: {
+			matches: []
+		},
+
+		created: function()
+		{
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+		},
+
+		attached: function()
+		{
+			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
+		},
+
+		detached: function()
+		{
+			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].removeEventListener('changed', this.checkError);
+		},
+
+		checkError: function(event, scope)
+		{
+			var scope = scope || naff.getParentScope(this, 'naff-x-form');
+			var error = false;
+			for (var i = 0; i < scope.private.matches.length; i++)
+			{
+				if (scope.private.matches[i].hasAttribute('disabled')) continue;
+				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || scope.private.matches[i].scope.error) error = true;
+			}
+			scope.error = error;
+
+			if (!!error)
+			{
+				scope.host.setAttribute('error', 1);
+				scope.fire('error');
+			}
+			else
+			{
+				scope.host.setAttribute('error', 0);
+				scope.fire('ok');
+			}
+		}
+	});
+;
+
+	// build scope
+	naff.registerElement({
 		name: 'naff-x-icon-button',
 		extends: 'button',
 
@@ -275,3 +255,5 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			}
 		}
 	});
+;
+naff.registerElement({name: 'naff-x-select'});

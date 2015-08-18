@@ -1,0 +1,17 @@
+<!--
+* razor-naff-components
+* naff-x-select - Form select with feedback for multi selected items
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	select[is="naff-x-select"] { padding: 2px 5px; border: none; border-bottom: 2px solid #999; outline: none; font-size: 15px; background: transparent; }
+	select[is="naff-x-select"]:focus:not([disabled]), select[is="naff-x-select"]:active:not([disabled]) { border-bottom-width: 3px; border-color: #777; }
+	select[is="naff-x-select"][disabled] { cursor: not-allowed; border-bottom: 2px dashed #999; background-color: #fff; }
+</style>
+
+<!-- LOGIC -->
+<script>naff.registerElement({name: 'naff-x-select'});</script>

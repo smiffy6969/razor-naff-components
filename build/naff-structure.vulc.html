@@ -177,8 +177,8 @@
 		setMenuItems: function(menuItems)
 		{
 			if (menuItems.indexOf('object bound') == 0) return;
-
 			try {
+				if (typeof this.attribtues === 'undefined') this.attributes = {};
 				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';

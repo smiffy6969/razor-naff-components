@@ -171,25 +171,56 @@ __events__
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
+### naff-x-form (naff-form)
+
+
+```html
+<form is="naff-x-form" error></form>
+```
+
+
+Adds some goodies to form element, any naff-form element used inside an extended form element using naff-x-form that has validation regex set will be checked by this form when any value changes.
+The form will set the error attribute when any naff-form element errors or is required and empty (skipping disabled ones) to allow you to easily error check your form contents in one go. Please note only naff-form custom elements will be checked.
+
+
+* __error__ - Set to 1 for an error and 0 for ok.
+
+
+__events__
+
+
+* __error__ - Fired when an error in naff-form element validation occurs.
+* __ok__ - Fired when no error is found in naff-form element validation.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__properties__
+
+
+* __.scope.error__ - Is there an error with the form
+
+
 ### naff-input (naff-form)
 
 
 ```html
-<naff-input name="testName" type="text" value="hello" placeholder="Type Something" validate="^(\s*|[0-9-]+)$" validateMessage="Numbers only dude!" disabled error></naff-input>
+<naff-input name="testName" type="text" value="hello" placeholder="Type Something" match="Text to match" match-message="does not match" validate="^(\s*|[0-9-]+)$" validateMessage="Numbers only dude!" disabled error></naff-input>
 ```
 
 
-A more advanced input with intgral error checking, validating values entered to regex supplied and outputting a message under the input on failure.
+A more advanced input with intgral error checking, validating values entered to regex supplied and outputting a message under the input on failure. In addition to validation, you may also send in an additional match attribute, meaning you can have validation, and if pass, will then move on to ensure matches the match value. This is great for email and password confirmation by using naff-match="" to send in the password to confirm against for the confirmation input. Sets error on validation or match fail.
 
 
 * __name__ - The name of the form input.
 * __type__ - The type of form input just like a normal input element.
 * __value__ - The value of of the live input just like a normal input element.
 * __placeholder__ - Text to show in the input box when empty.
+* __match__ - A tet string to match, can be used to send in password to confirm using naff-match="path.to.password".
+* __matchMessage__ - Message to show if match is set and validation passes, good for confirming things like emails or passwords.
 * __validate__ - A regex to validate to.
 * __validateMessage__ - Message to show under input when error happens.
 * __disabled__ - Disables the input.
-* __error__ - Shows up when an error happens in real time.
+* __error__ - Set to 1 for an error and 0 for ok.
 
 
 __events__
@@ -214,30 +245,22 @@ __methods__
 * __.scope.focus__ - Sets focus on the element
 
 
-### naff-select (naff-form)
+### naff-x-select (naff-form)
 
 
 ```html
-<naff-select disabled deselector placeholder="Select Value" options='[{"id": 1, "label": "One"},{"id": 2, "label": "Two"}]' option-id="id" option-label="label" value="1"></naff-select>
+<select is="naff-x-select">
+    <option></option>
+</select>
 ```
 
 
-A nice select box that goes with the input box, allowing you to build a select box up just from throwing some JSON at it, or by setting the scope.attributes.options to an object. Can also be used with naff-options="object.something" to dynamically bind an object to the options. Add in a placeholder, deselect option and also set the value to a preset, along with chosing the object keys you wish to use as value and label (leave blank for simple array of data).
-
-
-* __value__ - The selected value, use naff-value for binding from app.
-* __disabled__ - Disables the select box.
-* __deselector__ - Adds a deselector option to the list.
-* __placeholder__ - Adds a non selectable placeholder that is auto selected on first load with no value set.
-* __options__ - The options for your select box, as a JSON string, or by binding directly via naff-options from an app.
-* __option-id__ - If your options are array of objects, choose your id (option value).
-* __option-label__ - If your options are array of objects, choose your label (option html contents).
+A simple wrapper for select boxes to style them like the naff-input box. You can use naff-repeat on options to output options for the select box.
 
 
 __events__
 
 
-* __change__ - Fired when a select is changed.
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
