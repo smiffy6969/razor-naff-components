@@ -30,6 +30,9 @@ naff.registerElement({name: 'naff-tag'});
 			if (this.host.hasAttribute('validate-message')) this.private.validateMessage = this.host.getAttribute('validate-message');
 			if (this.host.hasAttribute('match')) this.private.match = this.host.getAttribute('match');
 			if (this.host.hasAttribute('match-message')) this.private.matchMessage = this.host.getAttribute('match-message');
+
+			// force check on start if error set
+			if (this.host.hasAttribute('error')) this.checkError(this.value);
 		},
 
 		attached: function()
@@ -59,8 +62,7 @@ naff.registerElement({name: 'naff-tag'});
 					this.template.querySelector('input').value = newVal;
 				break;
 				case 'disabled':
-				case 'required':
-					if (newVal) this.template.querySelector('input').setAttribute(name, '');
+					if (this.host.hasAttribute(name)) this.template.querySelector('input').setAttribute(name, '');
 					else this.template.querySelector('input').removeAttribute(name);
 				break;
 				case 'validate':

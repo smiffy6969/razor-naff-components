@@ -220,7 +220,7 @@ A more advanced input with intgral error checking, validating values entered to 
 * __validate__ - A regex to validate to.
 * __validateMessage__ - Message to show under input when error happens.
 * __disabled__ - Disables the input.
-* __error__ - Set to 1 for an error and 0 for ok.
+* __error__ - Set to 1 for an error and 0 for ok, add this attribute manually to force check on load.
 
 
 __events__
