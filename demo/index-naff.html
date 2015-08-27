@@ -6,9 +6,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>razorNAFF Application Demo</title>
 
-		<!-- Polyfill native API's if missing -->
+		<!-- Polyfill native API's if missing  and any other dependancies-->
 		<script type="text/javascript" src="../../webcomponentsjs/webcomponents.min.js"></script>
 		<script type="text/javascript" src="../../promise-polyfill/Promise.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../font-awesome/css/font-awesome.min.css">
 
 		<!-- Load the naff helper library used by the web components -->
 		<script type="text/javascript" src="../../razor-naff/build/naff.bundled.min.js"></script>
@@ -55,7 +56,7 @@
 
 				<hr>
 
-				<h2>Icon [naff-icon] (using embedded font-awesome 4.3, no dependancy)</h2>
+				<h2>Icon [naff-icon] (using font-awesome dependancy, please add style import to main head)</h2>
 				<naff-icon name="check"></naff-icon>
 				<naff-icon name="check" style="background-color: #444" inverse></naff-icon>
 				<naff-icon name="bed" size="2" style="color: red"></naff-icon>
@@ -93,7 +94,7 @@
 
 				<hr>
 
-		 		<h2>Extended Icon Button [is="naff-x-icon-button"]</h2>
+		 		<h2>Extended Icon Button [is="naff-x-icon-button"] (using font-awesome dependancy, please add style import to main head)</h2>
 		 		<p>Clicked {{private.iconButtonClicks}} times</p>
 				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="check" size="extra-small"></button>
 				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="times" color="red" size="small" disabled></button>

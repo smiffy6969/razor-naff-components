@@ -16,7 +16,7 @@ This set of web components is work in progress, so please expect bugs and a limi
 ## Installation  
 
 
-It is best to install the components via [Bower](http://bower.io/) in order to satisfy all dependencies (razor-naff, webcomponentsjs), in such cases where you wish to install manually, I suggest you take a peek at the **bower.json** file to satisfy dependences listed under the dependencies section manually. Please ensure when installing manually, that correct directory structure is adhered to as per [github](https://github.com) (as the dependencies are structured on github), with all components being placed in a shared folder (called bower_components maybe?).
+It is best to install the components via [Bower](http://bower.io/) in order to satisfy all dependencies (razor-naff, webcomponentsjs, promise, font-awesome), in such cases where you wish to install manually, I suggest you take a peek at the **bower.json** file to satisfy dependences listed under the dependencies section manually. Please ensure when installing manually, that correct directory structure is adhered to as per [github](https://github.com) (as the dependencies are structured on github), with all components being placed in a shared folder (called bower_components maybe?).
 
 You may use the --save flag to store installation info in a central project bower.json file, if you do not have one already, you can do this first.
 
@@ -47,6 +47,7 @@ In order to use the web components, it is first best practice to include the pol
 <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
 <script src="bower_components/promise-polyfill/Promise.min.js"></script>
 <script src="bower_components/razor-naff/naff.bundled.min.js"></script>
+<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
 ```
 
 
@@ -85,11 +86,14 @@ The components are split into groups, with a distinction between extended compon
 
 
 ```html
-<naff-icon name="" size="" rotate="" flip="" border spin pulse inverse fixed-width></naff-icon>
+<naff-icon name="" size="" rotate="" flip="" border spin pulse inverse fw></naff-icon>
 ```
 
 
-All icons are supplied via embedded [font-awesome](http://fortawesome.github.io/Font-Awesome/) which does not require a dependancy, for a full list of icons available please see their site. NOTE: you can add the attribute 'spin' to make icons spin. Styling can be applied direct to the element via standard css means, or you can have control via attributes such as size="2".
+All icons are supplied via [font-awesome](http://fortawesome.github.io/Font-Awesome/) all we do is abstract out the different class names allowing you to add them as attirbutes (better for binding tools), thes are then written to the class as a name (or you can alter the class directly). Basically this component allows you to use a dedicate icon tag instead of the 'i' tag which is not meant for icons really. For a full list of icons available please see their site. NOTE: you can add the attribute 'spin' to make icons spin. Styling can be applied direct to the element via standard css means, or you can have control via attributes such as size="2".
+
+
+Please ensure you have added your style tag in your head for fontawesome before using!
 
 
 * __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name).
@@ -100,7 +104,7 @@ All icons are supplied via embedded [font-awesome](http://fortawesome.github.io/
 * __spin__ - Make the icon spin.
 * __pulse__ - Make the icon spin in steps.
 * __inverse__ - Invert the icon color (white icon).
-* __fixed-width__ - Set the icon to a fixed width (great for aligning icons).
+* __fw__ - Set the icon to a fixed width (great for aligning icons).
 
 
 ### naff-tag (naff-base)

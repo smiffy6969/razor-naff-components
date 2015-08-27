@@ -2,11 +2,12 @@
   "name": "razor-naff-components",
   "description": "razorNAFF HTML web components created using the razorNAFF helper library.",
   "author": "Paul Smith (smiffy6969)",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "homepage": "http://ulsmith.net/razor-naff/razor-naff-components",
   "license": "MIT",
   "dependencies": {
     "razor-naff": "smiffy6969/razor-naff",
+    "font-awesome": "FortAwesome/Font-Awesome",
     "webcomponentsjs": "webcomponents/webcomponentsjs",
     "promise-polyfill": "taylorhakes/promise-polyfill"
   },

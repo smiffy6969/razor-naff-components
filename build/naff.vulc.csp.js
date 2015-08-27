@@ -1,4 +1,39 @@
-naff.registerElement({name: 'naff-icon'});
+
+    naff.registerElement({
+        name: 'naff-icon',
+
+		created: function()
+		{
+			// Initial setup
+            if (this.host.className.indexOf('fa') >= 0) return;
+            this.addClasses();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+            if (name == 'class') return; // altered class directly
+            this.addClasses();
+		},
+
+        addClasses: function()
+        {
+            var className = ' fa';
+            var classes = this.host.className.split(' ');
+            for (var i = 0; i < classes.length; i++) className += classes[i] == 'fa' || classes[i].trim().indexOf('fa-') == 0 ? '' : classes[i];
+
+            if (this.host.hasAttribute('name')) className += ' fa-' + this.host.getAttribute('name');
+            if (this.host.hasAttribute('size')) className += ' fa-' + this.host.getAttribute('size') + 'x';
+            if (this.host.hasAttribute('rotate')) className += ' fa-rotate-' + this.host.getAttribute('rotate');
+            if (this.host.hasAttribute('stack')) className += ' fa-stack-' + this.host.getAttribute('stack') + 'x';
+            if (this.host.hasAttribute('fw')) className += ' fa-fw';
+            if (this.host.hasAttribute('spin')) className += ' fa-spin';
+            if (this.host.hasAttribute('pulse')) className += ' fa-pulse';
+            if (this.host.hasAttribute('inverse')) className += ' fa-inverse';
+            if (this.host.hasAttribute('border')) className += ' fa-border';
+            this.host.className = className;
+        }
+    })
+;
 naff.registerElement({name: 'naff-tag'});
 
 	// build scope
