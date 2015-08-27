@@ -19,7 +19,7 @@
         {
             var className = ' fa';
             var classes = this.host.className.split(' ');
-            for (var i = 0; i < classes.length; i++) className += classes[i] == 'fa' || classes[i].trim().indexOf('fa-') == 0 ? '' : classes[i];
+            for (var i = 0; i < classes.length; i++) className += classes[i] == 'fa' || classes[i].trim().indexOf('fa-') == 0 ? '' : ' ' + classes[i];
 
             if (this.host.hasAttribute('name')) className += ' fa-' + this.host.getAttribute('name');
             if (this.host.hasAttribute('size')) className += ' fa-' + this.host.getAttribute('size') + 'x';
@@ -30,7 +30,7 @@
             if (this.host.hasAttribute('pulse')) className += ' fa-pulse';
             if (this.host.hasAttribute('inverse')) className += ' fa-inverse';
             if (this.host.hasAttribute('border')) className += ' fa-border';
-            this.host.className = className;
+            this.host.className = className.trim();
         }
     })
 ;
