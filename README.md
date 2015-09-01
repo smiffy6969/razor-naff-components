@@ -369,6 +369,37 @@ __methods__
 * __scope.hide()__ - Hide the modal.
 
 
+### naff-date-picker (naff-overlay)
+
+
+```html
+<naff-date-picker toggle="1" format="ddd dd mmm yyyy" date="Tue 01 Jan 2015"></naff-date-picker>
+```
+
+
+A modal box with a date picker inside, allowing you to select a date. Date is set on the date attribute and selected date is set back on the date attribute. Change the format of the date as set and read back using the format supplied to dateFormat() function which is included in the naff bundle. Toggle the picker using toggle attribute, with selection toggling the modal off.
+
+
+* __toggle__ - The visibility of the modal in real time as 0 or 1. Change this value to show or hide the modal.
+
+
+__events__
+
+
+* __show__ - Fired when date picker modal is shown.
+* __hide__ - Fired when date picker modal is hidden.
+* __change__ - Fired when date picker month is changed, also sends detail of month in mm format.
+* __select__ - Fired when date picker date is selected, also sends detail of date selected in format set by format attribute.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__methods__
+
+
+* __scope.show()__ - Show the modal.
+* __scope.hide()__ - Hide the modal.
+
+
 ### naff-partial (naff-resource)
 
 

@@ -79,6 +79,7 @@
 			{
 				clearTimeout(scope.private.messageTimer);
 				clearTimeout(scope.private.displayTimer);
+				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
 
 				setTimeout(function()
 				{
@@ -91,7 +92,7 @@
 			else
 			{
 				scope.host.style.display = "block";
-				
+
 				setTimeout(function()
 				{
 					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
