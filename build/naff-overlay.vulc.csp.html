@@ -115,6 +115,56 @@
 <!-- LOGIC -->
 
 
+
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-time-picker naff-modal.-date-picker-modal { width: 300px; }
+	naff-time-picker .-container .-controls { display: block; width: 100%; text-align: center; overflow: hidden; }
+	naff-time-picker .-container .-controls .-tag-box { width: 150px; display: inline-block; }
+	naff-time-picker .-container .-controls .-tag-box button { margin-left: 8px; margin-right: 8px; }
+	naff-time-picker .-container .-controls .-close { position: absolute; right: 10px; }
+	naff-time-picker .-container .-controls .-close:hover { opacity: 1; }
+	naff-time-picker .-container .-frame { position: relative; }
+	naff-time-picker .-container .-frame .-time { font-family: monospace; font-size: 30px; font-weight: bold; color: #444; text-align: center; padding: 20px; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-time-picker">
+	<naff-modal class="-date-picker-modal" naff-toggle="toggle">
+		<main>
+			<div class="-container">
+		        <div class="-controls -above">
+					<div class="-tag-box">
+						<button is="naff-x-icon-button" naff-if="private.showHour" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setHour('1')"></button>
+						<button is="naff-x-icon-button" naff-if="private.showMin" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setMin('1')"></button>
+						<button is="naff-x-icon-button" naff-if="private.showSec" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setSec('1')"></button>
+					</div>
+					<button is="naff-x-icon-button" class="-close" name="times" shape="round" color="red" size="medium" naff-on-click="hide()"></button>
+		        </div>
+				<div class="-frame">
+					<div class="-time">
+						{{private.time}}
+					</div>
+				</div>
+		        <div class="-controls -below">
+					<div class="-tag-box">
+						<button is="naff-x-icon-button" naff-if="private.showHour" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setHour('-1')"></button>
+						<button is="naff-x-icon-button" naff-if="private.showMin" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setMin('-1')"></button>
+						<button is="naff-x-icon-button" naff-if="private.showSec" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setSec('-1')"></button>
+					</div>
+					<button is="naff-x-icon-button" class="-close" name="check" shape="round" color="green" size="medium" naff-on-click="selectTime()"></button>
+		        </div>
+			</div>
+		</main>
+	</naff-modal>
+</template>
+
+<!-- LOGIC -->
+
+
 </head><body><div hidden="">
+
 
 </div><script charset="utf-8" src="naff-overlay.vulc.csp.js"></script></body></html>

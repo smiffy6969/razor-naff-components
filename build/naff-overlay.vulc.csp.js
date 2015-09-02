@@ -318,3 +318,102 @@
 			this.fire('select', dateFormat(this.private.selected, this.format));
 		}
 	});
+;
+
+	// build scope
+	naff.registerElement({
+		name: 'naff-time-picker',
+		dataBind: true,
+		toggle: 0,
+		time: null,
+		format: 'HH:MM',
+
+		// private properties
+		private: {
+			time: null,
+			date: null,
+			showHour: true,
+			showMin: true,
+			showSec: true
+		},
+
+		created: function()
+		{
+			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
+			if (this.host.hasAttribute('time')) this.time = this.host.getAttribute('time');
+			this.private.showHour = this.format.indexOf('h') >= 0 || this.format.indexOf('H') >= 0 ? true : false;
+			this.private.showMin = this.format.indexOf('M') >= 0 ? true : false;
+			this.private.showSec = this.format.indexOf('s') >= 0 ? true : false;
+			this.setDateTime();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'time':
+					this.time = newVal;
+					this.setDateTime();
+				break;
+				case 'format':
+					this.format = newVal || 'HH:MM';
+					this.private.showHour = this.format.indexOf('h') >= 0 || this.format.indexOf('H') >= 0 ? true : false;
+					this.private.showMin = this.format.indexOf('M') >= 0 ? true : false;
+					this.private.showSec = this.format.indexOf('s') >= 0 ? true : false;
+					this.setDateTime();
+				break;
+				case 'toggle':
+					if (newVal == 0) this.toggle = 0;
+					else
+					{
+						this.toggle = 1;
+					}
+				break;
+			}
+		},
+
+		show: function()
+		{
+			this.host.setAttribute('toggle', 1);
+		},
+
+		hide: function()
+		{
+			this.host.setAttribute('toggle', 0);
+		},
+
+		setDateTime: function()
+		{
+			// correct any bad formatting before parsing time
+			this.private.date = this.time ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.time.replace(/am|pm/i, '').trim() : this.time))) : new Date(Date.now());
+			this.private.time = dateFormat(this.private.date, this.format);
+		},
+
+		setHour: function(ev, val)
+		{
+			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
+			this.private.time = dateFormat(this.private.date, this.format);
+			this.fire('change', this.private.time);
+		},
+
+		setMin: function(ev, val)
+		{
+			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
+			this.private.time = dateFormat(this.private.date, this.format);
+			this.fire('change', this.private.time);
+		},
+
+		setSec: function(ev, val)
+		{
+			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
+			this.private.time = dateFormat(this.private.date, this.format);
+			this.fire('change', this.private.time);
+		},
+
+		selectTime: function(ev)
+		{
+			this.host.setAttribute('time', this.private.time);
+			this.host.setAttribute('toggle', 0);
+			this.fire('select', this.private.time);
+		}
+	});

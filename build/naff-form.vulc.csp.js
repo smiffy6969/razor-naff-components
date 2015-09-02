@@ -212,7 +212,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
 				if (scope.private.matches[i].hasAttribute('disabled')) continue;
-				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || scope.private.matches[i].scope.error) error = true;
+				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || (scope.private.matches[i].scope && scope.private.matches[i].scope.error)) error = true;
 			}
 			scope.error = error;
 
