@@ -520,13 +520,13 @@ naff.registerElement({name: 'naff-x-select'});;
 
 		show: function()
 		{
-			this.toggle = 1;
+			this.host.setAttribute('toggle', 1);
 			this.load();
 		},
 
 		hide: function()
 		{
-			this.toggle = 0;
+			this.host.setAttribute('toggle', 0);
 		},
 
 		load: function()
@@ -612,8 +612,8 @@ naff.registerElement({name: 'naff-x-select'});;
 			this.private.selected = new Date(this.private.days[el.getAttribute('day-id')].date);
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 			this.host.setAttribute('date', dateFormat(this.private.selected, this.format));
+			this.host.setAttribute('toggle', 0);
 			this.fire('select', dateFormat(this.private.selected, this.format));
-			this.toggle = 0;
 		}
 	});
 ;
