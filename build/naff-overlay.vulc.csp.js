@@ -108,7 +108,7 @@
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
-				heading.parentNode.removeChild(heading);
+				if (heading) heading.parentNode.removeChild(heading);
 			}
 		},
 

@@ -227,17 +227,32 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			matches: []
 		},
 
-		created: function()
-		{
-			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
-		},
-
 		attached: function()
 		{
-			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
+			this.addMatches();
 		},
 
 		detached: function()
+		{
+			this.removeMatches();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'refresh' && newVal != oldVal)
+			{
+				this.removeMatches();
+				this.addMatches();
+			}
+		},
+
+		addMatches: function()
+		{
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
+		},
+
+		removeMatches: function()
 		{
 			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].removeEventListener('changed', this.checkError);
 		},
@@ -406,7 +421,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
-				heading.parentNode.removeChild(heading);
+				if (heading) heading.parentNode.removeChild(heading);
 			}
 		},
 

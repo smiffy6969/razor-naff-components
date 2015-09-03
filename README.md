@@ -179,7 +179,7 @@ __events__
 
 
 ```html
-<form is="naff-x-form" error></form>
+<form is="naff-x-form" refresh="anything" error></form>
 ```
 
 
@@ -188,6 +188,7 @@ The form will set the error attribute when any naff-form element errors or is re
 
 
 * __error__ - Set to 1 for an error and 0 for ok.
+* __refresh__ - Change the value in this attribute to refresh the error matches to error check, great when loading form with dynamic data.
 
 
 __events__
@@ -272,14 +273,15 @@ __events__
 
 
 ```html
-<naff-switch toggle="1" disabled></naff-switch>
+<naff-switch toggle="1" on-color="red" disabled></naff-switch>
 ```
 
 
-A nice toggle switch giving an off or on status, can be disabled and toggled manually by changing the toggle attribute.
+A nice toggle switch giving an off or on status showing as a gray off and green filled on switch, can be disabled and toggled manually by changing the toggle attribute.
 
 
 * __toggle__ - The status of the switch in real time as 0 or 1. Change this value to toggle the switch.
+* __on-color__ - Change the default green on color of the filled switch to red, blue or orange.
 * __disabled__ - Disables the switch.
 
 
