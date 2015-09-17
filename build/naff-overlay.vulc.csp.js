@@ -12,7 +12,7 @@
 			messageTimer: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('delay')) this.private.delay = parseInt(this.host.getAttribute('delay'));
@@ -94,6 +94,10 @@
 
 		created: function()
 		{
+		},
+
+		attached: function()
+		{
 			this.private.resize = this.resize.bind(this);
 
 			// Initial setup
@@ -101,10 +105,7 @@
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-		},
-
-		attached: function()
-		{
+			
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -171,7 +172,7 @@
 		name: 'naff-date-picker',
 		dataBind: true,
 		toggle: 0,
-		date: null,
+		value: null,
 		format: 'yyyy-mm-dd',
 
 		// private properties
@@ -186,14 +187,15 @@
 
 		created: function()
 		{
-			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('date')) this.date = this.host.getAttribute('date');
-			this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
-			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 		},
 
 		attached: function()
 		{
+			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
+			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
+			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
+			
 			this.load();
 		},
 
@@ -201,9 +203,9 @@
 		{
 			switch (name)
 			{
-				case 'date':
-					this.date = newVal;
-					this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
+				case 'value':
+					this.host.value = this.value = newVal;
+					this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 					this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 				break;
 				case 'format':
@@ -254,7 +256,7 @@
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -264,7 +266,7 @@
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -313,9 +315,9 @@
 			if (el.hasAttribute('disabled')) return;
 			this.private.selected = new Date(this.private.days[el.getAttribute('day-id')].date);
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			this.host.setAttribute('date', dateFormat(this.private.selected, this.format));
+			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', dateFormat(this.private.selected, this.format));
+			this.fire('changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 ;
@@ -325,7 +327,7 @@
 		name: 'naff-time-picker',
 		dataBind: true,
 		toggle: 0,
-		time: null,
+		value: null,
 		format: 'HH:MM',
 
 		// private properties
@@ -337,10 +339,10 @@
 			showSec: true
 		},
 
-		created: function()
+		attached: function()
 		{
 			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('time')) this.time = this.host.getAttribute('time');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
 			this.private.showHour = this.format.indexOf('h') >= 0 || this.format.indexOf('H') >= 0 ? true : false;
 			this.private.showMin = this.format.indexOf('M') >= 0 ? true : false;
 			this.private.showSec = this.format.indexOf('s') >= 0 ? true : false;
@@ -351,8 +353,8 @@
 		{
 			switch (name)
 			{
-				case 'time':
-					this.time = newVal;
+				case 'value':
+					this.host.value = this.value = newVal;
 					this.setDateTime();
 				break;
 				case 'format':
@@ -385,7 +387,7 @@
 		setDateTime: function()
 		{
 			// correct any bad formatting before parsing time
-			this.private.date = this.time ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.time.replace(/am|pm/i, '').trim() : this.time))) : new Date(Date.now());
+			this.private.date = this.value ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.value.replace(/am|pm/i, '').trim() : this.value))) : new Date(Date.now());
 			this.private.time = dateFormat(this.private.date, this.format);
 		},
 
@@ -393,27 +395,27 @@
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
-			this.host.setAttribute('time', this.private.time);
+			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', this.private.time);
+			this.fire('changed', this.private.time);
 		}
 	});

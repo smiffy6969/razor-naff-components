@@ -8,7 +8,9 @@
 
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	naff-input .-input-group input { padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-input { display: inline-block; }
+	naff-input .-input-group { width: inherit; }
+	naff-input .-input-group input { width: inherit; box-sizing: border-box; padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
 	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 2px; border-color: #444; }
 	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #888; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
@@ -50,7 +52,7 @@
 <!-- LOGIC -->
 
 
-<style type="text/css">
+<style>
 	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
 	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
@@ -84,7 +86,7 @@
 
 
 <!-- STYLE - Encapsulate all css to tag name -->
-<style type="text/css">
+<style>
 	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
 	button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }

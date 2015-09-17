@@ -47,6 +47,10 @@
 
 		created: function()
 		{
+		},
+
+		attached: function()
+		{
 			this.private.resize = this.resize.bind(this);
 
 			// Initial setup
@@ -54,10 +58,7 @@
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-		},
-
-		attached: function()
-		{
+			
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');

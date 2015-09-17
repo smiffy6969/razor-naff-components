@@ -15,7 +15,7 @@
 			matchMessage: 'Does not match'
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
@@ -31,10 +31,7 @@
 
 			// force check on start if error set
 			if (this.host.hasAttribute('error')) this.checkError(this.value);
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('input').addEventListener('input', this.onInputChanged);
 			this.template.querySelector('input').addEventListener('keypress', this.onKeyPressed);
 		},
@@ -47,6 +44,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+			
 			switch (name)
 			{
 				case 'name':
@@ -135,17 +134,14 @@
 		toggle: 0,
 		disabled: false,
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('naff-icon').addEventListener('click', this.click);
 		},
 
@@ -156,6 +152,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
 			if (name =='toggle')
 			{
@@ -211,7 +209,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 
 		addMatches: function()
 		{
-			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea], naff-date-picker, naff-time-picker');
 			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
 		},
 
@@ -227,7 +225,10 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
 				if (scope.private.matches[i].hasAttribute('disabled')) continue;
-				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || (scope.private.matches[i].scope && scope.private.matches[i].scope.error)) error = true;
+
+				var val = scope.private.matches[i].scope ? scope.private.matches[i].scope.value : scope.private.matches[i].value;
+				var err = scope.private.matches[i].scope ? scope.private.matches[i].scope.error : false;
+				if ((scope.private.matches[i].hasAttribute('required') && !val) || err) error = true;
 			}
 			scope.error = error;
 
@@ -250,7 +251,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 		name: 'naff-x-icon-button',
 		extends: 'button',
 
-		created: function()
+		attached: function()
 		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));

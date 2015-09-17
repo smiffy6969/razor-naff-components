@@ -65,7 +65,7 @@
 		name: 'naff-date-picker',
 		dataBind: true,
 		toggle: 0,
-		date: null,
+		value: null,
 		format: 'yyyy-mm-dd',
 
 		// private properties
@@ -80,14 +80,15 @@
 
 		created: function()
 		{
-			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('date')) this.date = this.host.getAttribute('date');
-			this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
-			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 		},
 
 		attached: function()
 		{
+			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
+			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
+			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
+			
 			this.load();
 		},
 
@@ -95,9 +96,9 @@
 		{
 			switch (name)
 			{
-				case 'date':
-					this.date = newVal;
-					this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
+				case 'value':
+					this.host.value = this.value = newVal;
+					this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 					this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 				break;
 				case 'format':
@@ -148,7 +149,7 @@
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -158,7 +159,7 @@
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -207,9 +208,9 @@
 			if (el.hasAttribute('disabled')) return;
 			this.private.selected = new Date(this.private.days[el.getAttribute('day-id')].date);
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			this.host.setAttribute('date', dateFormat(this.private.selected, this.format));
+			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', dateFormat(this.private.selected, this.format));
+			this.fire('changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 </script>

@@ -5,7 +5,7 @@
 * @licence MIT
 --><html><head>
 
-<style type="text/css">
+<style>
 	naff-tag { display: inline-block; padding: 6px 8px; background: #ddd; color: #222;}
 	naff-tag[size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
 	naff-tag[size='small'] { padding: 4px 6px; font-size: 12px; line-height: 12px; }
@@ -32,9 +32,12 @@
 
 
 
+
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	naff-input .-input-group input { padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-input { display: inline-block; }
+	naff-input .-input-group { width: inherit; }
+	naff-input .-input-group input { width: inherit; box-sizing: border-box; padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
 	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 2px; border-color: #444; }
 	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #888; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
@@ -76,7 +79,7 @@
 <!-- LOGIC -->
 
 
-<style type="text/css">
+<style>
 	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
 	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
@@ -110,7 +113,7 @@
 
 
 <!-- STYLE - Encapsulate all css to tag name -->
-<style type="text/css">
+<style>
 	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
 	button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }
@@ -394,9 +397,9 @@
 
 <style>
 	body { overflow: hidden; margin: 0; padding: 0; }
-	naff-page { padding: 10px 10px 10px 235px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
-	naff-page[position="left"] { padding: 10px 235px 10px 10px; }
-	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 10px; height: auto; overflow: initial; } }
+	naff-page { padding: 0px 0px 0px 225px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
+	naff-page[position="left"] { padding: 0px 225px 0px 0px; }
+	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 0px; height: auto; overflow: initial; } }
 </style>
 
 <!-- LOGIC -->

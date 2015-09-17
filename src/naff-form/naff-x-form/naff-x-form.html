@@ -39,7 +39,7 @@
 
 		addMatches: function()
 		{
-			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea], naff-date-picker, naff-time-picker');
 			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
 		},
 
@@ -55,7 +55,10 @@
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
 				if (scope.private.matches[i].hasAttribute('disabled')) continue;
-				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || (scope.private.matches[i].scope && scope.private.matches[i].scope.error)) error = true;
+
+				var val = scope.private.matches[i].scope ? scope.private.matches[i].scope.value : scope.private.matches[i].value;
+				var err = scope.private.matches[i].scope ? scope.private.matches[i].scope.error : false;
+				if ((scope.private.matches[i].hasAttribute('required') && !val) || err) error = true;
 			}
 			scope.error = error;
 

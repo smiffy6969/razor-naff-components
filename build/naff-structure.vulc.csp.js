@@ -3,6 +3,7 @@
 	naff.registerElement({
 		name: 'naff-menu',
 		dataBind: true,
+		attributes: {'menu-items': []},
 
 		toggle: false,
 
@@ -15,7 +16,7 @@
 			topLogo: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('side-logo')) this.private.sideLogo = this.host.getAttribute('side-logo');
@@ -36,7 +37,7 @@
 
 			var scope = this;
 			sightglass(this.attributes, 'menu-items', function() {
-			  	scope.updateSelected();
+				scope.updateSelected();
 			});
 		},
 
@@ -98,7 +99,7 @@
 
 		setMenuItems: function(menuItems)
 		{
-			if (menuItems.indexOf('object bound') == 0) return;
+			if (menuItems.indexOf('object not bound') == 0) return;
 			try {
 				if (typeof this.attribtues === 'undefined') this.attributes = {};
 				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));

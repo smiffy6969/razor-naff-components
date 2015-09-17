@@ -2,7 +2,7 @@
     naff.registerElement({
         name: 'naff-icon',
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
             if (this.host.className.indexOf('fa') >= 0) return;

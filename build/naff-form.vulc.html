@@ -8,7 +8,9 @@
 
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	naff-input .-input-group input { padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-input { display: inline-block; }
+	naff-input .-input-group { width: inherit; }
+	naff-input .-input-group input { width: inherit; box-sizing: border-box; padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
 	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 2px; border-color: #444; }
 	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #888; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
@@ -45,7 +47,7 @@
 			matchMessage: 'Does not match'
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
@@ -61,10 +63,7 @@
 
 			// force check on start if error set
 			if (this.host.hasAttribute('error')) this.checkError(this.value);
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('input').addEventListener('input', this.onInputChanged);
 			this.template.querySelector('input').addEventListener('keypress', this.onKeyPressed);
 		},
@@ -77,6 +76,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+			
 			switch (name)
 			{
 				case 'name':
@@ -184,17 +185,14 @@
 		toggle: 0,
 		disabled: false,
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('naff-icon').addEventListener('click', this.click);
 		},
 
@@ -205,6 +203,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
 			if (name =='toggle')
 			{
@@ -228,7 +228,7 @@
 	});
 </script>
 
-<style type="text/css">
+<style>
 	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
 	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
@@ -289,7 +289,7 @@
 
 		addMatches: function()
 		{
-			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea], naff-date-picker, naff-time-picker');
 			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
 		},
 
@@ -305,7 +305,10 @@
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
 				if (scope.private.matches[i].hasAttribute('disabled')) continue;
-				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || (scope.private.matches[i].scope && scope.private.matches[i].scope.error)) error = true;
+
+				var val = scope.private.matches[i].scope ? scope.private.matches[i].scope.value : scope.private.matches[i].value;
+				var err = scope.private.matches[i].scope ? scope.private.matches[i].scope.error : false;
+				if ((scope.private.matches[i].hasAttribute('required') && !val) || err) error = true;
 			}
 			scope.error = error;
 
@@ -326,7 +329,7 @@
 
 
 <!-- STYLE - Encapsulate all css to tag name -->
-<style type="text/css">
+<style>
 	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
 	button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }
@@ -364,7 +367,7 @@
 		name: 'naff-x-icon-button',
 		extends: 'button',
 
-		created: function()
+		attached: function()
 		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));

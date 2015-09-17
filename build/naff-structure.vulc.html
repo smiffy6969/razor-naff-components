@@ -81,6 +81,7 @@
 	naff.registerElement({
 		name: 'naff-menu',
 		dataBind: true,
+		attributes: {'menu-items': []},
 
 		toggle: false,
 
@@ -93,7 +94,7 @@
 			topLogo: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('side-logo')) this.private.sideLogo = this.host.getAttribute('side-logo');
@@ -114,7 +115,7 @@
 
 			var scope = this;
 			sightglass(this.attributes, 'menu-items', function() {
-			  	scope.updateSelected();
+				scope.updateSelected();
 			});
 		},
 
@@ -176,7 +177,7 @@
 
 		setMenuItems: function(menuItems)
 		{
-			if (menuItems.indexOf('object bound') == 0) return;
+			if (menuItems.indexOf('object not bound') == 0) return;
 			try {
 				if (typeof this.attribtues === 'undefined') this.attributes = {};
 				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
@@ -189,9 +190,9 @@
 
 <style>
 	body { overflow: hidden; margin: 0; padding: 0; }
-	naff-page { padding: 10px 10px 10px 235px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
-	naff-page[position="left"] { padding: 10px 235px 10px 10px; }
-	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 10px; height: auto; overflow: initial; } }
+	naff-page { padding: 0px 0px 0px 225px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
+	naff-page[position="left"] { padding: 0px 225px 0px 0px; }
+	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 0px; height: auto; overflow: initial; } }
 </style>
 
 <!-- LOGIC -->

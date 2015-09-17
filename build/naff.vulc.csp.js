@@ -2,7 +2,7 @@
     naff.registerElement({
         name: 'naff-icon',
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
             if (this.host.className.indexOf('fa') >= 0) return;
@@ -52,7 +52,7 @@ naff.registerElement({name: 'naff-tag'});
 			matchMessage: 'Does not match'
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
@@ -68,10 +68,7 @@ naff.registerElement({name: 'naff-tag'});
 
 			// force check on start if error set
 			if (this.host.hasAttribute('error')) this.checkError(this.value);
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('input').addEventListener('input', this.onInputChanged);
 			this.template.querySelector('input').addEventListener('keypress', this.onKeyPressed);
 		},
@@ -84,6 +81,8 @@ naff.registerElement({name: 'naff-tag'});
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+			
 			switch (name)
 			{
 				case 'name':
@@ -172,17 +171,14 @@ naff.registerElement({name: 'naff-tag'});
 		toggle: 0,
 		disabled: false,
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('naff-icon').addEventListener('click', this.click);
 		},
 
@@ -193,6 +189,8 @@ naff.registerElement({name: 'naff-tag'});
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
 			if (name =='toggle')
 			{
@@ -248,7 +246,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 
 		addMatches: function()
 		{
-			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea], naff-date-picker, naff-time-picker');
 			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
 		},
 
@@ -264,7 +262,10 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
 				if (scope.private.matches[i].hasAttribute('disabled')) continue;
-				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || (scope.private.matches[i].scope && scope.private.matches[i].scope.error)) error = true;
+
+				var val = scope.private.matches[i].scope ? scope.private.matches[i].scope.value : scope.private.matches[i].value;
+				var err = scope.private.matches[i].scope ? scope.private.matches[i].scope.error : false;
+				if ((scope.private.matches[i].hasAttribute('required') && !val) || err) error = true;
 			}
 			scope.error = error;
 
@@ -287,7 +288,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 		name: 'naff-x-icon-button',
 		extends: 'button',
 
-		created: function()
+		attached: function()
 		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
@@ -325,7 +326,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			messageTimer: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('delay')) this.private.delay = parseInt(this.host.getAttribute('delay'));
@@ -407,6 +408,10 @@ naff.registerElement({name: 'naff-x-select'});;
 
 		created: function()
 		{
+		},
+
+		attached: function()
+		{
 			this.private.resize = this.resize.bind(this);
 
 			// Initial setup
@@ -414,10 +419,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-		},
-
-		attached: function()
-		{
+			
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -484,7 +486,7 @@ naff.registerElement({name: 'naff-x-select'});;
 		name: 'naff-date-picker',
 		dataBind: true,
 		toggle: 0,
-		date: null,
+		value: null,
 		format: 'yyyy-mm-dd',
 
 		// private properties
@@ -499,14 +501,15 @@ naff.registerElement({name: 'naff-x-select'});;
 
 		created: function()
 		{
-			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('date')) this.date = this.host.getAttribute('date');
-			this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
-			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 		},
 
 		attached: function()
 		{
+			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
+			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
+			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
+			
 			this.load();
 		},
 
@@ -514,9 +517,9 @@ naff.registerElement({name: 'naff-x-select'});;
 		{
 			switch (name)
 			{
-				case 'date':
-					this.date = newVal;
-					this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
+				case 'value':
+					this.host.value = this.value = newVal;
+					this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 					this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 				break;
 				case 'format':
@@ -567,7 +570,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -577,7 +580,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -626,9 +629,9 @@ naff.registerElement({name: 'naff-x-select'});;
 			if (el.hasAttribute('disabled')) return;
 			this.private.selected = new Date(this.private.days[el.getAttribute('day-id')].date);
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			this.host.setAttribute('date', dateFormat(this.private.selected, this.format));
+			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', dateFormat(this.private.selected, this.format));
+			this.fire('changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 ;
@@ -638,7 +641,7 @@ naff.registerElement({name: 'naff-x-select'});;
 		name: 'naff-time-picker',
 		dataBind: true,
 		toggle: 0,
-		time: null,
+		value: null,
 		format: 'HH:MM',
 
 		// private properties
@@ -650,10 +653,10 @@ naff.registerElement({name: 'naff-x-select'});;
 			showSec: true
 		},
 
-		created: function()
+		attached: function()
 		{
 			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('time')) this.time = this.host.getAttribute('time');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
 			this.private.showHour = this.format.indexOf('h') >= 0 || this.format.indexOf('H') >= 0 ? true : false;
 			this.private.showMin = this.format.indexOf('M') >= 0 ? true : false;
 			this.private.showSec = this.format.indexOf('s') >= 0 ? true : false;
@@ -664,8 +667,8 @@ naff.registerElement({name: 'naff-x-select'});;
 		{
 			switch (name)
 			{
-				case 'time':
-					this.time = newVal;
+				case 'value':
+					this.host.value = this.value = newVal;
 					this.setDateTime();
 				break;
 				case 'format':
@@ -698,7 +701,7 @@ naff.registerElement({name: 'naff-x-select'});;
 		setDateTime: function()
 		{
 			// correct any bad formatting before parsing time
-			this.private.date = this.time ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.time.replace(/am|pm/i, '').trim() : this.time))) : new Date(Date.now());
+			this.private.date = this.value ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.value.replace(/am|pm/i, '').trim() : this.value))) : new Date(Date.now());
 			this.private.time = dateFormat(this.private.date, this.format);
 		},
 
@@ -706,28 +709,28 @@ naff.registerElement({name: 'naff-x-select'});;
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
-			this.host.setAttribute('time', this.private.time);
+			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', this.private.time);
+			this.fire('changed', this.private.time);
 		}
 	});
 ;
@@ -746,11 +749,16 @@ naff.registerElement({name: 'naff-x-select'});;
 			// Initial setup
 			if (this.host.hasAttribute('basepath')) this.private.basepath = this.host.getAttribute('basepath');
 			if (this.host.hasAttribute('partial')) this.private.partial = this.host.getAttribute('partial');
+		},
+
+		attached: function()
+		{
 			this.load();
 		},
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (oldVal == newVal) return;
 			if (name == 'basepath') this.private.basepath = newVal;
 			if (name == 'partial') this.private.partial = newVal;
 			this.load();
@@ -775,8 +783,21 @@ naff.registerElement({name: 'naff-x-select'});;
 				{
 					if (request.status === 200)
 					{
-						scope.host.innerHTML = request.response;
-						scope.fire('loaded');
+						var frag = document.createElement('FRAG');
+						frag.innerHTML = request.response;
+
+						var depends = frag.querySelector('dependencies');
+						if (depends)
+						{
+							depends.setAttribute('path', partial);
+							depends.remove();
+							if (!document.querySelector("dependencies[path='"+ partial +"']")) document.querySelector('head').appendChild(depends);
+						}
+
+						setTimeout(function(){
+							scope.host.innerHTML = frag.innerHTML;
+							scope.fire('loaded');
+						},1);
 					}
 					else throw 'naff-partial: Error loading partial [' + partial + ']';
 				}
@@ -790,6 +811,7 @@ naff.registerElement({name: 'naff-x-select'});;
 	naff.registerElement({
 		name: 'naff-menu',
 		dataBind: true,
+		attributes: {'menu-items': []},
 
 		toggle: false,
 
@@ -802,7 +824,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			topLogo: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('side-logo')) this.private.sideLogo = this.host.getAttribute('side-logo');
@@ -823,7 +845,7 @@ naff.registerElement({name: 'naff-x-select'});;
 
 			var scope = this;
 			sightglass(this.attributes, 'menu-items', function() {
-			  	scope.updateSelected();
+				scope.updateSelected();
 			});
 		},
 
@@ -885,7 +907,7 @@ naff.registerElement({name: 'naff-x-select'});;
 
 		setMenuItems: function(menuItems)
 		{
-			if (menuItems.indexOf('object bound') == 0) return;
+			if (menuItems.indexOf('object not bound') == 0) return;
 			try {
 				if (typeof this.attribtues === 'undefined') this.attributes = {};
 				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));

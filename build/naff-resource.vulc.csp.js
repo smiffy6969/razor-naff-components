@@ -13,11 +13,16 @@
 			// Initial setup
 			if (this.host.hasAttribute('basepath')) this.private.basepath = this.host.getAttribute('basepath');
 			if (this.host.hasAttribute('partial')) this.private.partial = this.host.getAttribute('partial');
+		},
+
+		attached: function()
+		{
 			this.load();
 		},
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (oldVal == newVal) return;
 			if (name == 'basepath') this.private.basepath = newVal;
 			if (name == 'partial') this.private.partial = newVal;
 			this.load();
@@ -42,8 +47,21 @@
 				{
 					if (request.status === 200)
 					{
-						scope.host.innerHTML = request.response;
-						scope.fire('loaded');
+						var frag = document.createElement('FRAG');
+						frag.innerHTML = request.response;
+
+						var depends = frag.querySelector('dependencies');
+						if (depends)
+						{
+							depends.setAttribute('path', partial);
+							depends.remove();
+							if (!document.querySelector("dependencies[path='"+ partial +"']")) document.querySelector('head').appendChild(depends);
+						}
+
+						setTimeout(function(){
+							scope.host.innerHTML = frag.innerHTML;
+							scope.fire('loaded');
+						},1);
 					}
 					else throw 'naff-partial: Error loading partial [' + partial + ']';
 				}

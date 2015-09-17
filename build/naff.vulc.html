@@ -7,7 +7,7 @@
     naff.registerElement({
         name: 'naff-icon',
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
             if (this.host.className.indexOf('fa') >= 0) return;
@@ -40,7 +40,7 @@
     })
 </script>
 
-<style type="text/css">
+<style>
 	naff-tag { display: inline-block; padding: 6px 8px; background: #ddd; color: #222;}
 	naff-tag[size='extra-small'] { padding: 2px 4px; font-size: 10px; line-height: 10px; }
 	naff-tag[size='small'] { padding: 4px 6px; font-size: 12px; line-height: 12px; }
@@ -67,9 +67,12 @@
 <script>naff.registerElement({name: 'naff-tag'})</script>
 
 
+
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	naff-input .-input-group input { padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-input { display: inline-block; }
+	naff-input .-input-group { width: inherit; }
+	naff-input .-input-group input { width: inherit; box-sizing: border-box; padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
 	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 2px; border-color: #444; }
 	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #888; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
@@ -106,7 +109,7 @@
 			matchMessage: 'Does not match'
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('name')) this.template.querySelector('input').setAttribute('name', this.host.getAttribute('name'));
@@ -122,10 +125,7 @@
 
 			// force check on start if error set
 			if (this.host.hasAttribute('error')) this.checkError(this.value);
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('input').addEventListener('input', this.onInputChanged);
 			this.template.querySelector('input').addEventListener('keypress', this.onKeyPressed);
 		},
@@ -138,6 +138,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+			
 			switch (name)
 			{
 				case 'name':
@@ -245,17 +247,14 @@
 		toggle: 0,
 		disabled: false,
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('naff-icon').addEventListener('click', this.click);
 		},
 
@@ -266,6 +265,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
 			if (name =='toggle')
 			{
@@ -289,7 +290,7 @@
 	});
 </script>
 
-<style type="text/css">
+<style>
 	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
 	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
@@ -350,7 +351,7 @@
 
 		addMatches: function()
 		{
-			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea]');
+			this.private.matches = this.host.querySelectorAll('naff-input, select[is=naff-x-select], textarea[is=naff-x-textarea], naff-date-picker, naff-time-picker');
 			for (var i = 0; i < this.private.matches.length; i++) this.private.matches[i].addEventListener('changed', this.checkError);
 		},
 
@@ -366,7 +367,10 @@
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
 				if (scope.private.matches[i].hasAttribute('disabled')) continue;
-				if ((scope.private.matches[i].hasAttribute('required') && !scope.private.matches[i].scope.value) || (scope.private.matches[i].scope && scope.private.matches[i].scope.error)) error = true;
+
+				var val = scope.private.matches[i].scope ? scope.private.matches[i].scope.value : scope.private.matches[i].value;
+				var err = scope.private.matches[i].scope ? scope.private.matches[i].scope.error : false;
+				if ((scope.private.matches[i].hasAttribute('required') && !val) || err) error = true;
 			}
 			scope.error = error;
 
@@ -387,7 +391,7 @@
 
 
 <!-- STYLE - Encapsulate all css to tag name -->
-<style type="text/css">
+<style>
 	button[is='naff-x-icon-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-icon-button']:focus { opacity: 1; outline: none;}
 	button[is='naff-x-icon-button']:active:not(.disabled) { opacity: 0.8; }
@@ -425,7 +429,7 @@
 		name: 'naff-x-icon-button',
 		extends: 'button',
 
-		created: function()
+		attached: function()
 		{
 			// set initial value of icon from parent attributes
 			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
@@ -500,7 +504,7 @@
 			messageTimer: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('delay')) this.private.delay = parseInt(this.host.getAttribute('delay'));
@@ -609,6 +613,10 @@
 
 		created: function()
 		{
+		},
+
+		attached: function()
+		{
 			this.private.resize = this.resize.bind(this);
 
 			// Initial setup
@@ -616,10 +624,7 @@
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-		},
-
-		attached: function()
-		{
+			
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -739,7 +744,7 @@
 		name: 'naff-date-picker',
 		dataBind: true,
 		toggle: 0,
-		date: null,
+		value: null,
 		format: 'yyyy-mm-dd',
 
 		// private properties
@@ -754,14 +759,15 @@
 
 		created: function()
 		{
-			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('date')) this.date = this.host.getAttribute('date');
-			this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
-			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 		},
 
 		attached: function()
 		{
+			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
+			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
+			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
+			
 			this.load();
 		},
 
@@ -769,9 +775,9 @@
 		{
 			switch (name)
 			{
-				case 'date':
-					this.date = newVal;
-					this.private.selected = this.date ? new Date(Date.parse(this.date)) : new Date(Date.now());
+				case 'value':
+					this.host.value = this.value = newVal;
+					this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 					this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 				break;
 				case 'format':
@@ -822,7 +828,7 @@
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -832,7 +838,7 @@
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('change', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -881,9 +887,9 @@
 			if (el.hasAttribute('disabled')) return;
 			this.private.selected = new Date(this.private.days[el.getAttribute('day-id')].date);
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			this.host.setAttribute('date', dateFormat(this.private.selected, this.format));
+			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', dateFormat(this.private.selected, this.format));
+			this.fire('changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 </script>
@@ -941,7 +947,7 @@
 		name: 'naff-time-picker',
 		dataBind: true,
 		toggle: 0,
-		time: null,
+		value: null,
 		format: 'HH:MM',
 
 		// private properties
@@ -953,10 +959,10 @@
 			showSec: true
 		},
 
-		created: function()
+		attached: function()
 		{
 			if (this.host.hasAttribute('format')) this.format = this.host.getAttribute('format');
-			if (this.host.hasAttribute('time')) this.time = this.host.getAttribute('time');
+			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
 			this.private.showHour = this.format.indexOf('h') >= 0 || this.format.indexOf('H') >= 0 ? true : false;
 			this.private.showMin = this.format.indexOf('M') >= 0 ? true : false;
 			this.private.showSec = this.format.indexOf('s') >= 0 ? true : false;
@@ -967,8 +973,8 @@
 		{
 			switch (name)
 			{
-				case 'time':
-					this.time = newVal;
+				case 'value':
+					this.host.value = this.value = newVal;
 					this.setDateTime();
 				break;
 				case 'format':
@@ -1001,7 +1007,7 @@
 		setDateTime: function()
 		{
 			// correct any bad formatting before parsing time
-			this.private.date = this.time ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.time.replace(/am|pm/i, '').trim() : this.time))) : new Date(Date.now());
+			this.private.date = this.value ? new Date(Date.parse('2015-01-01 ' + (this.format.indexOf('H') >= 0 && (this.format.indexOf('t') >= 0 || this.format.indexOf('T') >= 0) ? this.value.replace(/am|pm/i, '').trim() : this.value))) : new Date(Date.now());
 			this.private.time = dateFormat(this.private.date, this.format);
 		},
 
@@ -1009,28 +1015,28 @@
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('change', this.private.time);
+			this.fire('set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
-			this.host.setAttribute('time', this.private.time);
+			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('select', this.private.time);
+			this.fire('changed', this.private.time);
 		}
 	});
 </script>
@@ -1051,11 +1057,16 @@
 			// Initial setup
 			if (this.host.hasAttribute('basepath')) this.private.basepath = this.host.getAttribute('basepath');
 			if (this.host.hasAttribute('partial')) this.private.partial = this.host.getAttribute('partial');
+		},
+
+		attached: function()
+		{
 			this.load();
 		},
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (oldVal == newVal) return;
 			if (name == 'basepath') this.private.basepath = newVal;
 			if (name == 'partial') this.private.partial = newVal;
 			this.load();
@@ -1080,8 +1091,21 @@
 				{
 					if (request.status === 200)
 					{
-						scope.host.innerHTML = request.response;
-						scope.fire('loaded');
+						var frag = document.createElement('FRAG');
+						frag.innerHTML = request.response;
+
+						var depends = frag.querySelector('dependencies');
+						if (depends)
+						{
+							depends.setAttribute('path', partial);
+							depends.remove();
+							if (!document.querySelector("dependencies[path='"+ partial +"']")) document.querySelector('head').appendChild(depends);
+						}
+
+						setTimeout(function(){
+							scope.host.innerHTML = frag.innerHTML;
+							scope.fire('loaded');
+						},1);
 					}
 					else throw 'naff-partial: Error loading partial [' + partial + ']';
 				}
@@ -1169,6 +1193,7 @@
 	naff.registerElement({
 		name: 'naff-menu',
 		dataBind: true,
+		attributes: {'menu-items': []},
 
 		toggle: false,
 
@@ -1181,7 +1206,7 @@
 			topLogo: null
 		},
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('side-logo')) this.private.sideLogo = this.host.getAttribute('side-logo');
@@ -1202,7 +1227,7 @@
 
 			var scope = this;
 			sightglass(this.attributes, 'menu-items', function() {
-			  	scope.updateSelected();
+				scope.updateSelected();
 			});
 		},
 
@@ -1264,7 +1289,7 @@
 
 		setMenuItems: function(menuItems)
 		{
-			if (menuItems.indexOf('object bound') == 0) return;
+			if (menuItems.indexOf('object not bound') == 0) return;
 			try {
 				if (typeof this.attribtues === 'undefined') this.attributes = {};
 				this.attributes['menu-items'] = JSON.parse(menuItems.replace(/[\n\r]+/g, ''));
@@ -1277,9 +1302,9 @@
 
 <style>
 	body { overflow: hidden; margin: 0; padding: 0; }
-	naff-page { padding: 10px 10px 10px 235px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
-	naff-page[position="left"] { padding: 10px 235px 10px 10px; }
-	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 10px; height: auto; overflow: initial; } }
+	naff-page { padding: 0px 0px 0px 225px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
+	naff-page[position="left"] { padding: 0px 225px 0px 0px; }
+	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 0px; height: auto; overflow: initial; } }
 </style>
 
 <!-- LOGIC -->

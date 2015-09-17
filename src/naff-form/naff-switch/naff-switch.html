@@ -34,17 +34,14 @@
 		toggle: 0,
 		disabled: false,
 
-		created: function()
+		attached: function()
 		{
 			// Initial setup
 			if (this.host.hasAttribute('disabled')) this.disabled = true;
 			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle');
 			else this.host.setAttribute('toggle', this.toggle);
 			this.setSwitch();
-		},
 
-		attached: function()
-		{
 			this.template.querySelector('naff-icon').addEventListener('click', this.click);
 		},
 
@@ -55,6 +52,8 @@
 
 		attributeChanged: function(name, oldVal, newVal)
 		{
+			if (!this.template) return;
+
 			if (name == 'disabled') this.disabled = !newValue ? false: true;
 			if (name =='toggle')
 			{
