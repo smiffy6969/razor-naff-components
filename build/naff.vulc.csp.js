@@ -82,7 +82,7 @@ naff.registerElement({name: 'naff-tag'});
 		attributeChanged: function(name, oldVal, newVal)
 		{
 			if (!this.template) return;
-			
+
 			switch (name)
 			{
 				case 'name':
@@ -93,7 +93,7 @@ naff.registerElement({name: 'naff-tag'});
 				break;
 				case 'value':
 					this.host.value = this.value = newVal;
-					this.template.querySelector('input').value = newVal;
+					if (this.template.querySelector('input').value != newVal) this.template.querySelector('input').value = newVal;
 				break;
 				case 'disabled':
 					if (this.host.hasAttribute(name)) this.template.querySelector('input').setAttribute(name, '');
