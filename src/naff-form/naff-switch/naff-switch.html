@@ -72,7 +72,7 @@
 		setSwitch: function()
 		{
 			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.toggle == 1 ? 'on' : 'off'));
-			this.fire('change');
+			naff.fire(this.host, 'change');
 		}
 	});
 </script>

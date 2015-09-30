@@ -117,12 +117,12 @@ naff.registerElement({name: 'naff-tag'});
 			scope.checkError(this.value);
 			scope.host.value = scope.value = this.value; // have to push changes to host value too for data binders
 			scope.host.setAttribute('value', this.value);
-			scope.fire('changed');
+			naff.fire(scope.host, 'changed');
 		},
 
 		onKeyPressed: function(event)
 		{
-			naff.getScope(this).fire('keypress', event);
+			naff.fire(naff.getScope(this).host, 'keypress', event);
 		},
 
 		checkError: function(value)
@@ -138,7 +138,7 @@ naff.registerElement({name: 'naff-tag'});
 				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', 1);
-				this.fire('error', this.private.validateMessage);
+				naff.fire(this.host, 'error', this.private.validateMessage);
 			}
 			else if (this.private.match != null && this.private.match != value)
 			{
@@ -146,13 +146,13 @@ naff.registerElement({name: 'naff-tag'});
 				this.template.querySelector('.-input-error-message').innerHTML = this.private.matchMessage;
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', 1);
-				this.fire('error', this.private.matchMessage);
+				naff.fire(this.host, 'error', this.private.matchMessage);
 			}
 			else
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.setAttribute('error', 0);
-				this.fire('ok');
+				naff.fire(this.host, 'ok');
 			}
 		},
 
@@ -209,7 +209,7 @@ naff.registerElement({name: 'naff-tag'});
 		setSwitch: function()
 		{
 			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.toggle == 1 ? 'on' : 'off'));
-			this.fire('change');
+			naff.fire(this.host, 'change');
 		}
 	});
 ;
@@ -272,41 +272,12 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			if (!!error)
 			{
 				scope.host.setAttribute('error', 1);
-				scope.fire('error');
+				naff.fire(scope.host, 'error');
 			}
 			else
 			{
 				scope.host.setAttribute('error', 0);
-				scope.fire('ok');
-			}
-		}
-	});
-;
-
-	// build scope
-	naff.registerElement({
-		name: 'naff-x-icon-button',
-		extends: 'button',
-
-		attached: function()
-		{
-			// set initial value of icon from parent attributes
-			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
-			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
-			if (this.host.hasAttribute('pulse')) this.template.querySelector('naff-icon').setAttribute('pulse', 'pulse');
-		},
-
-		attributeChanged: function(name, oldVal, newVal)
-		{
-			// iterate over changes
-			switch (name)
-			{
-				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
-				case 'spin':
-				case 'pulse':
-					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
-					else this.template.querySelector('naff-icon').removeAttribute(name);
-				break;
+				naff.fire(scope.host, 'ok');
 			}
 		}
 	});
@@ -349,7 +320,7 @@ naff.registerElement({name: 'naff-x-select'});;
 		{
 			var scope = this;
 			if (internal && scope.toggle != 1) return;
-			scope.fire('show');
+			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
 			// jiggle toast if re-thrown or show for first time
@@ -361,7 +332,7 @@ naff.registerElement({name: 'naff-x-select'});;
 
 				setTimeout(function()
 				{
-					scope.fire('jiggle');
+					naff.fire(scope.host, 'jiggle');
 					scope.host.className += " -jiggle";
 
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
@@ -388,7 +359,7 @@ naff.registerElement({name: 'naff-x-select'});;
 					scope.private.messageTimer = null;
 					scope.private.displayTimer = null;
 					scope.host.setAttribute('toggle', 0);
-					scope.fire('hide');
+					naff.fire(scope.host, 'hide');
 				}, 300);
 			}, scope.private.delay * 1000);
 		}
@@ -419,7 +390,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-			
+
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -449,7 +420,7 @@ naff.registerElement({name: 'naff-x-select'});;
 				scope.host.style.opacity = 1;
 				document.body.style.overflow = 'hidden';
 				scope.resize();
-				scope.fire('show');
+				naff.fire(scope.host, 'show');
 			}, 0);
 		},
 
@@ -465,7 +436,7 @@ naff.registerElement({name: 'naff-x-select'});;
 				scope.host.style.display = "none";
 				document.body.style.overflow = 'auto';
 				scope.host.setAttribute('toggle', 0);
-				scope.fire('hide');
+				naff.fire(scope.host, 'hide');
 			}, 200);
 		},
 
@@ -509,7 +480,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
 			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			
+
 			this.load();
 		},
 
@@ -570,7 +541,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -580,7 +551,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -631,7 +602,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', dateFormat(this.private.selected, this.format));
+			naff.fire(this.host, 'changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 ;
@@ -709,28 +680,28 @@ naff.registerElement({name: 'naff-x-select'});;
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
 			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', this.private.time);
+			naff.fire(this.host, 'changed', this.private.time);
 		}
 	});
 ;
@@ -749,10 +720,7 @@ naff.registerElement({name: 'naff-x-select'});;
 			// Initial setup
 			if (this.host.hasAttribute('basepath')) this.private.basepath = this.host.getAttribute('basepath');
 			if (this.host.hasAttribute('partial')) this.private.partial = this.host.getAttribute('partial');
-		},
 
-		attached: function()
-		{
 			this.load();
 		},
 
@@ -760,8 +728,11 @@ naff.registerElement({name: 'naff-x-select'});;
 		{
 			if (oldVal == newVal) return;
 			if (name == 'basepath') this.private.basepath = newVal;
-			if (name == 'partial') this.private.partial = newVal;
-			this.load();
+			if (name == 'partial')
+			{
+				this.private.partial = newVal;
+				this.load();
+			}
 		},
 
 		load: function()
@@ -784,20 +755,60 @@ naff.registerElement({name: 'naff-x-select'});;
 					if (request.status === 200)
 					{
 						var frag = document.createElement('FRAG');
-						frag.innerHTML = request.response;
+						frag.innerHTML = request.responseText;
 
 						var depends = frag.querySelector('dependencies');
+
 						if (depends)
 						{
-							depends.setAttribute('path', partial);
-							depends.remove();
-							if (!document.querySelector("dependencies[path='"+ partial +"']")) document.querySelector('head').appendChild(depends);
-						}
+							// we have deps, so are they loaded?
+							if (!document.querySelector("dependencies[path='"+ partial +"']"))
+							{
+								depends.setAttribute('path', partial);
+								frag.removeChild(depends);
 
-						setTimeout(function(){
-							scope.host.innerHTML = frag.innerHTML;
-							scope.fire('loaded');
-						},1);
+								// monitor deps loading to promise
+								var promises = [];
+								for (var i = 0; i < depends.childNodes.length; i++) {
+									if (depends.childNodes[i].nodeType == 1)
+									{
+										promises[i] = new Promise(function(resolve)
+										{
+											depends.childNodes[i].addEventListener('load', function(ev) { return resolve(3); });
+										});
+									}
+								}
+
+								// once all deps loaded, load inner html
+								Promise.all(promises).then(function(){
+									setTimeout(function()
+									{
+										scope.host.innerHTML = frag.innerHTML;
+										naff.fire(scope.host, 'loaded');
+									},1);
+								});
+
+								document.querySelector('head').appendChild(depends);
+							}
+							else
+							{
+								setTimeout(function()
+								{
+									// immediately load if no deps to worry about
+									scope.host.innerHTML = frag.innerHTML;
+									naff.fire(scope.host, 'loaded');
+								},1);
+							}
+						}
+						else
+						{
+							setTimeout(function()
+							{
+								// immediately load if no deps to worry about
+								scope.host.innerHTML = frag.innerHTML;
+								naff.fire(scope.host, 'loaded');
+							},1);
+						}
 					}
 					else throw 'naff-partial: Error loading partial [' + partial + ']';
 				}

@@ -68,7 +68,7 @@
 		{
 			var scope = this;
 			if (internal && scope.toggle != 1) return;
-			scope.fire('show');
+			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
 			// jiggle toast if re-thrown or show for first time
@@ -80,7 +80,7 @@
 
 				setTimeout(function()
 				{
-					scope.fire('jiggle');
+					naff.fire(scope.host, 'jiggle');
 					scope.host.className += " -jiggle";
 
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
@@ -107,7 +107,7 @@
 					scope.private.messageTimer = null;
 					scope.private.displayTimer = null;
 					scope.host.setAttribute('toggle', 0);
-					scope.fire('hide');
+					naff.fire(scope.host, 'hide');
 				}, 300);
 			}, scope.private.delay * 1000);
 		}
@@ -132,8 +132,7 @@
 <template id="naff-modal">
 	<div class="-heading">
 		<content select="heading"></content>
-		<!-- <naff-icon class="-close" name="times" naff-on-click="hide()"></naff-icon> -->
-		<button is="naff-x-icon-button" class="-close" name="times" shape="round" color="red" size="medium" naff-on-click="hide()"></button>
+		<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon=""><naff-icon name="times"></naff-icon></button>
 	</div>
 	<content select="main"></content>
 	<content select="footer"></content>
@@ -165,7 +164,7 @@
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-			
+
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -195,7 +194,7 @@
 				scope.host.style.opacity = 1;
 				document.body.style.overflow = 'hidden';
 				scope.resize();
-				scope.fire('show');
+				naff.fire(scope.host, 'show');
 			}, 0);
 		},
 
@@ -211,7 +210,7 @@
 				scope.host.style.display = "none";
 				document.body.style.overflow = 'auto';
 				scope.host.setAttribute('toggle', 0);
-				scope.fire('hide');
+				naff.fire(scope.host, 'hide');
 			}, 200);
 		},
 
@@ -235,7 +234,7 @@
 <style>
 	naff-date-picker naff-modal.-date-picker-modal { width: 300px; }
 	naff-date-picker .-container .-controls { display: block; width: 100%; text-align: center; overflow: hidden; margin-bottom: 10px; }
-	naff-date-picker .-container .-controls .-tag-box { width: 130px; display: inline-block; }
+	naff-date-picker .-container .-controls .-tag-box { width: 140px; display: inline-block; }
 	naff-date-picker .-container .-controls .-tag-box .-in-month	{ background-color: #555; color: #eee; line-height: 18px; }
 	naff-date-picker .-container .-controls .-close { position: absolute; right: 10px; }
 	naff-date-picker .-container .-controls .-close:hover { opacity: 1; }
@@ -256,12 +255,12 @@
 		<main>
 			<div class="-container">
 		        <div class="-controls">
-					<button is="naff-x-icon-button" size="medium" shape="round" color="grey" name="chevron-left" naff-on-click="previousMonth()"></button>
+					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="previousMonth()" icon=""><naff-icon name="chevron-left"></naff-icon></button>
 					<div class="-tag-box">
 						<naff-tag class="-in-month" shape="round" naff-text="private.date | date 'mmmm yyyy'"></naff-tag>
 					</div>
-					<button is="naff-x-icon-button" size="medium" shape="round" color="grey" name="chevron-right" naff-on-click="nextMonth()"></button>
-					<button is="naff-x-icon-button" class="-close" name="times" shape="round" color="red" size="medium" naff-on-click="hide()"></button>
+					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="nextMonth()" icon=""><naff-icon name="chevron-right"></naff-icon></button>
+					<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon=""><naff-icon name="times"></naff-icon></button>
 		        </div>
 				<div class="-frame">
 			        <ul class="-picker">
@@ -308,7 +307,7 @@
 			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
 			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			
+
 			this.load();
 		},
 
@@ -369,7 +368,7 @@
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -379,7 +378,7 @@
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -430,7 +429,7 @@
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', dateFormat(this.private.selected, this.format));
+			naff.fire(this.host, 'changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 </script>
@@ -457,11 +456,11 @@
 			<div class="-container">
 		        <div class="-controls -above">
 					<div class="-tag-box">
-						<button is="naff-x-icon-button" naff-if="private.showHour" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setHour('1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showMin" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setMin('1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showSec" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setSec('1')"></button>
+						<button is="naff-x-button" naff-if="private.showHour" size="medium" shape="round" color="grey" naff-on-click="setHour('1')" icon=""><naff-icon name="chevron-up"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showMin" size="medium" shape="round" color="grey" naff-on-click="setMin('1')" icon=""><naff-icon name="chevron-up"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showSec" size="medium" shape="round" color="grey" naff-on-click="setSec('1')" icon=""><naff-icon name="chevron-up"></naff-icon></button>
 					</div>
-					<button is="naff-x-icon-button" class="-close" name="times" shape="round" color="red" size="medium" naff-on-click="hide()"></button>
+					<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon=""><naff-icon name="times"></naff-icon></button>
 		        </div>
 				<div class="-frame">
 					<div class="-time">
@@ -470,11 +469,11 @@
 				</div>
 		        <div class="-controls -below">
 					<div class="-tag-box">
-						<button is="naff-x-icon-button" naff-if="private.showHour" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setHour('-1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showMin" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setMin('-1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showSec" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setSec('-1')"></button>
+						<button is="naff-x-button" naff-if="private.showHour" size="medium" shape="round" color="grey" naff-on-click="setHour('-1')" icon=""><naff-icon name="chevron-down"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showMin" size="medium" shape="round" color="grey" naff-on-click="setMin('-1')" icon=""><naff-icon name="chevron-down"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showSec" size="medium" shape="round" color="grey" naff-on-click="setSec('-1')" icon=""><naff-icon name="chevron-down"></naff-icon></button>
 					</div>
-					<button is="naff-x-icon-button" class="-close" name="check" shape="round" color="green" size="medium" naff-on-click="selectTime()"></button>
+					<button is="naff-x-button" class="-close" shape="round" color="green" size="medium" naff-on-click="selectTime()" icon=""><naff-icon name="check"></naff-icon></button>
 		        </div>
 			</div>
 		</main>
@@ -556,28 +555,28 @@
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
 			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', this.private.time);
+			naff.fire(this.host, 'changed', this.private.time);
 		}
 	});
 </script>

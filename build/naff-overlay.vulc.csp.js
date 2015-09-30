@@ -35,7 +35,7 @@
 		{
 			var scope = this;
 			if (internal && scope.toggle != 1) return;
-			scope.fire('show');
+			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
 			// jiggle toast if re-thrown or show for first time
@@ -47,7 +47,7 @@
 
 				setTimeout(function()
 				{
-					scope.fire('jiggle');
+					naff.fire(scope.host, 'jiggle');
 					scope.host.className += " -jiggle";
 
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
@@ -74,7 +74,7 @@
 					scope.private.messageTimer = null;
 					scope.private.displayTimer = null;
 					scope.host.setAttribute('toggle', 0);
-					scope.fire('hide');
+					naff.fire(scope.host, 'hide');
 				}, 300);
 			}, scope.private.delay * 1000);
 		}
@@ -105,7 +105,7 @@
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-			
+
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -135,7 +135,7 @@
 				scope.host.style.opacity = 1;
 				document.body.style.overflow = 'hidden';
 				scope.resize();
-				scope.fire('show');
+				naff.fire(scope.host, 'show');
 			}, 0);
 		},
 
@@ -151,7 +151,7 @@
 				scope.host.style.display = "none";
 				document.body.style.overflow = 'auto';
 				scope.host.setAttribute('toggle', 0);
-				scope.fire('hide');
+				naff.fire(scope.host, 'hide');
 			}, 200);
 		},
 
@@ -195,7 +195,7 @@
 			if (this.host.hasAttribute('value')) this.value = this.host.getAttribute('value');
 			this.private.selected = this.value ? new Date(Date.parse(this.value)) : new Date(Date.now());
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
-			
+
 			this.load();
 		},
 
@@ -256,7 +256,7 @@
 			newDate.setMonth(newDate.getMonth() + 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Clears the calendar and shows the previous month
@@ -266,7 +266,7 @@
 			newDate.setMonth(newDate.getMonth() - 1);
 			this.private.date = newDate;
 		    this.createMonth();
-			this.fire('set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -317,7 +317,7 @@
 			this.private.selectedDate = dateFormat(this.private.selected, 'yyyy-mm-dd');
 			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', dateFormat(this.private.selected, this.format));
+			naff.fire(this.host, 'changed', dateFormat(this.private.selected, this.format));
 		}
 	});
 ;
@@ -395,27 +395,27 @@
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
 			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', this.private.time);
+			naff.fire(this.host, 'changed', this.private.time);
 		}
 	});

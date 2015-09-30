@@ -13,10 +13,7 @@
 			// Initial setup
 			if (this.host.hasAttribute('basepath')) this.private.basepath = this.host.getAttribute('basepath');
 			if (this.host.hasAttribute('partial')) this.private.partial = this.host.getAttribute('partial');
-		},
 
-		attached: function()
-		{
 			this.load();
 		},
 
@@ -24,8 +21,11 @@
 		{
 			if (oldVal == newVal) return;
 			if (name == 'basepath') this.private.basepath = newVal;
-			if (name == 'partial') this.private.partial = newVal;
-			this.load();
+			if (name == 'partial')
+			{
+				this.private.partial = newVal;
+				this.load();
+			}
 		},
 
 		load: function()
@@ -48,20 +48,60 @@
 					if (request.status === 200)
 					{
 						var frag = document.createElement('FRAG');
-						frag.innerHTML = request.response;
+						frag.innerHTML = request.responseText;
 
 						var depends = frag.querySelector('dependencies');
+
 						if (depends)
 						{
-							depends.setAttribute('path', partial);
-							depends.remove();
-							if (!document.querySelector("dependencies[path='"+ partial +"']")) document.querySelector('head').appendChild(depends);
-						}
+							// we have deps, so are they loaded?
+							if (!document.querySelector("dependencies[path='"+ partial +"']"))
+							{
+								depends.setAttribute('path', partial);
+								frag.removeChild(depends);
 
-						setTimeout(function(){
-							scope.host.innerHTML = frag.innerHTML;
-							scope.fire('loaded');
-						},1);
+								// monitor deps loading to promise
+								var promises = [];
+								for (var i = 0; i < depends.childNodes.length; i++) {
+									if (depends.childNodes[i].nodeType == 1)
+									{
+										promises[i] = new Promise(function(resolve)
+										{
+											depends.childNodes[i].addEventListener('load', function(ev) { return resolve(3); });
+										});
+									}
+								}
+
+								// once all deps loaded, load inner html
+								Promise.all(promises).then(function(){
+									setTimeout(function()
+									{
+										scope.host.innerHTML = frag.innerHTML;
+										naff.fire(scope.host, 'loaded');
+									},1);
+								});
+
+								document.querySelector('head').appendChild(depends);
+							}
+							else
+							{
+								setTimeout(function()
+								{
+									// immediately load if no deps to worry about
+									scope.host.innerHTML = frag.innerHTML;
+									naff.fire(scope.host, 'loaded');
+								},1);
+							}
+						}
+						else
+						{
+							setTimeout(function()
+							{
+								// immediately load if no deps to worry about
+								scope.host.innerHTML = frag.innerHTML;
+								naff.fire(scope.host, 'loaded');
+							},1);
+						}
 					}
 					else throw 'naff-partial: Error loading partial [' + partial + ']';
 				}

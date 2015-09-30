@@ -92,20 +92,6 @@
 				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="orange" size="large">Large button</button>
 				<button is="naff-x-button" naff-on-click="buttonTestClick()" color="black" size="extra-large">Extra Large Button</button>
 
-				<hr>
-
-		 		<h2>Extended Icon Button [is="naff-x-icon-button"] (using font-awesome dependancy, please add style import to main head)</h2>
-		 		<p>Clicked {{private.iconButtonClicks}} times</p>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="check" size="extra-small"></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="times" color="red" size="small" disabled></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="user" color="blue" size="medium"></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="building" color="green" size="medium"></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="spinner" color="orange" size="large" pulse></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" spin></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" shape="rounded" spin></button>
-				<button is="naff-x-icon-button" naff-on-click="iconButtonTestClick()" name="refresh" color="black" size="extra-large" shape="round" spin></button>
-
-				<hr>
 
 		 		<h2>Input [naff-input]</h2>
 
@@ -210,8 +196,8 @@
 						</div>
 					</main>
 					<footer>
-						<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
-						<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal1')"></button>
+						<button is="naff-x-button" size="medium" shape="round" color="green"><naff-icon name="check"></naff-icon></button>
+						<button is="naff-x-button" size="medium" shape="round" color="red" naff-on-click="hide('modal1')"><naff-icon name="times"></naff-icon></button>
 					</footer>
 				</naff-modal>
 
@@ -224,8 +210,8 @@
 						</div>
 					</main>
 					<footer>
-						<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
-						<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal2')"></button>
+						<button is="naff-x-button" size="medium" shape="round" color="green"><naff-icon name="check"></naff-icon></button>
+						<button is="naff-x-button" size="medium" shape="round" color="red" naff-on-click="hide('modal2')"><naff-icon name="times"></naff-icon></button>
 					</footer>
 				</naff-modal>
 
@@ -246,8 +232,8 @@
 						</div>
 					</main>
 					<footer>
-						<button is="naff-x-icon-button" name="check" size="medium" shape="round" color="green"></button>
-						<button is="naff-x-icon-button" name="times" size="medium" shape="round" color="red" naff-on-click="hide('modal3')"></button>
+						<button is="naff-x-button" size="medium" shape="round" color="green"><naff-icon name="check"></naff-icon></button>
+						<button is="naff-x-button" size="medium" shape="round" color="red" naff-on-click="hide('modal3')"><naff-icon name="times"></naff-icon></button>
 					</footer>
 				</naff-modal>
 

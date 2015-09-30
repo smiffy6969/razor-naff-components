@@ -149,32 +149,6 @@ __events__
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
-### is="naff-x-icon-button" (naff-form)
-
-
-```html
-<button is="naff-x-icon-button" name="" size="" color="" shape="" spin pulse disabled></button>
-```
-
-
-A nice set of buttons that extend the default button element that allow us to control the look and feel like size, colour etc. Use with on-click attribute or click event listener.
-
-
-* __name__ - The icon to use as per font-awesome list (without the need for 'fa-' we only need the icon name).
-* __size__ - Sizes include extra-small, small, medium, large, extra-large buttons.
-* __color__ - Colours include grey, blue, red, green, orange, black, pink, purple, yellow, aqua, white.
-* __shape__ - Shapes include square, round, rounded and oval.
-* __spin__ - Make the icon spin.
-* __pulse__ - Make the icon spin in steps.
-* __disabled__ - Disables the button.
-
-
-__events__
-
-
-* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
-
-
 ### naff-x-form (naff-form)
 
 
@@ -375,7 +349,7 @@ __methods__
 
 
 ```html
-<naff-date-picker toggle="1" format="ddd dd mmm yyyy" date="Tue 01 Jan 2015"></naff-date-picker>
+<naff-date-picker toggle="1" format="ddd dd mmm yyyy" value="Tue 01 Jan 2015"></naff-date-picker>
 ```
 
 
@@ -383,6 +357,8 @@ A modal box with a date picker inside, allowing you to select a date. Date is se
 
 
 * __toggle__ - The visibility of the modal in real time as 0 or 1. Change this value to show or hide the modal.
+* __format__ - The format of the formatted result as per dateFormat()
+* __value__ - The actual value picked, can also set this to get the picker to start at this point.
 
 
 __events__
@@ -404,7 +380,7 @@ __methods__
 
 
 ```html
-<naff-time-picker toggle="1" format="HH:MM" time="16:30"></naff-time-picker>
+<naff-time-picker toggle="1" format="HH:MM" value="16:30"></naff-time-picker>
 ```
 
 
@@ -412,6 +388,8 @@ A modal box with a time picker inside, allowing you to select a time. Time is se
 
 
 * __toggle__ - The visibility of the modal in real time as 0 or 1. Change this value to show or hide the modal.
+* __format__ - The format of the formatted result as per dateFormat()
+* __value__ - The actual value picked, can also set this to get the picker to start at this point.
 
 
 __events__

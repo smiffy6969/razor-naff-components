@@ -25,8 +25,7 @@
 <template id="naff-modal">
 	<div class="-heading">
 		<content select="heading"></content>
-		<!-- <naff-icon class="-close" name="times" naff-on-click="hide()"></naff-icon> -->
-		<button is="naff-x-icon-button" class="-close" name="times" shape="round" color="red" size="medium" naff-on-click="hide()"></button>
+		<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon><naff-icon name="times"></naff-icon></button>
 	</div>
 	<content select="main"></content>
 	<content select="footer"></content>
@@ -58,7 +57,7 @@
 			else this.host.setAttribute('toggle', this.toggle);
 			if (this.toggle == 1) this.show(true);
 			else this.hide();
-			
+
 			if (!this.template.querySelector('heading'))
 			{
 				var heading = this.template.querySelector('.-heading');
@@ -88,7 +87,7 @@
 				scope.host.style.opacity = 1;
 				document.body.style.overflow = 'hidden';
 				scope.resize();
-				scope.fire('show');
+				naff.fire(scope.host, 'show');
 			}, 0);
 		},
 
@@ -104,7 +103,7 @@
 				scope.host.style.display = "none";
 				document.body.style.overflow = 'auto';
 				scope.host.setAttribute('toggle', 0);
-				scope.fire('hide');
+				naff.fire(scope.host, 'hide');
 			}, 200);
 		},
 

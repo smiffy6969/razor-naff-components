@@ -80,12 +80,12 @@
 			scope.checkError(this.value);
 			scope.host.value = scope.value = this.value; // have to push changes to host value too for data binders
 			scope.host.setAttribute('value', this.value);
-			scope.fire('changed');
+			naff.fire(scope.host, 'changed');
 		},
 
 		onKeyPressed: function(event)
 		{
-			naff.getScope(this).fire('keypress', event);
+			naff.fire(naff.getScope(this).host, 'keypress', event);
 		},
 
 		checkError: function(value)
@@ -101,7 +101,7 @@
 				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', 1);
-				this.fire('error', this.private.validateMessage);
+				naff.fire(this.host, 'error', this.private.validateMessage);
 			}
 			else if (this.private.match != null && this.private.match != value)
 			{
@@ -109,13 +109,13 @@
 				this.template.querySelector('.-input-error-message').innerHTML = this.private.matchMessage;
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', 1);
-				this.fire('error', this.private.matchMessage);
+				naff.fire(this.host, 'error', this.private.matchMessage);
 			}
 			else
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.setAttribute('error', 0);
-				this.fire('ok');
+				naff.fire(this.host, 'ok');
 			}
 		},
 
@@ -172,7 +172,7 @@
 		setSwitch: function()
 		{
 			this.template.querySelector('naff-icon').setAttribute('name', 'toggle-' + (this.toggle == 1 ? 'on' : 'off'));
-			this.fire('change');
+			naff.fire(this.host, 'change');
 		}
 	});
 ;
@@ -235,41 +235,12 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 			if (!!error)
 			{
 				scope.host.setAttribute('error', 1);
-				scope.fire('error');
+				naff.fire(scope.host, 'error');
 			}
 			else
 			{
 				scope.host.setAttribute('error', 0);
-				scope.fire('ok');
-			}
-		}
-	});
-;
-
-	// build scope
-	naff.registerElement({
-		name: 'naff-x-icon-button',
-		extends: 'button',
-
-		attached: function()
-		{
-			// set initial value of icon from parent attributes
-			this.template.querySelector('naff-icon').setAttribute('name', this.host.getAttribute('name'));
-			if (this.host.hasAttribute('spin')) this.template.querySelector('naff-icon').setAttribute('spin', 'spin');
-			if (this.host.hasAttribute('pulse')) this.template.querySelector('naff-icon').setAttribute('pulse', 'pulse');
-		},
-
-		attributeChanged: function(name, oldVal, newVal)
-		{
-			// iterate over changes
-			switch (name)
-			{
-				case 'name': this.template.querySelector('naff-icon').setAttribute('name', newVal); break;
-				case 'spin':
-				case 'pulse':
-					if (this.host.hasAttribute(name)) this.template.querySelector('naff-icon').setAttribute(name, name);
-					else this.template.querySelector('naff-icon').removeAttribute(name);
-				break;
+				naff.fire(scope.host, 'ok');
 			}
 		}
 	});

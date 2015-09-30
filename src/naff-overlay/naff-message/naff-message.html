@@ -71,7 +71,7 @@
 		{
 			var scope = this;
 			if (internal && scope.toggle != 1) return;
-			scope.fire('show');
+			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
 			// jiggle toast if re-thrown or show for first time
@@ -83,7 +83,7 @@
 
 				setTimeout(function()
 				{
-					scope.fire('jiggle');
+					naff.fire(scope.host, 'jiggle');
 					scope.host.className += " -jiggle";
 
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
@@ -110,7 +110,7 @@
 					scope.private.messageTimer = null;
 					scope.private.displayTimer = null;
 					scope.host.setAttribute('toggle', 0);
-					scope.fire('hide');
+					naff.fire(scope.host, 'hide');
 				}, 300);
 			}, scope.private.delay * 1000);
 		}

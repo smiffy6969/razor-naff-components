@@ -65,12 +65,12 @@
 			if (!!error)
 			{
 				scope.host.setAttribute('error', 1);
-				scope.fire('error');
+				naff.fire(scope.host, 'error');
 			}
 			else
 			{
 				scope.host.setAttribute('error', 0);
-				scope.fire('ok');
+				naff.fire(scope.host, 'ok');
 			}
 		}
 	});

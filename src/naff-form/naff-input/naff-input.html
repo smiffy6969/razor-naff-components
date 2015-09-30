@@ -11,13 +11,13 @@
 
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	naff-input { display: inline-block; }
-	naff-input .-input-group { width: inherit; }
-	naff-input .-input-group input { width: inherit; box-sizing: border-box; padding: 2px 5px; border: none; border-bottom: 2px solid #888; outline: none; font-size: 15px; background: transparent; }
-	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-bottom-width: 2px; border-color: #444; }
-	naff-input .-input-group input[disabled] { cursor: not-allowed; border-bottom: 2px dashed #888; background-color: #fff; }
+	naff-input { height: 30px; display: inline-block; }
+	naff-input .-input-group { width: 100%; height: inherit; }
+	naff-input .-input-group input { width: inherit; height: inherit; box-sizing: border-box; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-color: #444; }
+	naff-input .-input-group input[disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
 	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
-	naff-input .-input-group .-input-error { visibility: hidden; color: red; font-size: 11px; line-height: 10px; }
+	naff-input .-input-group .-input-error { position: absolute; visibility: hidden; color: red; font-size: 11px; line-height: 10px; }
 	naff-input .-input-group .-input-error naff-icon, naff-input .-input-group .-input-error .-input-error-message { color: red; font-size: 11px; line-height: 10px}
 </style>
 
@@ -115,12 +115,12 @@
 			scope.checkError(this.value);
 			scope.host.value = scope.value = this.value; // have to push changes to host value too for data binders
 			scope.host.setAttribute('value', this.value);
-			scope.fire('changed');
+			naff.fire(scope.host, 'changed');
 		},
 
 		onKeyPressed: function(event)
 		{
-			naff.getScope(this).fire('keypress', event);
+			naff.fire(naff.getScope(this).host, 'keypress', event);
 		},
 
 		checkError: function(value)
@@ -136,7 +136,7 @@
 				this.template.querySelector('.-input-error-message').innerHTML = this.private.validateMessage;
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', 1);
-				this.fire('error', this.private.validateMessage);
+				naff.fire(this.host, 'error', this.private.validateMessage);
 			}
 			else if (this.private.match != null && this.private.match != value)
 			{
@@ -144,13 +144,13 @@
 				this.template.querySelector('.-input-error-message').innerHTML = this.private.matchMessage;
 				this.template.querySelector('.-input-error').style.visibility = 'visible';
 				this.host.setAttribute('error', 1);
-				this.fire('error', this.private.matchMessage);
+				naff.fire(this.host, 'error', this.private.matchMessage);
 			}
 			else
 			{
 				this.template.querySelector('.-input-error').style.visibility = 'hidden';
 				this.host.setAttribute('error', 0);
-				this.fire('ok');
+				naff.fire(this.host, 'ok');
 			}
 		},
 

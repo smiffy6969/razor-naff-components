@@ -29,11 +29,11 @@
 			<div class="-container">
 		        <div class="-controls -above">
 					<div class="-tag-box">
-						<button is="naff-x-icon-button" naff-if="private.showHour" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setHour('1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showMin" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setMin('1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showSec" size="medium" shape="round" color="grey" name="chevron-up" naff-on-click="setSec('1')"></button>
+						<button is="naff-x-button" naff-if="private.showHour" size="medium" shape="round" color="grey" naff-on-click="setHour('1')" icon><naff-icon name="chevron-up"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showMin" size="medium" shape="round" color="grey" naff-on-click="setMin('1')" icon><naff-icon name="chevron-up"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showSec" size="medium" shape="round" color="grey" naff-on-click="setSec('1')" icon><naff-icon name="chevron-up"></naff-icon></button>
 					</div>
-					<button is="naff-x-icon-button" class="-close" name="times" shape="round" color="red" size="medium" naff-on-click="hide()"></button>
+					<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon><naff-icon name="times"></naff-icon></button>
 		        </div>
 				<div class="-frame">
 					<div class="-time">
@@ -42,11 +42,11 @@
 				</div>
 		        <div class="-controls -below">
 					<div class="-tag-box">
-						<button is="naff-x-icon-button" naff-if="private.showHour" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setHour('-1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showMin" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setMin('-1')"></button>
-						<button is="naff-x-icon-button" naff-if="private.showSec" size="medium" shape="round" color="grey" name="chevron-down" naff-on-click="setSec('-1')"></button>
+						<button is="naff-x-button" naff-if="private.showHour" size="medium" shape="round" color="grey" naff-on-click="setHour('-1')" icon><naff-icon name="chevron-down"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showMin" size="medium" shape="round" color="grey" naff-on-click="setMin('-1')" icon><naff-icon name="chevron-down"></naff-icon></button>
+						<button is="naff-x-button" naff-if="private.showSec" size="medium" shape="round" color="grey" naff-on-click="setSec('-1')" icon><naff-icon name="chevron-down"></naff-icon></button>
 					</div>
-					<button is="naff-x-icon-button" class="-close" name="check" shape="round" color="green" size="medium" naff-on-click="selectTime()"></button>
+					<button is="naff-x-button" class="-close" shape="round" color="green" size="medium" naff-on-click="selectTime()" icon><naff-icon name="check"></naff-icon></button>
 		        </div>
 			</div>
 		</main>
@@ -128,28 +128,28 @@
 		{
 			this.private.date.setHours(this.private.date.getHours() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setMin: function(ev, val)
 		{
 			this.private.date.setMinutes(this.private.date.getMinutes() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		setSec: function(ev, val)
 		{
 			this.private.date.setSeconds(this.private.date.getSeconds() + parseInt(val));
 			this.private.time = dateFormat(this.private.date, this.format);
-			this.fire('set', this.private.time);
+			naff.fire(this.host, 'set', this.private.time);
 		},
 
 		selectTime: function(ev)
 		{
 			this.host.setAttribute('value', this.private.time);
 			this.host.setAttribute('toggle', 0);
-			this.fire('changed', this.private.time);
+			naff.fire(this.host, 'changed', this.private.time);
 		}
 	});
 </script>
