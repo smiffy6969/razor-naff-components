@@ -66,6 +66,174 @@
 <!-- LOGIC -->
 <script>naff.registerElement({name: 'naff-tag'})</script>
 
+<style>
+	naff-choose { height: 30px; display: inline-block; }
+	naff-choose .-items { height: 30px; width: 100%; display: block; margin-top: 2px; }
+	naff-choose .-items .-item { padding: 0px 3px; background-color: #f4f4f4; color: #444; border: 1px solid #ccc; margin: 0px 2px 2px 0px; display: inline-block; }
+	naff-choose .-items .-item naff-icon { cursor: pointer; opacity: 0.8; }
+	naff-choose .-items .-item naff-icon:hover { opacity: 1; }
+	naff-choose .-chooser { width: 100%; box-sizing: border-box; }
+	naff-choose	.-chooser select { height: 30px; width: inherit; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-choose .-chooser select:focus:not([disabled]), naff-choose .-chooser select:active:not([disabled]) { border: 1px solid #444; }
+	naff-choose .-chooser select[disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
+	naff-choose .-chooser select option { color: #444; }
+	naff-choose .-chooser select option.-placeholder { color: #aaa; }
+	naff-choose .-chooser select { color: #aaa; }
+	naff-choose .-chooser select[selected] { color: #444; }
+	naff-choose[add] .-chooser { padding-right: 35px; position: relative; }
+	naff-choose[add] .-chooser button { position: absolute; top: 0px; right: 0px; }
+	naff-choose[disabled] .-items .-item { border: 1px dashed #ccc; background-color: #fff; }
+	naff-choose[disabled] .-items .-item naff-icon { cursor: not-allowed; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-choose">
+	<div class="-chooser">
+		<select naff-value="private.selected" naff-on-change="selectedOption('auto')" naff-placeholder="placeholder | bool" naff-selected="private.selected">
+			<option naff-if="placeholder" class="-placeholder" value="" disabled="">{{placeholder}}</option>
+			<option naff-each-option="options" naff-value="index">{{option | key optionLabel}}</option>
+		</select>
+		<button naff-show="private.add" is="naff-x-button" size="medium" shape="round" color="green" naff-on-click="selectedOption('add')" icon="">
+			<naff-icon name="plus"></naff-icon>
+		</button>
+	</div>
+	<ul class="-items">
+		<li class="-item" naff-each-item="selectedObs" naff-index="index">
+			{{item | key optionLabel}}
+			<naff-icon name="times" naff-on-click="removeItem()"></naff-icon>
+		</li>
+	</ul>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-choose',
+		dataBind: true,
+
+		// public properties
+		options: [],
+		optionValue: 'value',
+		optionLabel: 'label',
+		selectedObs: [],
+		selected: [],
+		placeholder: null,
+
+		// private properties
+		private: {
+			selected: null,
+			add: 0
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('option-value')) this.optionValue = this.host.getAttribute('option-value');
+			if (this.host.hasAttribute('option-label')) this.optionLabel = this.host.getAttribute('option-label');
+			if (this.host.hasAttribute('placeholder')) this.placeholder = this.host.getAttribute('placeholder');
+			if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+			if (this.host.hasAttribute('add')) this.private.add = 1;
+
+			// configure any options set on attribtues
+			if (this.host.hasAttribute('options')) this.parseOptions();
+		},
+
+		detached: function()
+		{
+			// this.template.querySelector('input').removeEventListener('input', this.onInputChanged);
+			// this.template.querySelector('input').removeEventListener('keypress', this.onKeyPressed);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'option-value':
+					this.optionValue = newVal;
+				break;
+				case 'option-label':
+					this.optionLabel = newVal;
+				break;
+				case 'options':
+					this.parseOptions();
+				break;
+				case 'placeholder':
+					this.placeholder = newVal;
+				break;
+				case 'disabled':
+					if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+					else this.host.querySelector('select').removeAttribute('disabled');
+				break;
+				case 'add':
+					if (this.host.hasAttribute('add')) this.private.add = 1;
+					else this.private.add = 0;
+				break;
+			}
+		},
+
+		parseOptions: function()
+		{
+			try
+			{
+			   this.options = JSON.parse(this.host.getAttribute('options'));
+			}
+			catch (e)
+			{
+				var options = [];
+				var bits = this.host.getAttribute('options').split(',');
+				for (var i = 0; i < bits.length; i++) {
+					options[i] = {};
+					options[i][this.optionValue] = bits[i].trim();
+					options[i][this.optionLabel] = bits[i].trim();
+				}
+				this.options = options;
+			}
+		},
+
+		selectedOption: function(ev, type)
+		{
+			if (type == 'auto' && this.host.hasAttribute('add'))
+			{
+				naff.fire(this.host, 'select', this.options[this.private.selected]);
+				return;
+			}
+
+			if (this.host.hasAttribute('disabled') || !this.private.selected) return;
+
+			var selectedObs = [];
+			var selected = [];
+			for (var i = 0; i < this.selectedObs.length; i++)
+			{
+				selectedObs.push(naff.cloneObject(this.selectedObs[i]));
+				selected.push(this.selectedObs[i][this.optionValue]);
+			}
+			selectedObs.push(naff.cloneObject(this.options[this.private.selected]));
+			selected.push(this.options[this.private.selected][this.optionValue]);
+
+			this.selectedObs = selectedObs;
+			this.selected = selected;
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		},
+
+		removeItem: function(ev)
+		{
+			if (this.host.hasAttribute('disabled')) return;
+
+			var ele = ev.target;
+			while (!ele.hasAttribute('index')) ele = ele.parentNode;
+			var index = parseInt(ele.getAttribute('index'));
+			this.selectedObs.splice(index, 1);
+			this.selected.splice(index, 1);
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		}
+	});
+</script>
+
 
 
 <!-- STYLE - Encapsulate all css to tag name -->
@@ -290,45 +458,96 @@
 	});
 </script>
 
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
-	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
-	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
-	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
-	button[is='naff-x-button'][size='extra-small'] { padding: 0 4px; font-size: 9px; line-height: 17px; min-width: 18px; height: 18px; }
-	button[is='naff-x-button'][size='small'] { padding: 0 8px; font-size: 11px; line-height: 21px; min-width: 22px; height: 22px; }
-	button[is='naff-x-button'][size='medium'] { padding: 0 8px; font-size: 14px; line-height: 29px; min-width: 30px; height: 30px; }
-	button[is='naff-x-button'][size='large'] { padding: 0 12px; font-size: 18px; line-height: 33px; min-width: 34px; height: 34px; }
-	button[is='naff-x-button'][size='extra-large'] { padding: 0 14px; font-size: 20px; line-height: 37px; min-width: 38px; height: 38px; }
-	button[is='naff-x-button'][size='extra-small'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='small'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='medium'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='large'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='extra-large'][icon] { padding: 0; }
-	button[is='naff-x-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
-	button[is='naff-x-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
-	button[is='naff-x-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
-	button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
-	button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
-	button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
-	button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
-	button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
-	button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
-	button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
-	button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
-	button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
-	button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
-	button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+	naff-level naff-icon { opacity: 0.8; cursor: pointer; }
+	naff-level naff-icon:hover { opacity: 1; cursor: pointer; }
+	naff-level[disabled] naff-icon, naff-level[disabled] naff-icon:hover { opacity: 0.5; cursor: not-allowed; }
 </style>
 
+<!-- TEMPLATE -->
+<template id="naff-level">
+	<naff-icon naff-each-star="private.stars" naff-name="star" naff-on-click="updateStars()" naff-index="index"></naff-icon>
+</template>
+
 <!-- LOGIC -->
-<script>naff.registerElement({name: 'naff-x-button', extends: 'button'})</script>
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-level',
+		dataBind: true,
+
+		// Public properties
+		level: 0,
+		maximum: 0,
+		iconFilled: 'star',
+		iconEmpty: 'star-o',
+		disabled: false,
+
+		private: {
+			stars: []
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('disabled')) this.disabled = true;
+			if (this.host.hasAttribute('level')) this.level = parseInt(this.host.getAttribute('level'));
+			if (this.host.hasAttribute('icon-filled')) this.iconFilled = this.host.getAttribute('icon-filled');
+			if (this.host.hasAttribute('icon-empty')) this.iconEmpty = this.host.getAttribute('icon-empty');
+			if (this.host.hasAttribute('maximum'))
+			{
+				this.maximum = parseInt(this.host.getAttribute('maximum'));
+				this.createStars();
+			}
+		},
+
+		detached: function()
+		{
+
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'disabled') this.disabled = !newValue ? false: true;
+			if (name == 'icon-filled') this.iconFilled = newValue;
+			if (name == 'icon-empty') this.iconEmpty = newValue;
+
+			if (name =='level')
+			{
+				this.level = newVal;
+				this.createStars();
+			}
+
+			if (name =='maximum')
+			{
+				this.maximum = newVal;
+				this.createStars();
+			}
+		},
+
+		createStars: function()
+		{
+			this.private.stars = [];
+			for (var i = 0; i < this.maximum; i++) this.private.stars.push(i < this.level ? this.iconFilled : this.iconEmpty);
+		},
+
+		updateStars: function(ev)
+		{
+			if (this.disabled) return;
+			var index = parseInt(ev.target.getAttribute('index'));
+			this.host.setAttribute('level', index + 1);
+			naff.fire(this.host, 'change', index + 1);
+		}
+	});
+</script>
 
 <script>
 	// build scope
 	naff.registerElement({
-		name: 'naff-x-form',
-		extends: 'form',
+		name: 'naff-form',
 		error: false,
 
 		private: {
@@ -367,7 +586,7 @@
 
 		checkError: function(event, scope)
 		{
-			var scope = scope || naff.getParentScope(this, 'naff-x-form');
+			var scope = scope || naff.getParentScope(this, 'naff-form');
 			var error = false;
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
@@ -393,15 +612,225 @@
 	});
 </script>
 
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-paginate .-holder { text-align: center; }
+	naff-paginate .-holder naff-tag { min-width: 100px; }
+	naff-paginate .-holder naff-tag input { border: 1px solid #888; text-align: right; width: 60px; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-paginate">
+	<div class="-holder">
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="beginning()" icon=""><naff-icon name="angle-double-left"></naff-icon></button>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="pageLeft()" icon=""><naff-icon name="angle-left"></naff-icon></button>
+		<naff-tag shape="round" color="grey">
+			Page <input type="number" naff-value="page" naff-on-change="goTo()">
+			of {{pages}}
+		</naff-tag>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="pageRight()" icon=""><naff-icon name="angle-right"></naff-icon></button>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="end()" icon=""><naff-icon name="angle-double-right"></naff-icon></button>
+	</div>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-paginate',
+		dataBind: true,
+		page: null,
+		pages: null,
+
+		created: function()
+		{
+
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('pages')) this.pages = !isNaN(this.host.getAttribute('pages')) ? parseInt(this.host.getAttribute('pages')) : 1;
+			if (this.host.hasAttribute('page')) this.page = !isNaN(this.host.getAttribute('page')) ? parseInt(this.host.getAttribute('page')) : 1;
+
+			this.resolveValues();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='page') this.page = !isNaN(newVal) ? parseInt(newVal) : 1;
+			if (name =='pages') this.pages = !isNaN(newVal) ? parseInt(newVal) : 1;
+
+			this.resolveValues();
+		},
+
+		resolveValues: function()
+		{
+			if (this.pages < 1) this.pages = 1;
+			if (this.page < 1) this.page = 1;
+			if (this.page > this.pages) this.page = this.pages
+		},
+
+		pageLeft: function()
+		{
+			if (this.page > 1) this.host.setAttribute('page', this.page - 1);
+			naff.fire(this.host, 'change');
+		},
+
+		pageRight: function()
+		{
+			if (this.page < this.pages) this.host.setAttribute('page', this.page + 1);
+			naff.fire(this.host, 'change');
+		},
+
+		beginning: function()
+		{
+			this.host.setAttribute('page', 1);
+			naff.fire(this.host, 'change');
+		},
+
+		end: function()
+		{
+			this.host.setAttribute('page', this.pages);
+			naff.fire(this.host, 'change');
+		},
+
+		goTo: function()
+		{
+			if (isNaN(this.page)) this.page = 1;
+			else if (this.page < 1) this.page = 1;
+			else if (this.page > this.pages) this.page = this.pages;
+			this.host.setAttribute('page', this.page);
+			naff.fire(this.host, 'change');
+		}
+	});
+</script>
+
+<style>
+	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
+	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
+	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
+	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
+	button[is='naff-x-button'][size='extra-small'] { padding: 0 4px; font-size: 9px; line-height: 14px; min-width: 18px; height: 18px; }
+	button[is='naff-x-button'][size='small'] { padding: 0 8px; font-size: 11px; line-height: 18px; min-width: 22px; height: 22px; }
+	button[is='naff-x-button'][size='medium'] { padding: 0 8px; font-size: 14px; line-height: 26px; min-width: 30px; height: 30px; }
+	button[is='naff-x-button'][size='large'] { padding: 0 12px; font-size: 18px; line-height: 30px; min-width: 34px; height: 34px; }
+	button[is='naff-x-button'][size='extra-large'] { padding: 0 14px; font-size: 20px; line-height: 34px; min-width: 38px; height: 38px; }
+	button[is='naff-x-button'][size='extra-small'][icon] { padding: 0; }
+	button[is='naff-x-button'][size='small'][icon] { padding: 0; }
+	button[is='naff-x-button'][size='medium'][icon] { padding: 0; }
+	button[is='naff-x-button'][size='large'][icon] { padding: 0; }
+	button[is='naff-x-button'][size='extra-large'][icon] { padding: 0; }
+	button[is='naff-x-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
+	button[is='naff-x-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
+	button[is='naff-x-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
+	button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
+	button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
+	button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
+	button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
+	button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
+	button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
+	button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
+	button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
+	button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
+	button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
+	button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
+</style>
+
+<!-- LOGIC -->
+<script>naff.registerElement({name: 'naff-x-button', extends: 'button'})</script>
+
 <style>
 	select[is="naff-x-select"] { height: 30px; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
 	select[is="naff-x-select"]:focus:not([disabled]), select[is="naff-x-select"]:active:not([disabled]) { border: 1px solid #444; }
 	select[is="naff-x-select"][disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
 </style>
 
-<!-- LOGIC -->
-<script>naff.registerElement({name: 'naff-x-select'});</script>
 
+<style>
+	naff-loading { padding: 10px; position: fixed; top: 50%; left: 50%; opacity: 0; text-align: center; background-color: #444; color: #fff; font-size: 14px; display: none; max-width: 80%; z-index: 3000; -webkit-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -moz-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -ms-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -o-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -0-border-radius: 2px; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
+	naff-loading[color='red'] { background-color: rgb(255, 44, 44); }
+	naff-loading[color='blue'] { background-color: rgb(74, 74, 255); }
+	naff-loading[color='green'] { background-color: rgb(18, 163, 18); }
+	naff-loading[color='orange'] { background-color: rgb(255, 136, 26); }
+	naff-loading[color='white'] { background-color: #f4f4f4; color: #444; }
+	naff-loading[shape='round'] { border-radius: 100px; }
+	naff-loading[shape='rounded'] { border-radius: 5px; }
+	naff-loading[shape='oval'] { border-radius: 75% / 77%; }
+	@-webkit-keyframes -naff-loading-jiggle { 0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 10% { -webkit-transform: translate(-1px, -2px) rotate(-2deg); }	20% { -webkit-transform: translate(-3px, 0px) rotate(3deg); } 30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); } 70% { -webkit-transform: translate(2px, 1px) rotate(-2deg); } 80% { -webkit-transform: translate(-1px, -1px) rotate(4deg); } 90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }	}
+	@-moz-keyframes -naff-loading-jiggle { 0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 10% { -moz-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -moz-transform: translate(-3px, 0px) rotate(3deg); } 30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -moz-transform: translate(-3px, 1px) rotate(0deg); } 70% { -moz-transform: translate(2px, 1px) rotate(-2deg); } 80% { -moz-transform: translate(-1px, -1px) rotate(4deg); } 90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-ms-keyframes -naff-loading-jiggle { 0% { -ms-transform: translate(2px, 1px) rotate(0deg); } 10% { -ms-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -ms-transform: translate(-3px, 0px) rotate(3deg); } 30% { -ms-transform: translate(0px, 2px) rotate(0deg); } 40% { -ms-transform: translate(1px, -1px) rotate(1deg); } 50% { -ms-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -ms-transform: translate(-3px, 1px) rotate(0deg); } 70% { -ms-transform: translate(2px, 1px) rotate(-2deg); } 80% { -ms-transform: translate(-1px, -1px) rotate(4deg); } 90% { -ms-transform: translate(2px, 2px) rotate(0deg); } 100% { -ms-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-o-keyframes -naff-loading-jiggle { 0% { -o-transform: translate(2px, 1px) rotate(0deg); } 10% { -o-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -o-transform: translate(-3px, 0px) rotate(3deg); } 30% { -o-transform: translate(0px, 2px) rotate(0deg); } 40% { -o-transform: translate(1px, -1px) rotate(1deg); } 50% { -o-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -o-transform: translate(-3px, 1px) rotate(0deg); } 70% { -o-transform: translate(2px, 1px) rotate(-2deg); } 80% { -o-transform: translate(-1px, -1px) rotate(4deg); } 90% { -o-transform: translate(2px, 2px) rotate(0deg); } 100% { -o-transform: translate(1px, -2px) rotate(-1deg); } }
+	@keyframes -naff-loading-jiggle { 0% { transform: translate(2px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-2deg); } 20% { transform: translate(-3px, 0px) rotate(3deg); } 30% { transform: translate(0px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(2px, 1px) rotate(-2deg); } 80% { transform: translate(-1px, -1px) rotate(4deg); } 90% { transform: translate(2px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-loading">
+	<content></content>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-loading',
+
+		toggle: 0,
+
+		private: {
+			delay: 4,
+			opacityTimer: null,
+			displayTimer: null,
+			loadingTimer: null
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle') == 1 ? 1 : 0;
+			else this.host.setAttribute('toggle', this.toggle);
+
+			if (this.toggle) this.show();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='toggle')
+			{
+				this.toggle = newVal == 1 ? 1 : 0;
+				if (this.toggle) this.show();
+				else this.hide();
+			}
+		},
+
+		show: function()
+		{
+			naff.fire(this.host, 'show');
+
+			// re-center
+			this.host.style.display = "block";
+			if ("bottom" === this.host.getAttribute('position') || "top" === this.host.getAttribute('position')) this.host.style.marginLeft = "-" + this.host.offsetWidth/2 + "px";
+
+			// fade in
+			var scope = this;
+			setTimeout(function(){ scope.host.style.opacity = 1 }, 1);
+		},
+
+		hide: function()
+		{
+			this.host.style.opacity = 0;
+
+			var scope = this;
+			setTimeout(function()
+			{
+				scope.host.style.display = "none";
+				naff.fire(scope.host, 'hide');
+			}, 300);
+		}
+	});
+</script>
 
 <style>
 	naff-message { padding: 10px; position: fixed; opacity: 0; text-align: center; background-color: #444; color: #fff; font-size: 14px; display: none; max-width: 80%; z-index: 3000; -webkit-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -moz-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -ms-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -o-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -0-border-radius: 2px; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
@@ -470,12 +899,15 @@
 			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
+			// re-center
+			scope.host.style.display = "block";
+			if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+
 			// jiggle toast if re-thrown or show for first time
 			if (!!scope.private.messageTimer)
 			{
 				clearTimeout(scope.private.messageTimer);
 				clearTimeout(scope.private.displayTimer);
-				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
 
 				setTimeout(function()
 				{
@@ -485,16 +917,7 @@
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
 				}, 1);
 			}
-			else
-			{
-				scope.host.style.display = "block";
-
-				setTimeout(function()
-				{
-					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
-					scope.host.style.opacity = 1;
-				}, 1);
-			}
+			else setTimeout(function() { scope.host.style.opacity = 1 }, 1);
 
 			// set timing of show/hide
 			scope.private.messageTimer = setTimeout(function()
@@ -633,10 +1056,10 @@
 <style>
 	naff-date-picker naff-modal.-date-picker-modal { width: 300px; }
 	naff-date-picker .-container .-controls { display: block; width: 100%; text-align: center; overflow: hidden; margin-bottom: 10px; }
-	naff-date-picker .-container .-controls .-tag-box { width: 140px; display: inline-block; }
-	naff-date-picker .-container .-controls .-tag-box .-in-month	{ background-color: #555; color: #eee; line-height: 18px; }
+	naff-date-picker .-container .-controls .-tag-box { width: 130px; display: inline-block; }
+	naff-date-picker .-container .-controls .-clear { position: absolute; left: 10px; }
 	naff-date-picker .-container .-controls .-close { position: absolute; right: 10px; }
-	naff-date-picker .-container .-controls .-close:hover { opacity: 1; }
+	naff-date-picker .-container .-controls .-close:hover, naff-date-picker .-container .-controls .-clear:hover  { opacity: 1; }
 	naff-date-picker .-container .-frame { position: relative; }
 	naff-date-picker .-container .-frame .-picker { width: 100%; display: block; margin: 0; padding: 0; }
 	naff-date-picker .-container .-frame .-picker .-picker-day { width: 14.28%; display: inline-block; cursor: pointer; box-sizing: border-box; list-style-type: none; padding: 1px;	}
@@ -646,6 +1069,10 @@
 	naff-date-picker .-container .-frame .-picker .-picker-day[disabled] .-details { opacity: 0.5; cursor: not-allowed; background: #fff; border: solid 1px #ddd; }
 	naff-date-picker .-container .-frame .-picker .-picker-day .-details .-date { font-size: 16px; line-height: 12px; display: block; }
 	naff-date-picker .-container .-frame .-picker .-picker-day .-details .-day { font-size: 10px; padding-top: 0px; display: block; }
+	naff-date-picker .-container .-frame .-picker .-picker-year { width: 20%; display: inline-block; cursor: pointer; box-sizing: border-box; list-style-type: none; padding: 1px;	}
+	naff-date-picker .-container .-frame .-picker .-picker-year .-details { width: 100%; text-align: center; box-sizing: border-box; background-color: #f4f4f4; border: solid 1px #ddd; padding: 10px 6px 10px 6px; }
+	naff-date-picker .-container .-frame .-picker .-picker-month { width: 25%; display: inline-block; cursor: pointer; box-sizing: border-box; list-style-type: none; padding: 1px;	}
+	naff-date-picker .-container .-frame .-picker .-picker-month .-details { width: 100%; text-align: center; box-sizing: border-box; background-color: #f4f4f4; border: solid 1px #ddd; padding: 22px 6px 22px 6px; }
 </style>
 
 <!-- TEMPLATE -->
@@ -654,19 +1081,36 @@
 		<main>
 			<div class="-container">
 		        <div class="-controls">
-					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="previousMonth()" icon=""><naff-icon name="chevron-left"></naff-icon></button>
+					<button is="naff-x-button" class="-clear" shape="round" color="orange" size="medium" naff-on-click="clear()" icon=""><naff-icon name="eraser"></naff-icon></button>
+					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="previous()" icon=""><naff-icon name="chevron-left"></naff-icon></button>
 					<div class="-tag-box">
-						<naff-tag class="-in-month" shape="round" naff-text="private.date | date 'mmmm yyyy'"></naff-tag>
+						<button class="-in-month" is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="changeMode()">
+							{{private.date | date 'mmmm yyyy'}}
+						</button>
 					</div>
-					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="nextMonth()" icon=""><naff-icon name="chevron-right"></naff-icon></button>
+					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="next()" icon=""><naff-icon name="chevron-right"></naff-icon></button>
 					<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon=""><naff-icon name="times"></naff-icon></button>
 		        </div>
 				<div class="-frame">
-			        <ul class="-picker">
+			        <ul class="-picker" naff-show="private.mode | equals 'day'">
 				        <li naff-each-day="private.days" naff-on-click="selectDay()" naff-selected="day.date | equals private.selectedDate" class="-picker-day" naff-today="day.today" naff-day-id="day.id" naff-disabled="day.disabled">
 							<div class="-details">
 								<span class="-date" naff-text="day.dom"></span>
 								<span class="-day" naff-text="day.day"></span>
+							</div>
+						</li>
+			        </ul>
+			        <ul class="-picker" naff-show="private.mode | equals 'year'">
+				        <li naff-each-year="private.years" naff-on-click="selectYear()" class="-picker-year" naff-index="index">
+							<div class="-details">
+								<span class="-year" naff-text="year"></span>
+							</div>
+						</li>
+			        </ul>
+			        <ul class="-picker" naff-show="private.mode | equals 'month'">
+				        <li naff-each-month="private.months" naff-on-click="selectMonth()" class="-picker-month" naff-index="index">
+							<div class="-details">
+								<span class="-month" naff-text="month"></span>
 							</div>
 						</li>
 			        </ul>
@@ -691,8 +1135,11 @@
 			today: null,
 			date: null,
 			days: [],
+			years: [],
+			months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			selected: null,
 			selectedDate: null,
+			mode: 'day',
 			events: []
 		},
 
@@ -728,6 +1175,7 @@
 					{
 						this.toggle = 1;
 						this.load();
+						this.private.mode = 'day';
 					}
 				break;
 			}
@@ -742,6 +1190,13 @@
 		hide: function()
 		{
 			this.host.setAttribute('toggle', 0);
+		},
+
+		clear: function()
+		{
+			this.host.setAttribute('value', '');
+			this.host.setAttribute('toggle', 0);
+			naff.fire(this.host, 'changed', '');
 		},
 
 		load: function()
@@ -761,23 +1216,41 @@
 		},
 
 		// Clears the calendar and shows the next month
-		nextMonth: function()
+		next: function()
 		{
-		    var newDate = new Date(this.private.date);
-			newDate.setMonth(newDate.getMonth() + 1);
-			this.private.date = newDate;
-		    this.createMonth();
-			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			if (this.private.mode == 'day')
+			{
+			    var newDate = new Date(this.private.date);
+				newDate.setMonth(newDate.getMonth() + 1);
+				this.private.date = newDate;
+			    this.createMonth();
+				naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			}
+			else if (this.private.mode == 'year')
+			{
+				var start = parseInt(this.private.years[24]) + 1;
+				this.private.years = [];
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+			}
 		},
 
 		// Clears the calendar and shows the previous month
-		previousMonth: function()
+		previous: function()
 		{
-		    var newDate = new Date(this.private.date);
-			newDate.setMonth(newDate.getMonth() - 1);
-			this.private.date = newDate;
-		    this.createMonth();
-			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			if (this.private.mode == 'day')
+			{
+			    var newDate = new Date(this.private.date);
+				newDate.setMonth(newDate.getMonth() - 1);
+				this.private.date = newDate;
+			    this.createMonth();
+				naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			}
+			else if (this.private.mode == 'year')
+			{
+				var start = parseInt(this.private.years[0]) - 25;
+				this.private.years = [];
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+			}
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -829,6 +1302,49 @@
 			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
 			naff.fire(this.host, 'changed', dateFormat(this.private.selected, this.format));
+		},
+
+		selectYear: function(ev)
+		{
+			var el = ev.target;
+			while (!el.hasAttribute('index')) el = el.parentNode;
+			var index = el.getAttribute('index');
+
+			var dateObject = new Date();
+		    dateObject.setDate(this.private.date.getDate());
+		    dateObject.setMonth(this.private.date.getMonth());
+		    dateObject.setYear(this.private.years[index]);
+
+			this.private.date = dateObject
+			this.private.mode = 'month';
+		},
+
+		selectMonth: function(ev)
+		{
+			var el = ev.target;
+			while (!el.hasAttribute('index')) el = el.parentNode;
+			var index = el.getAttribute('index');
+
+			var dateObject = new Date();
+		    dateObject.setDate(this.private.date.getDate());
+		    dateObject.setMonth(index);
+		    dateObject.setYear(this.private.date.getFullYear());
+
+			this.private.date = dateObject
+			this.createMonth();
+			this.private.mode = 'day';
+		},
+
+		changeMode: function()
+		{
+			if (this.private.mode != 'day') this.private.mode = 'day';
+			else
+			{
+				this.private.years = [];
+				var start = parseInt(this.private.selected.getFullYear()) - 12;
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+				this.private.mode = 'year';
+			}
 		}
 	});
 </script>
@@ -1107,26 +1623,27 @@
 	naff-menu * { color: inherit; }
 	naff-menu > ul > li { border-top: 1px solid rgba(0, 0, 0, 0.1); }
 	naff-menu > ul > li:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
-	naff-menu ul li span { display: inherit; padding: 5px; font-size: 14px; line-height: 30px; cursor: pointer; color: inherit; opacity: 0.85; }
-	naff-menu ul li span naff-icon { text-align: center; color: inherit; width: 2em; }
-	naff-menu ul li[selected] > span { background-color: rgba(0, 0, 0, 0.1); }
-	naff-menu ul li:hover > span { opacity: 1; }
-	naff-menu ul li ul li span { padding-left: 15px; }
-	naff-menu ul li ul li ul li span { padding-left: 25px; }
-	naff-menu ul li ul li ul li ul li span { padding-left: 35px; }
-	naff-menu ul li ul li ul li ul li ul li span { padding-left: 45px; }
+	naff-menu ul li a { text-decoration: none; display: inherit; padding: 5px; font-size: 14px; line-height: 30px; cursor: pointer; color: inherit; opacity: 0.85; }
+	naff-menu ul li a naff-icon { text-align: center; color: inherit; width: 2em; }
+	naff-menu ul li[selected] > a { background-color: rgba(0, 0, 0, 0.1); }
+	naff-menu ul li:hover > a { opacity: 1; }
+	naff-menu ul li ul li a { text-decoration: none; padding-left: 15px; }
+	naff-menu ul li ul li ul li a { text-decoration: none; padding-left: 25px; }
+	naff-menu ul li ul li ul li ul li a { text-decoration: none; padding-left: 35px; }
+	naff-menu ul li ul li ul li ul li ul li a { text-decoration: none; padding-left: 45px; }
 	naff-menu naff-icon[name="bars"] { display: none; }
 	naff-menu[children="expandable"] ul li ul { display: none; }
 	naff-menu[children="expandable"] ul li[selected] > ul, naff-menu[children="expandable"] ul li ul[active] { display: block; }
 	naff-menu ._side-logo, naff-menu ._top-logo { display: none; }
 	naff-menu ._top-logo ._top-logo-text, naff-menu ._side-logo ._side-logo-text { min-height: 40px; line-height: 40px; opacity: 0.85; cursor: pointer; }
 	naff-menu ._top-logo img, naff-menu ._side-logo img { cursor: pointer; }
-	@media (max-width:600px) { naff-menu { width: 100%; height: auto; top: 0px; left: 0px; } naff-menu naff-icon[name="bars"] { font-size: 18px; line-height: 40px; opacity: 0.85; display: block; position: absolute; top: 0px; right: 8px; cursor: pointer; } naff-menu naff-icon[name="bars"]:hover, naff-menu naff-icon[name="bars"]:active, naff-menu naff-icon[name="bars"]:focus { opacity: 1; } naff-menu ._top-logo { display: inline-block; height: 40px; } naff-menu ._top-logo img { display: inline-block; height: 36px; margin-left: 2px; margin-top: 2px; float: left; } naff-menu ._top-logo ._top-logo-text { display: inline-block; padding-left: 5px; } naff-menu ._top-logo ._top-logo-text:empty { display: inline; } }
-	@media (min-width:601px) { naff-menu > ul, naff-menu ._content { display: block !important; } naff-menu ._side-logo-text { display: block; } naff-menu ._side-logo-text:empty { display: none; } naff-menu ._side-logo img { margin-top: 10px; margin-bottom: 10px; display: inline-block; max-width: 100%; } naff-menu ._side-logo { display: block; text-align: center; width: 100%; } }
+	@media (max-width:720px) { naff-menu { width: 100%; height: auto; top: 0px; left: 0px; } naff-menu naff-icon[name="bars"] { font-size: 18px; line-height: 40px; opacity: 0.85; display: block; position: absolute; top: 0px; right: 8px; cursor: pointer; } naff-menu naff-icon[name="bars"]:hover, naff-menu naff-icon[name="bars"]:active, naff-menu naff-icon[name="bars"]:focus { opacity: 1; } naff-menu ._top-logo { display: inline-block; height: 40px; } naff-menu ._top-logo img { display: inline-block; height: 36px; margin-left: 2px; margin-top: 2px; float: left; } naff-menu ._top-logo ._top-logo-text { display: inline-block; padding-left: 5px; } naff-menu ._top-logo ._top-logo-text:empty { display: inline; } }
+	@media (min-width:721px) { naff-menu > ul, naff-menu ._content { display: block !important; } naff-menu ._side-logo-text { display: block; } naff-menu ._side-logo-text:empty { display: none; } naff-menu ._side-logo img { margin-top: 10px; margin-bottom: 10px; display: inline-block; max-width: 100%; } naff-menu ._side-logo { display: block; text-align: center; width: 100%; } }
 </style>
 
 <!-- TEMPLATE -->
 <template id="naff-menu">
+	<naff-icon fw="" name="bars" naff-on-click="toggleMenu()"></naff-icon>
 	<div class="_side-logo">
 		<img naff-if="private.sideLogo" naff-src="private.sideLogo" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default="" alt="logo">
 		<span class="_side-logo-text" naff-text="private.sideLogoText" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default=""></span>
@@ -1136,20 +1653,20 @@
 		<span class="_top-logo-text" naff-text="private.topLogoText" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default=""></span>
 	</div>
 	<ul naff-show="toggle">
-		<li naff-each-item="attributes.menu-items" naff-route="item.route" naff-on-click="changeRoute()">
-			<span><naff-icon naff-name="item.icon" naff-if="item.icon"></naff-icon>{{item.label}}</span>
+		<li naff-each-item="attributes.menu-items">
+			<a naff-href="addHash < item" naff-on-click="changeRoute()" naff-route="item.route"><naff-icon naff-name="item.icon" naff-show="item.icon"></naff-icon>{{item.label}}</a>
 			<ul naff-if="item.menuItems">
-				<li naff-each-item2="item.menuItems" naff-route="item2.route" naff-on-click="changeRoute()">
-					<span><naff-icon naff-name="item2.icon" naff-if="item2.icon"></naff-icon>{{item2.label}}</span>
+				<li naff-each-item2="item.menuItems">
+					<a naff-href="item2.route" naff-on-click="changeRoute()" naff-route="item2.route"><naff-icon naff-name="item2.icon" naff-show="item2.icon"></naff-icon>{{item2.label}}</a>
 					<ul naff-if="item2.menuItems">
-						<li naff-each-item3="item2.menuItems" naff-route="item3.route" naff-on-click="changeRoute()">
-							<span><naff-icon naff-name="item3.icon" naff-if="item3.icon"></naff-icon>{{item3.label}}</span>
+						<li naff-each-item3="item2.menuItems">
+							<a naff-href="item3.route" naff-on-click="changeRoute()" naff-route="item3.route"><naff-icon naff-name="item3.icon" naff-show="item3.icon"></naff-icon>{{item3.label}}</a>
 							<ul naff-if="item3.menuItems">
-								<li naff-each-item4="item3.menuItems" naff-route="item4.route" naff-on-click="changeRoute()">
-									<span><naff-icon naff-name="item4.icon" naff-if="item4.icon"></naff-icon>{{item4.label}}</span>
+								<li naff-each-item4="item3.menuItems">
+									<a naff-href="item4.route" naff-on-click="changeRoute()" naff-route="item4.route"><naff-icon naff-name="item4.icon" naff-show="item4.icon"></naff-icon>{{item4.label}}</a>
 									<ul naff-if="item4.menuItems">
-										<li naff-each-item5="item4.menuItems" naff-route="item5.route" naff-on-click="changeRoute()">
-											<span><naff-icon naff-name="item5.icon" naff-if="item5.icon"></naff-icon>{{item5.label}}</span>
+										<li naff-each-item5="item4.menuItems">
+											<a naff-href="item5.route" naff-on-click="changeRoute()" naff-route="item5.route"><naff-icon naff-name="item5.icon" naff-show="item5.icon"></naff-icon>{{item5.label}}</a>
 										</li>
 									</ul>
 								</li>
@@ -1160,7 +1677,6 @@
 			</ul>
 		</li>
 	</ul>
-	<naff-icon name="bars" naff-on-click="toggleMenu()"></naff-icon>
 	<div class="_content" naff-show="toggle">
 		<content></content>
 	</div>
@@ -1233,17 +1749,18 @@
 		changeRoute: function(event)
 		{
 			var parent = event.target;
-			while (parent.tagName != 'LI' && !parent.hasAttribute('default')) parent = parent.parentNode;
+
 			if (parent.hasAttribute('route')) {
 				naff.setLocation({route: parent.getAttribute('route')});
 				this.toggle = false;
 			} else {
-				var list = parent.querySelector('ul');
+				var list = parent.parentNode.querySelector('ul');
 				if (list.hasAttribute('active')) list.removeAttribute('active');
 				else list.setAttribute('active', '');
 			}
 
 			event.stopPropagation();
+			event.preventDefault();
 		},
 
 		toggleMenu: function()
@@ -1275,15 +1792,19 @@
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
 			}
+		},
+
+		addHash: function(a, b)
+		{
+			return '#' + this.item.route;
 		}
 	});
 </script>
 
 <style>
-	body { overflow: hidden; margin: 0; padding: 0; }
 	naff-page { padding: 0px 0px 0px 225px; position: absolute; height: 100%; width: 100%; overflow: auto; box-sizing: border-box; }
 	naff-page[position="left"] { padding: 0px 225px 0px 0px; }
-	@media (max-width: 600px) { body { overflow: visible; margin: 0; padding: 40px 0px 0px 0px; } naff-page { padding: 0px; height: auto; overflow: initial; } }
+	@media (max-width: 720px) { naff-page { padding: 40px 0px 0px 0px; height: auto; overflow: initial; } }
 </style>
 
 <!-- LOGIC -->
@@ -1291,6 +1812,10 @@
 
 
 </head><body><div hidden="">
+
+
+
+
 
 
 

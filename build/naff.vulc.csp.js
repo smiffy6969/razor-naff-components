@@ -38,6 +38,133 @@ naff.registerElement({name: 'naff-tag'});
 
 	// build scope
 	naff.registerElement({
+		name: 'naff-choose',
+		dataBind: true,
+
+		// public properties
+		options: [],
+		optionValue: 'value',
+		optionLabel: 'label',
+		selectedObs: [],
+		selected: [],
+		placeholder: null,
+
+		// private properties
+		private: {
+			selected: null,
+			add: 0
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('option-value')) this.optionValue = this.host.getAttribute('option-value');
+			if (this.host.hasAttribute('option-label')) this.optionLabel = this.host.getAttribute('option-label');
+			if (this.host.hasAttribute('placeholder')) this.placeholder = this.host.getAttribute('placeholder');
+			if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+			if (this.host.hasAttribute('add')) this.private.add = 1;
+
+			// configure any options set on attribtues
+			if (this.host.hasAttribute('options')) this.parseOptions();
+		},
+
+		detached: function()
+		{
+			// this.template.querySelector('input').removeEventListener('input', this.onInputChanged);
+			// this.template.querySelector('input').removeEventListener('keypress', this.onKeyPressed);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'option-value':
+					this.optionValue = newVal;
+				break;
+				case 'option-label':
+					this.optionLabel = newVal;
+				break;
+				case 'options':
+					this.parseOptions();
+				break;
+				case 'placeholder':
+					this.placeholder = newVal;
+				break;
+				case 'disabled':
+					if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+					else this.host.querySelector('select').removeAttribute('disabled');
+				break;
+				case 'add':
+					if (this.host.hasAttribute('add')) this.private.add = 1;
+					else this.private.add = 0;
+				break;
+			}
+		},
+
+		parseOptions: function()
+		{
+			try
+			{
+			   this.options = JSON.parse(this.host.getAttribute('options'));
+			}
+			catch (e)
+			{
+				var options = [];
+				var bits = this.host.getAttribute('options').split(',');
+				for (var i = 0; i < bits.length; i++) {
+					options[i] = {};
+					options[i][this.optionValue] = bits[i].trim();
+					options[i][this.optionLabel] = bits[i].trim();
+				}
+				this.options = options;
+			}
+		},
+
+		selectedOption: function(ev, type)
+		{
+			if (type == 'auto' && this.host.hasAttribute('add'))
+			{
+				naff.fire(this.host, 'select', this.options[this.private.selected]);
+				return;
+			}
+
+			if (this.host.hasAttribute('disabled') || !this.private.selected) return;
+
+			var selectedObs = [];
+			var selected = [];
+			for (var i = 0; i < this.selectedObs.length; i++)
+			{
+				selectedObs.push(naff.cloneObject(this.selectedObs[i]));
+				selected.push(this.selectedObs[i][this.optionValue]);
+			}
+			selectedObs.push(naff.cloneObject(this.options[this.private.selected]));
+			selected.push(this.options[this.private.selected][this.optionValue]);
+
+			this.selectedObs = selectedObs;
+			this.selected = selected;
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		},
+
+		removeItem: function(ev)
+		{
+			if (this.host.hasAttribute('disabled')) return;
+
+			var ele = ev.target;
+			while (!ele.hasAttribute('index')) ele = ele.parentNode;
+			var index = parseInt(ele.getAttribute('index'));
+			this.selectedObs.splice(index, 1);
+			this.selected.splice(index, 1);
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		}
+	});
+;
+
+	// build scope
+	naff.registerElement({
 		name: 'naff-input',
 
 		// public properties
@@ -213,12 +340,80 @@ naff.registerElement({name: 'naff-tag'});
 		}
 	});
 ;
-naff.registerElement({name: 'naff-x-button', extends: 'button'});
 
 	// build scope
 	naff.registerElement({
-		name: 'naff-x-form',
-		extends: 'form',
+		name: 'naff-level',
+		dataBind: true,
+
+		// Public properties
+		level: 0,
+		maximum: 0,
+		iconFilled: 'star',
+		iconEmpty: 'star-o',
+		disabled: false,
+
+		private: {
+			stars: []
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('disabled')) this.disabled = true;
+			if (this.host.hasAttribute('level')) this.level = parseInt(this.host.getAttribute('level'));
+			if (this.host.hasAttribute('icon-filled')) this.iconFilled = this.host.getAttribute('icon-filled');
+			if (this.host.hasAttribute('icon-empty')) this.iconEmpty = this.host.getAttribute('icon-empty');
+			if (this.host.hasAttribute('maximum'))
+			{
+				this.maximum = parseInt(this.host.getAttribute('maximum'));
+				this.createStars();
+			}
+		},
+
+		detached: function()
+		{
+
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'disabled') this.disabled = !newValue ? false: true;
+			if (name == 'icon-filled') this.iconFilled = newValue;
+			if (name == 'icon-empty') this.iconEmpty = newValue;
+
+			if (name =='level')
+			{
+				this.level = newVal;
+				this.createStars();
+			}
+
+			if (name =='maximum')
+			{
+				this.maximum = newVal;
+				this.createStars();
+			}
+		},
+
+		createStars: function()
+		{
+			this.private.stars = [];
+			for (var i = 0; i < this.maximum; i++) this.private.stars.push(i < this.level ? this.iconFilled : this.iconEmpty);
+		},
+
+		updateStars: function(ev)
+		{
+			if (this.disabled) return;
+			var index = parseInt(ev.target.getAttribute('index'));
+			this.host.setAttribute('level', index + 1);
+			naff.fire(this.host, 'change', index + 1);
+		}
+	});
+;
+
+	// build scope
+	naff.registerElement({
+		name: 'naff-form',
 		error: false,
 
 		private: {
@@ -257,7 +452,7 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 
 		checkError: function(event, scope)
 		{
-			var scope = scope || naff.getParentScope(this, 'naff-x-form');
+			var scope = scope || naff.getParentScope(this, 'naff-form');
 			var error = false;
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
@@ -282,7 +477,137 @@ naff.registerElement({name: 'naff-x-button', extends: 'button'});
 		}
 	});
 ;
-naff.registerElement({name: 'naff-x-select'});;
+
+	// build scope
+	naff.registerElement({
+		name: 'naff-paginate',
+		dataBind: true,
+		page: null,
+		pages: null,
+
+		created: function()
+		{
+
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('pages')) this.pages = !isNaN(this.host.getAttribute('pages')) ? parseInt(this.host.getAttribute('pages')) : 1;
+			if (this.host.hasAttribute('page')) this.page = !isNaN(this.host.getAttribute('page')) ? parseInt(this.host.getAttribute('page')) : 1;
+
+			this.resolveValues();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='page') this.page = !isNaN(newVal) ? parseInt(newVal) : 1;
+			if (name =='pages') this.pages = !isNaN(newVal) ? parseInt(newVal) : 1;
+
+			this.resolveValues();
+		},
+
+		resolveValues: function()
+		{
+			if (this.pages < 1) this.pages = 1;
+			if (this.page < 1) this.page = 1;
+			if (this.page > this.pages) this.page = this.pages
+		},
+
+		pageLeft: function()
+		{
+			if (this.page > 1) this.host.setAttribute('page', this.page - 1);
+			naff.fire(this.host, 'change');
+		},
+
+		pageRight: function()
+		{
+			if (this.page < this.pages) this.host.setAttribute('page', this.page + 1);
+			naff.fire(this.host, 'change');
+		},
+
+		beginning: function()
+		{
+			this.host.setAttribute('page', 1);
+			naff.fire(this.host, 'change');
+		},
+
+		end: function()
+		{
+			this.host.setAttribute('page', this.pages);
+			naff.fire(this.host, 'change');
+		},
+
+		goTo: function()
+		{
+			if (isNaN(this.page)) this.page = 1;
+			else if (this.page < 1) this.page = 1;
+			else if (this.page > this.pages) this.page = this.pages;
+			this.host.setAttribute('page', this.page);
+			naff.fire(this.host, 'change');
+		}
+	});
+;
+naff.registerElement({name: 'naff-x-button', extends: 'button'});
+
+	// build scope
+	naff.registerElement({
+		name: 'naff-loading',
+
+		toggle: 0,
+
+		private: {
+			delay: 4,
+			opacityTimer: null,
+			displayTimer: null,
+			loadingTimer: null
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle') == 1 ? 1 : 0;
+			else this.host.setAttribute('toggle', this.toggle);
+
+			if (this.toggle) this.show();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='toggle')
+			{
+				this.toggle = newVal == 1 ? 1 : 0;
+				if (this.toggle) this.show();
+				else this.hide();
+			}
+		},
+
+		show: function()
+		{
+			naff.fire(this.host, 'show');
+
+			// re-center
+			this.host.style.display = "block";
+			if ("bottom" === this.host.getAttribute('position') || "top" === this.host.getAttribute('position')) this.host.style.marginLeft = "-" + this.host.offsetWidth/2 + "px";
+
+			// fade in
+			var scope = this;
+			setTimeout(function(){ scope.host.style.opacity = 1 }, 1);
+		},
+
+		hide: function()
+		{
+			this.host.style.opacity = 0;
+
+			var scope = this;
+			setTimeout(function()
+			{
+				scope.host.style.display = "none";
+				naff.fire(scope.host, 'hide');
+			}, 300);
+		}
+	});
+;
 
 	// build scope
 	naff.registerElement({
@@ -323,12 +648,15 @@ naff.registerElement({name: 'naff-x-select'});;
 			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
+			// re-center
+			scope.host.style.display = "block";
+			if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+
 			// jiggle toast if re-thrown or show for first time
 			if (!!scope.private.messageTimer)
 			{
 				clearTimeout(scope.private.messageTimer);
 				clearTimeout(scope.private.displayTimer);
-				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
 
 				setTimeout(function()
 				{
@@ -338,16 +666,7 @@ naff.registerElement({name: 'naff-x-select'});;
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
 				}, 1);
 			}
-			else
-			{
-				scope.host.style.display = "block";
-
-				setTimeout(function()
-				{
-					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
-					scope.host.style.opacity = 1;
-				}, 1);
-			}
+			else setTimeout(function() { scope.host.style.opacity = 1 }, 1);
 
 			// set timing of show/hide
 			scope.private.messageTimer = setTimeout(function()
@@ -465,8 +784,11 @@ naff.registerElement({name: 'naff-x-select'});;
 			today: null,
 			date: null,
 			days: [],
+			years: [],
+			months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			selected: null,
 			selectedDate: null,
+			mode: 'day',
 			events: []
 		},
 
@@ -502,6 +824,7 @@ naff.registerElement({name: 'naff-x-select'});;
 					{
 						this.toggle = 1;
 						this.load();
+						this.private.mode = 'day';
 					}
 				break;
 			}
@@ -516,6 +839,13 @@ naff.registerElement({name: 'naff-x-select'});;
 		hide: function()
 		{
 			this.host.setAttribute('toggle', 0);
+		},
+
+		clear: function()
+		{
+			this.host.setAttribute('value', '');
+			this.host.setAttribute('toggle', 0);
+			naff.fire(this.host, 'changed', '');
 		},
 
 		load: function()
@@ -535,23 +865,41 @@ naff.registerElement({name: 'naff-x-select'});;
 		},
 
 		// Clears the calendar and shows the next month
-		nextMonth: function()
+		next: function()
 		{
-		    var newDate = new Date(this.private.date);
-			newDate.setMonth(newDate.getMonth() + 1);
-			this.private.date = newDate;
-		    this.createMonth();
-			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			if (this.private.mode == 'day')
+			{
+			    var newDate = new Date(this.private.date);
+				newDate.setMonth(newDate.getMonth() + 1);
+				this.private.date = newDate;
+			    this.createMonth();
+				naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			}
+			else if (this.private.mode == 'year')
+			{
+				var start = parseInt(this.private.years[24]) + 1;
+				this.private.years = [];
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+			}
 		},
 
 		// Clears the calendar and shows the previous month
-		previousMonth: function()
+		previous: function()
 		{
-		    var newDate = new Date(this.private.date);
-			newDate.setMonth(newDate.getMonth() - 1);
-			this.private.date = newDate;
-		    this.createMonth();
-			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			if (this.private.mode == 'day')
+			{
+			    var newDate = new Date(this.private.date);
+				newDate.setMonth(newDate.getMonth() - 1);
+				this.private.date = newDate;
+			    this.createMonth();
+				naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			}
+			else if (this.private.mode == 'year')
+			{
+				var start = parseInt(this.private.years[0]) - 25;
+				this.private.years = [];
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+			}
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -603,6 +951,49 @@ naff.registerElement({name: 'naff-x-select'});;
 			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
 			naff.fire(this.host, 'changed', dateFormat(this.private.selected, this.format));
+		},
+
+		selectYear: function(ev)
+		{
+			var el = ev.target;
+			while (!el.hasAttribute('index')) el = el.parentNode;
+			var index = el.getAttribute('index');
+
+			var dateObject = new Date();
+		    dateObject.setDate(this.private.date.getDate());
+		    dateObject.setMonth(this.private.date.getMonth());
+		    dateObject.setYear(this.private.years[index]);
+
+			this.private.date = dateObject
+			this.private.mode = 'month';
+		},
+
+		selectMonth: function(ev)
+		{
+			var el = ev.target;
+			while (!el.hasAttribute('index')) el = el.parentNode;
+			var index = el.getAttribute('index');
+
+			var dateObject = new Date();
+		    dateObject.setDate(this.private.date.getDate());
+		    dateObject.setMonth(index);
+		    dateObject.setYear(this.private.date.getFullYear());
+
+			this.private.date = dateObject
+			this.createMonth();
+			this.private.mode = 'day';
+		},
+
+		changeMode: function()
+		{
+			if (this.private.mode != 'day') this.private.mode = 'day';
+			else
+			{
+				this.private.years = [];
+				var start = parseInt(this.private.selected.getFullYear()) - 12;
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+				this.private.mode = 'year';
+			}
 		}
 	});
 ;
@@ -883,17 +1274,18 @@ naff.registerElement({name: 'naff-x-select'});;
 		changeRoute: function(event)
 		{
 			var parent = event.target;
-			while (parent.tagName != 'LI' && !parent.hasAttribute('default')) parent = parent.parentNode;
+
 			if (parent.hasAttribute('route')) {
 				naff.setLocation({route: parent.getAttribute('route')});
 				this.toggle = false;
 			} else {
-				var list = parent.querySelector('ul');
+				var list = parent.parentNode.querySelector('ul');
 				if (list.hasAttribute('active')) list.removeAttribute('active');
 				else list.setAttribute('active', '');
 			}
 
 			event.stopPropagation();
+			event.preventDefault();
 		},
 
 		toggleMenu: function()
@@ -925,6 +1317,11 @@ naff.registerElement({name: 'naff-x-select'});;
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
 			}
+		},
+
+		addHash: function(a, b)
+		{
+			return '#' + this.item.route;
 		}
 	});
 ;

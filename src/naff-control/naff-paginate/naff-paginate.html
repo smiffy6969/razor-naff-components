@@ -1,0 +1,104 @@
+<!--
+* razor-naff-components
+* naff-paginate - Overlay modal with auto height and mobile snap layout
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- DEPENDANCIES -->
+<link rel="import" href="../../naff-base.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-paginate .-holder { text-align: center; }
+	naff-paginate .-holder naff-tag { min-width: 100px; }
+	naff-paginate .-holder naff-tag input { border: 1px solid #888; text-align: right; width: 60px; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-paginate">
+	<div class="-holder">
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="beginning()" icon><naff-icon name="angle-double-left"></naff-icon></button>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="pageLeft()" icon><naff-icon name="angle-left"></naff-icon></button>
+		<naff-tag shape="round" color="grey">
+			Page <input type="number" naff-value="page" naff-on-change="goTo()"/>
+			of {{pages}}
+		</naff-tag>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="pageRight()" icon><naff-icon name="angle-right"></naff-icon></button>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="end()" icon><naff-icon name="angle-double-right"></naff-icon></button>
+	</div>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-paginate',
+		dataBind: true,
+		page: null,
+		pages: null,
+
+		created: function()
+		{
+
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('pages')) this.pages = !isNaN(this.host.getAttribute('pages')) ? parseInt(this.host.getAttribute('pages')) : 1;
+			if (this.host.hasAttribute('page')) this.page = !isNaN(this.host.getAttribute('page')) ? parseInt(this.host.getAttribute('page')) : 1;
+
+			this.resolveValues();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='page') this.page = !isNaN(newVal) ? parseInt(newVal) : 1;
+			if (name =='pages') this.pages = !isNaN(newVal) ? parseInt(newVal) : 1;
+
+			this.resolveValues();
+		},
+
+		resolveValues: function()
+		{
+			if (this.pages < 1) this.pages = 1;
+			if (this.page < 1) this.page = 1;
+			if (this.page > this.pages) this.page = this.pages
+		},
+
+		pageLeft: function()
+		{
+			if (this.page > 1) this.host.setAttribute('page', this.page - 1);
+			naff.fire(this.host, 'change');
+		},
+
+		pageRight: function()
+		{
+			if (this.page < this.pages) this.host.setAttribute('page', this.page + 1);
+			naff.fire(this.host, 'change');
+		},
+
+		beginning: function()
+		{
+			this.host.setAttribute('page', 1);
+			naff.fire(this.host, 'change');
+		},
+
+		end: function()
+		{
+			this.host.setAttribute('page', this.pages);
+			naff.fire(this.host, 'change');
+		},
+
+		goTo: function()
+		{
+			if (isNaN(this.page)) this.page = 1;
+			else if (this.page < 1) this.page = 1;
+			else if (this.page > this.pages) this.page = this.pages;
+			this.host.setAttribute('page', this.page);
+			naff.fire(this.host, 'change');
+		}
+	});
+</script>

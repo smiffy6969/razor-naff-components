@@ -1,0 +1,91 @@
+<!--
+* razor-naff-components
+* naff-loading - Overlay loading for use as notification tool
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-loading { padding: 10px; position: fixed; top: 50%; left: 50%; opacity: 0; text-align: center; background-color: #444; color: #fff; font-size: 14px; display: none; max-width: 80%; z-index: 3000; -webkit-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -moz-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -ms-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -o-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -0-border-radius: 2px; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
+	naff-loading[color='red'] { background-color: rgb(255, 44, 44); }
+	naff-loading[color='blue'] { background-color: rgb(74, 74, 255); }
+	naff-loading[color='green'] { background-color: rgb(18, 163, 18); }
+	naff-loading[color='orange'] { background-color: rgb(255, 136, 26); }
+	naff-loading[color='white'] { background-color: #f4f4f4; color: #444; }
+	naff-loading[shape='round'] { border-radius: 100px; }
+	naff-loading[shape='rounded'] { border-radius: 5px; }
+	naff-loading[shape='oval'] { border-radius: 75% / 77%; }
+	@-webkit-keyframes -naff-loading-jiggle { 0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 10% { -webkit-transform: translate(-1px, -2px) rotate(-2deg); }	20% { -webkit-transform: translate(-3px, 0px) rotate(3deg); } 30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); } 70% { -webkit-transform: translate(2px, 1px) rotate(-2deg); } 80% { -webkit-transform: translate(-1px, -1px) rotate(4deg); } 90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }	}
+	@-moz-keyframes -naff-loading-jiggle { 0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 10% { -moz-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -moz-transform: translate(-3px, 0px) rotate(3deg); } 30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -moz-transform: translate(-3px, 1px) rotate(0deg); } 70% { -moz-transform: translate(2px, 1px) rotate(-2deg); } 80% { -moz-transform: translate(-1px, -1px) rotate(4deg); } 90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-ms-keyframes -naff-loading-jiggle { 0% { -ms-transform: translate(2px, 1px) rotate(0deg); } 10% { -ms-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -ms-transform: translate(-3px, 0px) rotate(3deg); } 30% { -ms-transform: translate(0px, 2px) rotate(0deg); } 40% { -ms-transform: translate(1px, -1px) rotate(1deg); } 50% { -ms-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -ms-transform: translate(-3px, 1px) rotate(0deg); } 70% { -ms-transform: translate(2px, 1px) rotate(-2deg); } 80% { -ms-transform: translate(-1px, -1px) rotate(4deg); } 90% { -ms-transform: translate(2px, 2px) rotate(0deg); } 100% { -ms-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-o-keyframes -naff-loading-jiggle { 0% { -o-transform: translate(2px, 1px) rotate(0deg); } 10% { -o-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -o-transform: translate(-3px, 0px) rotate(3deg); } 30% { -o-transform: translate(0px, 2px) rotate(0deg); } 40% { -o-transform: translate(1px, -1px) rotate(1deg); } 50% { -o-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -o-transform: translate(-3px, 1px) rotate(0deg); } 70% { -o-transform: translate(2px, 1px) rotate(-2deg); } 80% { -o-transform: translate(-1px, -1px) rotate(4deg); } 90% { -o-transform: translate(2px, 2px) rotate(0deg); } 100% { -o-transform: translate(1px, -2px) rotate(-1deg); } }
+	@keyframes -naff-loading-jiggle { 0% { transform: translate(2px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-2deg); } 20% { transform: translate(-3px, 0px) rotate(3deg); } 30% { transform: translate(0px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(2px, 1px) rotate(-2deg); } 80% { transform: translate(-1px, -1px) rotate(4deg); } 90% { transform: translate(2px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-loading">
+	<content></content>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-loading',
+
+		toggle: 0,
+
+		private: {
+			delay: 4,
+			opacityTimer: null,
+			displayTimer: null,
+			loadingTimer: null
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle') == 1 ? 1 : 0;
+			else this.host.setAttribute('toggle', this.toggle);
+
+			if (this.toggle) this.show();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='toggle')
+			{
+				this.toggle = newVal == 1 ? 1 : 0;
+				if (this.toggle) this.show();
+				else this.hide();
+			}
+		},
+
+		show: function()
+		{
+			naff.fire(this.host, 'show');
+
+			// re-center
+			this.host.style.display = "block";
+			if ("bottom" === this.host.getAttribute('position') || "top" === this.host.getAttribute('position')) this.host.style.marginLeft = "-" + this.host.offsetWidth/2 + "px";
+
+			// fade in
+			var scope = this;
+			setTimeout(function(){ scope.host.style.opacity = 1 }, 1);
+		},
+
+		hide: function()
+		{
+			this.host.style.opacity = 0;
+
+			var scope = this;
+			setTimeout(function()
+			{
+				scope.host.style.display = "none";
+				naff.fire(scope.host, 'hide');
+			}, 300);
+		}
+	});
+</script>

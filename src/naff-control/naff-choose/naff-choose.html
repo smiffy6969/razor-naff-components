@@ -1,0 +1,179 @@
+<!--
+* razor-naff-components
+* naff-choose - Form input with user feedback
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- DEPENDANCIES -->
+<!-- <link rel="import" href="../../naff-base.html"> -->
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-choose { height: 30px; display: inline-block; }
+	naff-choose .-items { height: 30px; width: 100%; display: block; margin-top: 2px; }
+	naff-choose .-items .-item { padding: 0px 3px; background-color: #f4f4f4; color: #444; border: 1px solid #ccc; margin: 0px 2px 2px 0px; display: inline-block; }
+	naff-choose .-items .-item naff-icon { cursor: pointer; opacity: 0.8; }
+	naff-choose .-items .-item naff-icon:hover { opacity: 1; }
+	naff-choose .-chooser { width: 100%; box-sizing: border-box; }
+	naff-choose	.-chooser select { height: 30px; width: inherit; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-choose .-chooser select:focus:not([disabled]), naff-choose .-chooser select:active:not([disabled]) { border: 1px solid #444; }
+	naff-choose .-chooser select[disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
+	naff-choose .-chooser select option { color: #444; }
+	naff-choose .-chooser select option.-placeholder { color: #aaa; }
+	naff-choose .-chooser select { color: #aaa; }
+	naff-choose .-chooser select[selected] { color: #444; }
+	naff-choose[add] .-chooser { padding-right: 35px; position: relative; }
+	naff-choose[add] .-chooser button { position: absolute; top: 0px; right: 0px; }
+	naff-choose[disabled] .-items .-item { border: 1px dashed #ccc; background-color: #fff; }
+	naff-choose[disabled] .-items .-item naff-icon { cursor: not-allowed; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-choose">
+	<div class="-chooser">
+		<select naff-value="private.selected" naff-on-change="selectedOption('auto')" naff-placeholder="placeholder | bool" naff-selected="private.selected">
+			<option naff-if="placeholder" class="-placeholder" value="" disabled>{{placeholder}}</option>
+			<option naff-each-option="options" naff-value="index">{{option | key optionLabel}}</option>
+		</select>
+		<button naff-show="private.add" is="naff-x-button" size="medium" shape="round" color="green" naff-on-click="selectedOption('add')" icon>
+			<naff-icon name="plus"></naff-icon>
+		</button>
+	</div>
+	<ul class="-items">
+		<li class="-item" naff-each-item="selectedObs" naff-index="index">
+			{{item | key optionLabel}}
+			<naff-icon name="times" naff-on-click="removeItem()"></naff-icon>
+		</li>
+	</ul>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-choose',
+		dataBind: true,
+
+		// public properties
+		options: [],
+		optionValue: 'value',
+		optionLabel: 'label',
+		selectedObs: [],
+		selected: [],
+		placeholder: null,
+
+		// private properties
+		private: {
+			selected: null,
+			add: 0
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('option-value')) this.optionValue = this.host.getAttribute('option-value');
+			if (this.host.hasAttribute('option-label')) this.optionLabel = this.host.getAttribute('option-label');
+			if (this.host.hasAttribute('placeholder')) this.placeholder = this.host.getAttribute('placeholder');
+			if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+			if (this.host.hasAttribute('add')) this.private.add = 1;
+
+			// configure any options set on attribtues
+			if (this.host.hasAttribute('options')) this.parseOptions();
+		},
+
+		detached: function()
+		{
+			// this.template.querySelector('input').removeEventListener('input', this.onInputChanged);
+			// this.template.querySelector('input').removeEventListener('keypress', this.onKeyPressed);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'option-value':
+					this.optionValue = newVal;
+				break;
+				case 'option-label':
+					this.optionLabel = newVal;
+				break;
+				case 'options':
+					this.parseOptions();
+				break;
+				case 'placeholder':
+					this.placeholder = newVal;
+				break;
+				case 'disabled':
+					if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+					else this.host.querySelector('select').removeAttribute('disabled');
+				break;
+				case 'add':
+					if (this.host.hasAttribute('add')) this.private.add = 1;
+					else this.private.add = 0;
+				break;
+			}
+		},
+
+		parseOptions: function()
+		{
+			try
+			{
+			   this.options = JSON.parse(this.host.getAttribute('options'));
+			}
+			catch (e)
+			{
+				var options = [];
+				var bits = this.host.getAttribute('options').split(',');
+				for (var i = 0; i < bits.length; i++) {
+					options[i] = {};
+					options[i][this.optionValue] = bits[i].trim();
+					options[i][this.optionLabel] = bits[i].trim();
+				}
+				this.options = options;
+			}
+		},
+
+		selectedOption: function(ev, type)
+		{
+			if (type == 'auto' && this.host.hasAttribute('add'))
+			{
+				naff.fire(this.host, 'select', this.options[this.private.selected]);
+				return;
+			}
+
+			if (this.host.hasAttribute('disabled') || !this.private.selected) return;
+
+			var selectedObs = [];
+			var selected = [];
+			for (var i = 0; i < this.selectedObs.length; i++)
+			{
+				selectedObs.push(naff.cloneObject(this.selectedObs[i]));
+				selected.push(this.selectedObs[i][this.optionValue]);
+			}
+			selectedObs.push(naff.cloneObject(this.options[this.private.selected]));
+			selected.push(this.options[this.private.selected][this.optionValue]);
+
+			this.selectedObs = selectedObs;
+			this.selected = selected;
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		},
+
+		removeItem: function(ev)
+		{
+			if (this.host.hasAttribute('disabled')) return;
+
+			var ele = ev.target;
+			while (!ele.hasAttribute('index')) ele = ele.parentNode;
+			var index = parseInt(ele.getAttribute('index'));
+			this.selectedObs.splice(index, 1);
+			this.selected.splice(index, 1);
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		}
+	});
+</script>

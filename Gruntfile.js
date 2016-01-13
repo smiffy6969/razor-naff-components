@@ -38,7 +38,7 @@ module.exports = function(grunt) {
           excludes: {
             imports: [
               "naff-base.html",
-              "naff-form.html",
+              "naff-control.html",
               "naff-overlay.html",
               "naff-resource.html",
               "naff-structure.html"
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         files: {
           // Target-specific file lists and/or options go here. dest: source
           'build/naff-base.vulc.html': 'src/naff-base.html',
-          'build/naff-form.vulc.html': 'src/naff-form.html',
+          'build/naff-control.vulc.html': 'src/naff-control.html',
           'build/naff-overlay.vulc.html': 'src/naff-overlay.html',
           'build/naff-resource.vulc.html': 'src/naff-resource.html',
           'build/naff-structure.vulc.html': 'src/naff-structure.html'
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
           excludes: {
             imports: [
               "naff-base.html",
-              "naff-form.html",
+              "naff-control.html",
               "naff-overlay.html",
               "naff-resource.html",
               "naff-structure.html"
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         files: {
           // Target-specific file lists and/or options go here. dest: source
           'build/naff-base.vulc.csp.html': 'src/naff-base.html',
-          'build/naff-form.vulc.csp.html': 'src/naff-form.html',
+          'build/naff-control.vulc.csp.html': 'src/naff-control.html',
           'build/naff-overlay.vulc.csp.html': 'src/naff-overlay.html',
           'build/naff-resource.vulc.csp.html': 'src/naff-resource.html',
           'build/naff-structure.vulc.csp.html': 'src/naff-structure.html'
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
         overwrite: true,                 // overwrite matched source files
         replacements: [
           {from: "src/naff-base.html", to: "build/naff-base.vulc.html"},
-          {from: "src/naff-form.html", to: "build/naff-form.vulc.html"},
+          {from: "src/naff-control.html", to: "build/naff-control.vulc.html"},
           {from: "src/naff-overlay.html", to: "build/naff-overlay.vulc.html"},
           {from: "src/naff-resource.html", to: "build/naff-resource.vulc.html"},
           {from: "src/naff-structure.html", to: "build/naff-structure.vulc.html"}

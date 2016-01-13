@@ -1,6 +1,6 @@
 <!--
 * razor-naff-components
-* naff-x-form - Extends a standard form to incorprate error checking consolidation
+* naff-form - As we dont need forms in JS ui, this houses controls for error compilation
 * @author Paul Smith (smiffy6969)
 * @site ulsmith.net
 * @licence MIT
@@ -10,8 +10,7 @@
 <script>
 	// build scope
 	naff.registerElement({
-		name: 'naff-x-form',
-		extends: 'form',
+		name: 'naff-form',
 		error: false,
 
 		private: {
@@ -50,7 +49,7 @@
 
 		checkError: function(event, scope)
 		{
-			var scope = scope || naff.getParentScope(this, 'naff-x-form');
+			var scope = scope || naff.getParentScope(this, 'naff-form');
 			var error = false;
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{

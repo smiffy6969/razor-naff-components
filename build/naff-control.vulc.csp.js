@@ -1,36 +1,131 @@
-<!--
-* razor-naff-components
-* naff-form
-* @author Paul Smith (smiffy6969)
-* @site ulsmith.net
-* @licence MIT
---><html><head><link rel="import" href="../build/naff-base.vulc.html">
 
-<!-- STYLE - Encapsulate all css to tag name -->
-<style>
-	naff-input { height: 30px; display: inline-block; }
-	naff-input .-input-group { width: 100%; height: inherit; }
-	naff-input .-input-group input { width: inherit; height: inherit; box-sizing: border-box; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
-	naff-input .-input-group input:focus:not([disabled]), naff-input .-input-group input:active:not([disabled]) { border-color: #444; }
-	naff-input .-input-group input[disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
-	naff-input .-input-group input.error, naff-input .-input-group input.error:focus, naff-input .-input-group input.error:active { border-color: red; color: red; }
-	naff-input .-input-group .-input-error { position: absolute; visibility: hidden; color: red; font-size: 11px; line-height: 10px; }
-	naff-input .-input-group .-input-error naff-icon, naff-input .-input-group .-input-error .-input-error-message { color: red; font-size: 11px; line-height: 10px}
-</style>
+	// build scope
+	naff.registerElement({
+		name: 'naff-choose',
+		dataBind: true,
 
-<!-- TEMPLATE -->
-<template id="naff-input">
-	<div class="-input-group">
-		<input>
-		<div class="-input-error">
-			<naff-icon name="warning"></naff-icon>
-			<span class="-input-error-message"></span>
-		</div>
-	</div>
-</template>
+		// public properties
+		options: [],
+		optionValue: 'value',
+		optionLabel: 'label',
+		selectedObs: [],
+		selected: [],
+		placeholder: null,
 
-<!-- LOGIC -->
-<script>
+		// private properties
+		private: {
+			selected: null,
+			add: 0
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('option-value')) this.optionValue = this.host.getAttribute('option-value');
+			if (this.host.hasAttribute('option-label')) this.optionLabel = this.host.getAttribute('option-label');
+			if (this.host.hasAttribute('placeholder')) this.placeholder = this.host.getAttribute('placeholder');
+			if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+			if (this.host.hasAttribute('add')) this.private.add = 1;
+
+			// configure any options set on attribtues
+			if (this.host.hasAttribute('options')) this.parseOptions();
+		},
+
+		detached: function()
+		{
+			// this.template.querySelector('input').removeEventListener('input', this.onInputChanged);
+			// this.template.querySelector('input').removeEventListener('keypress', this.onKeyPressed);
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			switch (name)
+			{
+				case 'option-value':
+					this.optionValue = newVal;
+				break;
+				case 'option-label':
+					this.optionLabel = newVal;
+				break;
+				case 'options':
+					this.parseOptions();
+				break;
+				case 'placeholder':
+					this.placeholder = newVal;
+				break;
+				case 'disabled':
+					if (this.host.hasAttribute('disabled')) this.host.querySelector('select').setAttribute('disabled', '');
+					else this.host.querySelector('select').removeAttribute('disabled');
+				break;
+				case 'add':
+					if (this.host.hasAttribute('add')) this.private.add = 1;
+					else this.private.add = 0;
+				break;
+			}
+		},
+
+		parseOptions: function()
+		{
+			try
+			{
+			   this.options = JSON.parse(this.host.getAttribute('options'));
+			}
+			catch (e)
+			{
+				var options = [];
+				var bits = this.host.getAttribute('options').split(',');
+				for (var i = 0; i < bits.length; i++) {
+					options[i] = {};
+					options[i][this.optionValue] = bits[i].trim();
+					options[i][this.optionLabel] = bits[i].trim();
+				}
+				this.options = options;
+			}
+		},
+
+		selectedOption: function(ev, type)
+		{
+			if (type == 'auto' && this.host.hasAttribute('add'))
+			{
+				naff.fire(this.host, 'select', this.options[this.private.selected]);
+				return;
+			}
+
+			if (this.host.hasAttribute('disabled') || !this.private.selected) return;
+
+			var selectedObs = [];
+			var selected = [];
+			for (var i = 0; i < this.selectedObs.length; i++)
+			{
+				selectedObs.push(naff.cloneObject(this.selectedObs[i]));
+				selected.push(this.selectedObs[i][this.optionValue]);
+			}
+			selectedObs.push(naff.cloneObject(this.options[this.private.selected]));
+			selected.push(this.options[this.private.selected][this.optionValue]);
+
+			this.selectedObs = selectedObs;
+			this.selected = selected;
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		},
+
+		removeItem: function(ev)
+		{
+			if (this.host.hasAttribute('disabled')) return;
+
+			var ele = ev.target;
+			while (!ele.hasAttribute('index')) ele = ele.parentNode;
+			var index = parseInt(ele.getAttribute('index'));
+			this.selectedObs.splice(index, 1);
+			this.selected.splice(index, 1);
+			this.host.setAttribute('value', JSON.stringify(this.selected));
+
+			naff.fire(this.host, 'change');
+		}
+	});
+;
+
 	// build scope
 	naff.registerElement({
 		name: 'naff-input',
@@ -156,27 +251,8 @@
 			return this.template.querySelector('input').focus();
 		}
 	});
-</script>
+;
 
-
-
-<!-- STYLE - Encapsulate all css to tag name -->
-<style>
-	naff-switch[disabled] naff-icon { opacity: 0.5; cursor: not-allowed; }
-	naff-switch naff-icon.fa-toggle-on, naff-switch naff-icon.fa-toggle-off { font-size: 30px; line-height: 30px; cursor: pointer; }
-	naff-switch naff-icon[name='toggle-on'] { color: green; }
-	naff-switch[on-color='red'] naff-icon[name='toggle-on'] { color: red; }
-	naff-switch[on-color='blue'] naff-icon[name='toggle-on'] { color: blue; }
-	naff-switch[on-color='orange'] naff-icon[name='toggle-on'] { color: orange; }
-</style>
-
-<!-- TEMPLATE -->
-<template id="naff-switch">
-	<naff-icon></naff-icon>
-</template>
-
-<!-- LOGIC -->
-<script>
 	// build scope
 	naff.registerElement({
 		name: 'naff-switch',
@@ -226,47 +302,81 @@
 			naff.fire(this.host, 'change');
 		}
 	});
-</script>
+;
 
-<style>
-	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
-	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
-	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
-	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
-	button[is='naff-x-button'][size='extra-small'] { padding: 0 4px; font-size: 9px; line-height: 17px; min-width: 18px; height: 18px; }
-	button[is='naff-x-button'][size='small'] { padding: 0 8px; font-size: 11px; line-height: 21px; min-width: 22px; height: 22px; }
-	button[is='naff-x-button'][size='medium'] { padding: 0 8px; font-size: 14px; line-height: 29px; min-width: 30px; height: 30px; }
-	button[is='naff-x-button'][size='large'] { padding: 0 12px; font-size: 18px; line-height: 33px; min-width: 34px; height: 34px; }
-	button[is='naff-x-button'][size='extra-large'] { padding: 0 14px; font-size: 20px; line-height: 37px; min-width: 38px; height: 38px; }
-	button[is='naff-x-button'][size='extra-small'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='small'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='medium'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='large'][icon] { padding: 0; }
-	button[is='naff-x-button'][size='extra-large'][icon] { padding: 0; }
-	button[is='naff-x-button'][shape='round'] { -webkit-border-radius: 100px; -moz-border-radius: 100px; -ms-border-radius: 100px; -o-border-radius: 100px; border-radius: 100px; }
-	button[is='naff-x-button'][shape='rounded'] { -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
-	button[is='naff-x-button'][shape='oval'] { -webkit-border-radius: 75% / 77%; -moz-border-radius: 75% / 77%; -ms-border-radius: 75% / 77%; -o-border-radius: 75% / 77%; border-radius: 75% / 77%; }
-	button[is='naff-x-button'][color='grey'] { border: 1px solid #bbb; background: #ddd; color: #222; }
-	button[is='naff-x-button'][color='blue'] { border: 1px solid blue; background: rgb(74, 74, 255); color: #fff; }
-	button[is='naff-x-button'][color='red'] { border: 1px solid red; background: rgb(255, 44, 44); color: #fff; }
-	button[is='naff-x-button'][color='green'] { border: 1px solid green; background: rgb(18, 163, 18); color: #fff; }
-	button[is='naff-x-button'][color='orange'] { border: 1px solid rgb(255, 118, 26); background: rgb(255, 136, 26); color: #fff; }
-	button[is='naff-x-button'][color='black'] { border: 1px solid #111; background: #222; color: #fff; }
-	button[is='naff-x-button'][color='pink'] { border: 1px solid #991C97; background: #D729D5; color: #fff; }
-	button[is='naff-x-button'][color='purple'] { border: 1px solid #440869; background: #8913D4; color: #fff; }
-	button[is='naff-x-button'][color='yellow'] { border: 1px solid #CCCC36; background: #E5E522; color: #444; }
-	button[is='naff-x-button'][color='aqua'] { border: 1px solid #308FB1; background: #31AEDB; color: #FFF; }
-	button[is='naff-x-button'][color='white'] { border: 1px solid #ccc; background: #FFFFFF; color: #444; }
-</style>
-
-<!-- LOGIC -->
-<script>naff.registerElement({name: 'naff-x-button', extends: 'button'})</script>
-
-<script>
 	// build scope
 	naff.registerElement({
-		name: 'naff-x-form',
-		extends: 'form',
+		name: 'naff-level',
+		dataBind: true,
+
+		// Public properties
+		level: 0,
+		maximum: 0,
+		iconFilled: 'star',
+		iconEmpty: 'star-o',
+		disabled: false,
+
+		private: {
+			stars: []
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('disabled')) this.disabled = true;
+			if (this.host.hasAttribute('level')) this.level = parseInt(this.host.getAttribute('level'));
+			if (this.host.hasAttribute('icon-filled')) this.iconFilled = this.host.getAttribute('icon-filled');
+			if (this.host.hasAttribute('icon-empty')) this.iconEmpty = this.host.getAttribute('icon-empty');
+			if (this.host.hasAttribute('maximum'))
+			{
+				this.maximum = parseInt(this.host.getAttribute('maximum'));
+				this.createStars();
+			}
+		},
+
+		detached: function()
+		{
+
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'disabled') this.disabled = !newValue ? false: true;
+			if (name == 'icon-filled') this.iconFilled = newValue;
+			if (name == 'icon-empty') this.iconEmpty = newValue;
+
+			if (name =='level')
+			{
+				this.level = newVal;
+				this.createStars();
+			}
+
+			if (name =='maximum')
+			{
+				this.maximum = newVal;
+				this.createStars();
+			}
+		},
+
+		createStars: function()
+		{
+			this.private.stars = [];
+			for (var i = 0; i < this.maximum; i++) this.private.stars.push(i < this.level ? this.iconFilled : this.iconEmpty);
+		},
+
+		updateStars: function(ev)
+		{
+			if (this.disabled) return;
+			var index = parseInt(ev.target.getAttribute('index'));
+			this.host.setAttribute('level', index + 1);
+			naff.fire(this.host, 'change', index + 1);
+		}
+	});
+;
+
+	// build scope
+	naff.registerElement({
+		name: 'naff-form',
 		error: false,
 
 		private: {
@@ -305,7 +415,7 @@
 
 		checkError: function(event, scope)
 		{
-			var scope = scope || naff.getParentScope(this, 'naff-x-form');
+			var scope = scope || naff.getParentScope(this, 'naff-form');
 			var error = false;
 			for (var i = 0; i < scope.private.matches.length; i++)
 			{
@@ -329,19 +439,76 @@
 			}
 		}
 	});
-</script>
+;
 
-<style>
-	select[is="naff-x-select"] { height: 30px; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
-	select[is="naff-x-select"]:focus:not([disabled]), select[is="naff-x-select"]:active:not([disabled]) { border: 1px solid #444; }
-	select[is="naff-x-select"][disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
-</style>
+	// build scope
+	naff.registerElement({
+		name: 'naff-paginate',
+		dataBind: true,
+		page: null,
+		pages: null,
 
-<!-- LOGIC -->
-<script>naff.registerElement({name: 'naff-x-select'});</script>
+		created: function()
+		{
 
-</head><body><div hidden="">
+		},
 
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('pages')) this.pages = !isNaN(this.host.getAttribute('pages')) ? parseInt(this.host.getAttribute('pages')) : 1;
+			if (this.host.hasAttribute('page')) this.page = !isNaN(this.host.getAttribute('page')) ? parseInt(this.host.getAttribute('page')) : 1;
 
+			this.resolveValues();
+		},
 
-</div></body></html>
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='page') this.page = !isNaN(newVal) ? parseInt(newVal) : 1;
+			if (name =='pages') this.pages = !isNaN(newVal) ? parseInt(newVal) : 1;
+
+			this.resolveValues();
+		},
+
+		resolveValues: function()
+		{
+			if (this.pages < 1) this.pages = 1;
+			if (this.page < 1) this.page = 1;
+			if (this.page > this.pages) this.page = this.pages
+		},
+
+		pageLeft: function()
+		{
+			if (this.page > 1) this.host.setAttribute('page', this.page - 1);
+			naff.fire(this.host, 'change');
+		},
+
+		pageRight: function()
+		{
+			if (this.page < this.pages) this.host.setAttribute('page', this.page + 1);
+			naff.fire(this.host, 'change');
+		},
+
+		beginning: function()
+		{
+			this.host.setAttribute('page', 1);
+			naff.fire(this.host, 'change');
+		},
+
+		end: function()
+		{
+			this.host.setAttribute('page', this.pages);
+			naff.fire(this.host, 'change');
+		},
+
+		goTo: function()
+		{
+			if (isNaN(this.page)) this.page = 1;
+			else if (this.page < 1) this.page = 1;
+			else if (this.page > this.pages) this.page = this.pages;
+			this.host.setAttribute('page', this.page);
+			naff.fire(this.host, 'change');
+		}
+	});
+;
+naff.registerElement({name: 'naff-x-button', extends: 'button'})

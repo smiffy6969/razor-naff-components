@@ -126,7 +126,7 @@ Adds a tag with the contents being shown in a colored box in several shapes, use
 ## Form Components
 
 
-### is="naff-x-button" (naff-form)
+### is="naff-x-button" (naff-control)
 
 
 ```html
@@ -149,16 +149,16 @@ __events__
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
-### naff-x-form (naff-form)
+### naff-form (naff-control)
 
 
 ```html
-<form is="naff-x-form" refresh="anything" error></form>
+<naff-form refresh="anything" error></naff-form>
 ```
 
 
-Adds some goodies to form element, any naff-form element used inside an extended form element using naff-x-form that has validation regex set will be checked by this form when any value changes.
-The form will set the error attribute when any naff-form element errors or is required and empty (skipping disabled ones) to allow you to easily error check your form contents in one go. Please note only naff-form custom elements will be checked.
+Any naff-control element used inside naff-form that has validation regex set will be checked by this form when any value changes.
+The form will set the error attribute when any naff-control element errors or is required and empty (skipping disabled ones) to allow you to easily error check your form contents in one go. Please note only naff-control custom elements will be checked.
 
 
 * __error__ - Set to 1 for an error and 0 for ok.
@@ -168,8 +168,8 @@ The form will set the error attribute when any naff-form element errors or is re
 __events__
 
 
-* __error__ - Fired when an error in naff-form element validation occurs.
-* __ok__ - Fired when no error is found in naff-form element validation.
+* __error__ - Fired when an error in naff-control element validation occurs.
+* __ok__ - Fired when no error is found in naff-control element validation.
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
@@ -179,7 +179,7 @@ __properties__
 * __.scope.error__ - Is there an error with the form
 
 
-### naff-input (naff-form)
+### naff-input (naff-control)
 
 
 ```html
@@ -224,7 +224,43 @@ __methods__
 * __.scope.focus__ - Sets focus on the element
 
 
-### naff-x-select (naff-form)
+### naff-choose (naff-control)
+
+
+```html
+<naff-choose placeholder="Main Category" options='[{"id": 1, "name": "boo"}]' option-value="id" option-label="name" add disabled></naff-choose>
+```
+
+
+A nice simple multiple select tool that lets you choose values from a drop down list and add multiple/remove items from the selection.
+
+
+* __placeholder__ - Text to show with no selection.
+* __options__ - The options to load the chooser with, as comma separated list or JSON data (or you can set property directly).
+* __option-value__ - The object value to use as the values selected (array of values).
+* __option-label__ - The label to show when selecting.
+* __add__ - Stops auto add on select and provides an add button to select values.
+* __disabled__ - Disables the input.
+
+
+__events__
+
+
+* __change__ - Fired when a change to the selection happens.
+* __select__ - Fired when a selection happens without adding it (when using add button).
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__properties__
+
+
+* __.scope.options__ - The options to populate the chooser with.
+* __.scope.selected__ - The selected values as per option-value or 'value' for default.
+* __.scope.selectedObs__ - The actual selected objects, should you want the whole object.
+
+
+
+### naff-x-select (naff-control)
 
 
 ```html
@@ -243,7 +279,7 @@ __events__
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
-### naff-switch (naff-form)
+### naff-switch (naff-control)
 
 
 ```html
@@ -263,6 +299,31 @@ __events__
 
 
 * __change__ - Fired when a switch has toggled.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+### naff-level (naff-control)
+
+
+```html
+<naff-level level="3" maximum="5" icon-filled="" icon-empty="" disabled></naff-level>
+```
+
+
+A nice way to show a level using icons (default to stars). Will show filled in icons 'level' amount of times continuing with empty icons until 'maximum' reached. Click the icon to set the level at that point.
+
+
+* __level__ - The level currently set.
+* __maximum__ - The maximum amount of level to be had.
+* __icon-filled__ - [optional] The icon to use as filled icon as per naff-icon name (default is 'star').
+* __icon-empty__ - [optional] The icon to use as empty icon as per naff-icon name (default is 'star-o').
+* __disabled__ - Disables the level clicking.
+
+
+__events__
+
+
+* __change__ - Fired when a level is changed along with the level.
 * __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
 
 
@@ -296,6 +357,40 @@ __methods__
 
 
 * __scope.show()__ - Show the message, which then auto hides after 'delay' seconds.
+
+
+### naff-loading (naff-overlay)
+
+
+```html
+<naff-loading position="bottom-right" color="blue" shape="round" toggle="1">
+	<naff-icon name="refresh" spin></naff-icon>
+</naff-loading>
+```
+
+
+A type of notification message but has persistant state.
+
+
+* __toggle__ - The visibility of the message in real time as 0 or 1. Change this value to show or hide the message.
+* __position__ - Set to bottom, bottom-left, bottom-right, top, top-left or top-right to position the message when shown.
+* __color__ - The colour of the message to help set message types, red, blue, green, orange, white or black [default].
+* __shape__ - The shape of the message like round square or oval
+
+
+__events__
+
+
+* __show__ - Fired when message is shown.
+* __hide__ - Fired when message auto hides.
+* __[attribute_name]attributechanged__ - Fired when a change to the attribute happens, contains detail of changes.
+
+
+__methods__
+
+
+* __scope.show()__ - Show the message.
+* __scope.hide()__ - Hide the message.
 
 
 ### naff-modal (naff-overlay)

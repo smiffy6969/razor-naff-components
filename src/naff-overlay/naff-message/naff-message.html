@@ -74,12 +74,15 @@
 			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
+			// re-center
+			scope.host.style.display = "block";
+			if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+
 			// jiggle toast if re-thrown or show for first time
 			if (!!scope.private.messageTimer)
 			{
 				clearTimeout(scope.private.messageTimer);
 				clearTimeout(scope.private.displayTimer);
-				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
 
 				setTimeout(function()
 				{
@@ -89,16 +92,7 @@
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
 				}, 1);
 			}
-			else
-			{
-				scope.host.style.display = "block";
-
-				setTimeout(function()
-				{
-					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
-					scope.host.style.opacity = 1;
-				}, 1);
-			}
+			else setTimeout(function() { scope.host.style.opacity = 1 }, 1);
 
 			// set timing of show/hide
 			scope.private.messageTimer = setTimeout(function()

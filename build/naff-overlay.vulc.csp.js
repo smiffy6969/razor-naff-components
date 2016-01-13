@@ -1,6 +1,65 @@
 
 	// build scope
 	naff.registerElement({
+		name: 'naff-loading',
+
+		toggle: 0,
+
+		private: {
+			delay: 4,
+			opacityTimer: null,
+			displayTimer: null,
+			loadingTimer: null
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('toggle')) this.toggle = this.host.getAttribute('toggle') == 1 ? 1 : 0;
+			else this.host.setAttribute('toggle', this.toggle);
+
+			if (this.toggle) this.show();
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name =='toggle')
+			{
+				this.toggle = newVal == 1 ? 1 : 0;
+				if (this.toggle) this.show();
+				else this.hide();
+			}
+		},
+
+		show: function()
+		{
+			naff.fire(this.host, 'show');
+
+			// re-center
+			this.host.style.display = "block";
+			if ("bottom" === this.host.getAttribute('position') || "top" === this.host.getAttribute('position')) this.host.style.marginLeft = "-" + this.host.offsetWidth/2 + "px";
+
+			// fade in
+			var scope = this;
+			setTimeout(function(){ scope.host.style.opacity = 1 }, 1);
+		},
+
+		hide: function()
+		{
+			this.host.style.opacity = 0;
+
+			var scope = this;
+			setTimeout(function()
+			{
+				scope.host.style.display = "none";
+				naff.fire(scope.host, 'hide');
+			}, 300);
+		}
+	});
+;
+
+	// build scope
+	naff.registerElement({
 		name: 'naff-message',
 
 		toggle: 0,
@@ -38,12 +97,15 @@
 			naff.fire(scope.host, 'show');
 			scope.host.setAttribute('toggle', 0);
 
+			// re-center
+			scope.host.style.display = "block";
+			if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
+
 			// jiggle toast if re-thrown or show for first time
 			if (!!scope.private.messageTimer)
 			{
 				clearTimeout(scope.private.messageTimer);
 				clearTimeout(scope.private.displayTimer);
-				if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
 
 				setTimeout(function()
 				{
@@ -53,16 +115,7 @@
 					setTimeout(function() { scope.host.className = scope.host.className.replace(/ -jiggle/g, "") }, 750);
 				}, 1);
 			}
-			else
-			{
-				scope.host.style.display = "block";
-
-				setTimeout(function()
-				{
-					if ("bottom" === scope.host.getAttribute('position') || "top" === scope.host.getAttribute('position')) scope.host.style.marginLeft = "-" + scope.host.offsetWidth/2 + "px";
-					scope.host.style.opacity = 1;
-				}, 1);
-			}
+			else setTimeout(function() { scope.host.style.opacity = 1 }, 1);
 
 			// set timing of show/hide
 			scope.private.messageTimer = setTimeout(function()
@@ -180,8 +233,11 @@
 			today: null,
 			date: null,
 			days: [],
+			years: [],
+			months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			selected: null,
 			selectedDate: null,
+			mode: 'day',
 			events: []
 		},
 
@@ -217,6 +273,7 @@
 					{
 						this.toggle = 1;
 						this.load();
+						this.private.mode = 'day';
 					}
 				break;
 			}
@@ -231,6 +288,13 @@
 		hide: function()
 		{
 			this.host.setAttribute('toggle', 0);
+		},
+
+		clear: function()
+		{
+			this.host.setAttribute('value', '');
+			this.host.setAttribute('toggle', 0);
+			naff.fire(this.host, 'changed', '');
 		},
 
 		load: function()
@@ -250,23 +314,41 @@
 		},
 
 		// Clears the calendar and shows the next month
-		nextMonth: function()
+		next: function()
 		{
-		    var newDate = new Date(this.private.date);
-			newDate.setMonth(newDate.getMonth() + 1);
-			this.private.date = newDate;
-		    this.createMonth();
-			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			if (this.private.mode == 'day')
+			{
+			    var newDate = new Date(this.private.date);
+				newDate.setMonth(newDate.getMonth() + 1);
+				this.private.date = newDate;
+			    this.createMonth();
+				naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			}
+			else if (this.private.mode == 'year')
+			{
+				var start = parseInt(this.private.years[24]) + 1;
+				this.private.years = [];
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+			}
 		},
 
 		// Clears the calendar and shows the previous month
-		previousMonth: function()
+		previous: function()
 		{
-		    var newDate = new Date(this.private.date);
-			newDate.setMonth(newDate.getMonth() - 1);
-			this.private.date = newDate;
-		    this.createMonth();
-			naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			if (this.private.mode == 'day')
+			{
+			    var newDate = new Date(this.private.date);
+				newDate.setMonth(newDate.getMonth() - 1);
+				this.private.date = newDate;
+			    this.createMonth();
+				naff.fire(this.host, 'set', dateFormat(this.private.date, 'yyyy-mm-dd'));
+			}
+			else if (this.private.mode == 'year')
+			{
+				var start = parseInt(this.private.years[0]) - 25;
+				this.private.years = [];
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+			}
 		},
 
 		// Creates and populates all of the days to make up the month
@@ -318,6 +400,49 @@
 			this.host.setAttribute('value', dateFormat(this.private.selected, this.format));
 			this.host.setAttribute('toggle', 0);
 			naff.fire(this.host, 'changed', dateFormat(this.private.selected, this.format));
+		},
+
+		selectYear: function(ev)
+		{
+			var el = ev.target;
+			while (!el.hasAttribute('index')) el = el.parentNode;
+			var index = el.getAttribute('index');
+
+			var dateObject = new Date();
+		    dateObject.setDate(this.private.date.getDate());
+		    dateObject.setMonth(this.private.date.getMonth());
+		    dateObject.setYear(this.private.years[index]);
+
+			this.private.date = dateObject
+			this.private.mode = 'month';
+		},
+
+		selectMonth: function(ev)
+		{
+			var el = ev.target;
+			while (!el.hasAttribute('index')) el = el.parentNode;
+			var index = el.getAttribute('index');
+
+			var dateObject = new Date();
+		    dateObject.setDate(this.private.date.getDate());
+		    dateObject.setMonth(index);
+		    dateObject.setYear(this.private.date.getFullYear());
+
+			this.private.date = dateObject
+			this.createMonth();
+			this.private.mode = 'day';
+		},
+
+		changeMode: function()
+		{
+			if (this.private.mode != 'day') this.private.mode = 'day';
+			else
+			{
+				this.private.years = [];
+				var start = parseInt(this.private.selected.getFullYear()) - 12;
+				for (var i = start; i < start + 25; i++) this.private.years.push(i);
+				this.private.mode = 'year';
+			}
 		}
 	});
 ;

@@ -5,6 +5,31 @@
 * @site ulsmith.net
 * @licence MIT
 --><html><head><style>
+	naff-loading { padding: 10px; position: fixed; top: 50%; left: 50%; opacity: 0; text-align: center; background-color: #444; color: #fff; font-size: 14px; display: none; max-width: 80%; z-index: 3000; -webkit-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -moz-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -ms-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -o-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -0-border-radius: 2px; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
+	naff-loading[color='red'] { background-color: rgb(255, 44, 44); }
+	naff-loading[color='blue'] { background-color: rgb(74, 74, 255); }
+	naff-loading[color='green'] { background-color: rgb(18, 163, 18); }
+	naff-loading[color='orange'] { background-color: rgb(255, 136, 26); }
+	naff-loading[color='white'] { background-color: #f4f4f4; color: #444; }
+	naff-loading[shape='round'] { border-radius: 100px; }
+	naff-loading[shape='rounded'] { border-radius: 5px; }
+	naff-loading[shape='oval'] { border-radius: 75% / 77%; }
+	@-webkit-keyframes -naff-loading-jiggle { 0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 10% { -webkit-transform: translate(-1px, -2px) rotate(-2deg); }	20% { -webkit-transform: translate(-3px, 0px) rotate(3deg); } 30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); } 70% { -webkit-transform: translate(2px, 1px) rotate(-2deg); } 80% { -webkit-transform: translate(-1px, -1px) rotate(4deg); } 90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }	}
+	@-moz-keyframes -naff-loading-jiggle { 0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 10% { -moz-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -moz-transform: translate(-3px, 0px) rotate(3deg); } 30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -moz-transform: translate(-3px, 1px) rotate(0deg); } 70% { -moz-transform: translate(2px, 1px) rotate(-2deg); } 80% { -moz-transform: translate(-1px, -1px) rotate(4deg); } 90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-ms-keyframes -naff-loading-jiggle { 0% { -ms-transform: translate(2px, 1px) rotate(0deg); } 10% { -ms-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -ms-transform: translate(-3px, 0px) rotate(3deg); } 30% { -ms-transform: translate(0px, 2px) rotate(0deg); } 40% { -ms-transform: translate(1px, -1px) rotate(1deg); } 50% { -ms-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -ms-transform: translate(-3px, 1px) rotate(0deg); } 70% { -ms-transform: translate(2px, 1px) rotate(-2deg); } 80% { -ms-transform: translate(-1px, -1px) rotate(4deg); } 90% { -ms-transform: translate(2px, 2px) rotate(0deg); } 100% { -ms-transform: translate(1px, -2px) rotate(-1deg); } }
+	@-o-keyframes -naff-loading-jiggle { 0% { -o-transform: translate(2px, 1px) rotate(0deg); } 10% { -o-transform: translate(-1px, -2px) rotate(-2deg); } 20% { -o-transform: translate(-3px, 0px) rotate(3deg); } 30% { -o-transform: translate(0px, 2px) rotate(0deg); } 40% { -o-transform: translate(1px, -1px) rotate(1deg); } 50% { -o-transform: translate(-1px, 2px) rotate(-1deg); } 60% { -o-transform: translate(-3px, 1px) rotate(0deg); } 70% { -o-transform: translate(2px, 1px) rotate(-2deg); } 80% { -o-transform: translate(-1px, -1px) rotate(4deg); } 90% { -o-transform: translate(2px, 2px) rotate(0deg); } 100% { -o-transform: translate(1px, -2px) rotate(-1deg); } }
+	@keyframes -naff-loading-jiggle { 0% { transform: translate(2px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-2deg); } 20% { transform: translate(-3px, 0px) rotate(3deg); } 30% { transform: translate(0px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(2px, 1px) rotate(-2deg); } 80% { transform: translate(-1px, -1px) rotate(4deg); } 90% { transform: translate(2px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-loading">
+	<content></content>
+</template>
+
+<!-- LOGIC -->
+
+
+<style>
 	naff-message { padding: 10px; position: fixed; opacity: 0; text-align: center; background-color: #444; color: #fff; font-size: 14px; display: none; max-width: 80%; z-index: 3000; -webkit-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -moz-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -ms-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -o-box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); box-shadow: 0px 0px 30px 0px rgba(40, 40, 40, 0.61); -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -0-border-radius: 2px; border-radius: 2px; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -ms-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; }
 	naff-message[position='top'] { top: 20px; left: 50%; text-align: center; }
 	naff-message[position='bottom'] { bottom: 20px; left: 50%; text-align: center; }
@@ -33,7 +58,7 @@
 <!-- LOGIC -->
 
 
-<link rel="import" href="../build/naff-form.vulc.html">
+<link rel="import" href="../build/naff-control.vulc.html">
 
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
@@ -68,10 +93,10 @@
 <style>
 	naff-date-picker naff-modal.-date-picker-modal { width: 300px; }
 	naff-date-picker .-container .-controls { display: block; width: 100%; text-align: center; overflow: hidden; margin-bottom: 10px; }
-	naff-date-picker .-container .-controls .-tag-box { width: 140px; display: inline-block; }
-	naff-date-picker .-container .-controls .-tag-box .-in-month	{ background-color: #555; color: #eee; line-height: 18px; }
+	naff-date-picker .-container .-controls .-tag-box { width: 130px; display: inline-block; }
+	naff-date-picker .-container .-controls .-clear { position: absolute; left: 10px; }
 	naff-date-picker .-container .-controls .-close { position: absolute; right: 10px; }
-	naff-date-picker .-container .-controls .-close:hover { opacity: 1; }
+	naff-date-picker .-container .-controls .-close:hover, naff-date-picker .-container .-controls .-clear:hover  { opacity: 1; }
 	naff-date-picker .-container .-frame { position: relative; }
 	naff-date-picker .-container .-frame .-picker { width: 100%; display: block; margin: 0; padding: 0; }
 	naff-date-picker .-container .-frame .-picker .-picker-day { width: 14.28%; display: inline-block; cursor: pointer; box-sizing: border-box; list-style-type: none; padding: 1px;	}
@@ -81,6 +106,10 @@
 	naff-date-picker .-container .-frame .-picker .-picker-day[disabled] .-details { opacity: 0.5; cursor: not-allowed; background: #fff; border: solid 1px #ddd; }
 	naff-date-picker .-container .-frame .-picker .-picker-day .-details .-date { font-size: 16px; line-height: 12px; display: block; }
 	naff-date-picker .-container .-frame .-picker .-picker-day .-details .-day { font-size: 10px; padding-top: 0px; display: block; }
+	naff-date-picker .-container .-frame .-picker .-picker-year { width: 20%; display: inline-block; cursor: pointer; box-sizing: border-box; list-style-type: none; padding: 1px;	}
+	naff-date-picker .-container .-frame .-picker .-picker-year .-details { width: 100%; text-align: center; box-sizing: border-box; background-color: #f4f4f4; border: solid 1px #ddd; padding: 10px 6px 10px 6px; }
+	naff-date-picker .-container .-frame .-picker .-picker-month { width: 25%; display: inline-block; cursor: pointer; box-sizing: border-box; list-style-type: none; padding: 1px;	}
+	naff-date-picker .-container .-frame .-picker .-picker-month .-details { width: 100%; text-align: center; box-sizing: border-box; background-color: #f4f4f4; border: solid 1px #ddd; padding: 22px 6px 22px 6px; }
 </style>
 
 <!-- TEMPLATE -->
@@ -89,19 +118,36 @@
 		<main>
 			<div class="-container">
 		        <div class="-controls">
-					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="previousMonth()" icon=""><naff-icon name="chevron-left"></naff-icon></button>
+					<button is="naff-x-button" class="-clear" shape="round" color="orange" size="medium" naff-on-click="clear()" icon=""><naff-icon name="eraser"></naff-icon></button>
+					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="previous()" icon=""><naff-icon name="chevron-left"></naff-icon></button>
 					<div class="-tag-box">
-						<naff-tag class="-in-month" shape="round" naff-text="private.date | date 'mmmm yyyy'"></naff-tag>
+						<button class="-in-month" is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="changeMode()">
+							{{private.date | date 'mmmm yyyy'}}
+						</button>
 					</div>
-					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="nextMonth()" icon=""><naff-icon name="chevron-right"></naff-icon></button>
+					<button is="naff-x-button" size="medium" shape="round" color="grey" naff-on-click="next()" icon=""><naff-icon name="chevron-right"></naff-icon></button>
 					<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon=""><naff-icon name="times"></naff-icon></button>
 		        </div>
 				<div class="-frame">
-			        <ul class="-picker">
+			        <ul class="-picker" naff-show="private.mode | equals 'day'">
 				        <li naff-each-day="private.days" naff-on-click="selectDay()" naff-selected="day.date | equals private.selectedDate" class="-picker-day" naff-today="day.today" naff-day-id="day.id" naff-disabled="day.disabled">
 							<div class="-details">
 								<span class="-date" naff-text="day.dom"></span>
 								<span class="-day" naff-text="day.day"></span>
+							</div>
+						</li>
+			        </ul>
+			        <ul class="-picker" naff-show="private.mode | equals 'year'">
+				        <li naff-each-year="private.years" naff-on-click="selectYear()" class="-picker-year" naff-index="index">
+							<div class="-details">
+								<span class="-year" naff-text="year"></span>
+							</div>
+						</li>
+			        </ul>
+			        <ul class="-picker" naff-show="private.mode | equals 'month'">
+				        <li naff-each-month="private.months" naff-on-click="selectMonth()" class="-picker-month" naff-index="index">
+							<div class="-details">
+								<span class="-month" naff-text="month"></span>
 							</div>
 						</li>
 			        </ul>
@@ -164,6 +210,7 @@
 
 
 </head><body><div hidden="">
+
 
 
 </div><script charset="utf-8" src="naff-overlay.vulc.csp.js"></script></body></html>

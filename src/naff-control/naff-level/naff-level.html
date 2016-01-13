@@ -1,0 +1,94 @@
+<!--
+* razor-naff-components
+* naff-level - Toggle switch
+* @author Paul Smith (smiffy6969)
+* @site ulsmith.net
+* @licence MIT
+-->
+
+<!-- DEPENDANCIES -->
+<link rel="import" href="../../naff-base.html">
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-level naff-icon { opacity: 0.8; cursor: pointer; }
+	naff-level naff-icon:hover { opacity: 1; cursor: pointer; }
+	naff-level[disabled] naff-icon, naff-level[disabled] naff-icon:hover { opacity: 0.5; cursor: not-allowed; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-level">
+	<naff-icon naff-each-star="private.stars" naff-name="star" naff-on-click="updateStars()" naff-index="index"></naff-icon>
+</template>
+
+<!-- LOGIC -->
+<script>
+	// build scope
+	naff.registerElement({
+		name: 'naff-level',
+		dataBind: true,
+
+		// Public properties
+		level: 0,
+		maximum: 0,
+		iconFilled: 'star',
+		iconEmpty: 'star-o',
+		disabled: false,
+
+		private: {
+			stars: []
+		},
+
+		attached: function()
+		{
+			// Initial setup
+			if (this.host.hasAttribute('disabled')) this.disabled = true;
+			if (this.host.hasAttribute('level')) this.level = parseInt(this.host.getAttribute('level'));
+			if (this.host.hasAttribute('icon-filled')) this.iconFilled = this.host.getAttribute('icon-filled');
+			if (this.host.hasAttribute('icon-empty')) this.iconEmpty = this.host.getAttribute('icon-empty');
+			if (this.host.hasAttribute('maximum'))
+			{
+				this.maximum = parseInt(this.host.getAttribute('maximum'));
+				this.createStars();
+			}
+		},
+
+		detached: function()
+		{
+
+		},
+
+		attributeChanged: function(name, oldVal, newVal)
+		{
+			if (name == 'disabled') this.disabled = !newValue ? false: true;
+			if (name == 'icon-filled') this.iconFilled = newValue;
+			if (name == 'icon-empty') this.iconEmpty = newValue;
+
+			if (name =='level')
+			{
+				this.level = newVal;
+				this.createStars();
+			}
+
+			if (name =='maximum')
+			{
+				this.maximum = newVal;
+				this.createStars();
+			}
+		},
+
+		createStars: function()
+		{
+			this.private.stars = [];
+			for (var i = 0; i < this.maximum; i++) this.private.stars.push(i < this.level ? this.iconFilled : this.iconEmpty);
+		},
+
+		updateStars: function(ev)
+		{
+			if (this.disabled) return;
+			var index = parseInt(ev.target.getAttribute('index'));
+			this.host.setAttribute('level', index + 1);
+			naff.fire(this.host, 'change', index + 1);
+		}
+	});
+</script>

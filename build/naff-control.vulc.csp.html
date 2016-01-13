@@ -1,10 +1,52 @@
 <!--
 * razor-naff-components
-* naff-form
+* naff-control
 * @author Paul Smith (smiffy6969)
 * @site ulsmith.net
 * @licence MIT
---><html><head><link rel="import" href="../build/naff-base.vulc.html">
+--><html><head><style>
+	naff-choose { height: 30px; display: inline-block; }
+	naff-choose .-items { height: 30px; width: 100%; display: block; margin-top: 2px; }
+	naff-choose .-items .-item { padding: 0px 3px; background-color: #f4f4f4; color: #444; border: 1px solid #ccc; margin: 0px 2px 2px 0px; display: inline-block; }
+	naff-choose .-items .-item naff-icon { cursor: pointer; opacity: 0.8; }
+	naff-choose .-items .-item naff-icon:hover { opacity: 1; }
+	naff-choose .-chooser { width: 100%; box-sizing: border-box; }
+	naff-choose	.-chooser select { height: 30px; width: inherit; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
+	naff-choose .-chooser select:focus:not([disabled]), naff-choose .-chooser select:active:not([disabled]) { border: 1px solid #444; }
+	naff-choose .-chooser select[disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
+	naff-choose .-chooser select option { color: #444; }
+	naff-choose .-chooser select option.-placeholder { color: #aaa; }
+	naff-choose .-chooser select { color: #aaa; }
+	naff-choose .-chooser select[selected] { color: #444; }
+	naff-choose[add] .-chooser { padding-right: 35px; position: relative; }
+	naff-choose[add] .-chooser button { position: absolute; top: 0px; right: 0px; }
+	naff-choose[disabled] .-items .-item { border: 1px dashed #ccc; background-color: #fff; }
+	naff-choose[disabled] .-items .-item naff-icon { cursor: not-allowed; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-choose">
+	<div class="-chooser">
+		<select naff-value="private.selected" naff-on-change="selectedOption('auto')" naff-placeholder="placeholder | bool" naff-selected="private.selected">
+			<option naff-if="placeholder" class="-placeholder" value="" disabled="">{{placeholder}}</option>
+			<option naff-each-option="options" naff-value="index">{{option | key optionLabel}}</option>
+		</select>
+		<button naff-show="private.add" is="naff-x-button" size="medium" shape="round" color="green" naff-on-click="selectedOption('add')" icon="">
+			<naff-icon name="plus"></naff-icon>
+		</button>
+	</div>
+	<ul class="-items">
+		<li class="-item" naff-each-item="selectedObs" naff-index="index">
+			{{item | key optionLabel}}
+			<naff-icon name="times" naff-on-click="removeItem()"></naff-icon>
+		</li>
+	</ul>
+</template>
+
+<!-- LOGIC -->
+
+
+<link rel="import" href="../build/naff-base.vulc.html">
 
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
@@ -52,16 +94,61 @@
 <!-- LOGIC -->
 
 
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-level naff-icon { opacity: 0.8; cursor: pointer; }
+	naff-level naff-icon:hover { opacity: 1; cursor: pointer; }
+	naff-level[disabled] naff-icon, naff-level[disabled] naff-icon:hover { opacity: 0.5; cursor: not-allowed; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-level">
+	<naff-icon naff-each-star="private.stars" naff-name="star" naff-on-click="updateStars()" naff-index="index"></naff-icon>
+</template>
+
+<!-- LOGIC -->
+
+
+
+
+
+
+<!-- STYLE - Encapsulate all css to tag name -->
+<style>
+	naff-paginate .-holder { text-align: center; }
+	naff-paginate .-holder naff-tag { min-width: 100px; }
+	naff-paginate .-holder naff-tag input { border: 1px solid #888; text-align: right; width: 60px; }
+</style>
+
+<!-- TEMPLATE -->
+<template id="naff-paginate">
+	<div class="-holder">
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="beginning()" icon=""><naff-icon name="angle-double-left"></naff-icon></button>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="pageLeft()" icon=""><naff-icon name="angle-left"></naff-icon></button>
+		<naff-tag shape="round" color="grey">
+			Page <input type="number" naff-value="page" naff-on-change="goTo()">
+			of {{pages}}
+		</naff-tag>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="pageRight()" icon=""><naff-icon name="angle-right"></naff-icon></button>
+		<button is="naff-x-button" shape="round" color="grey" size="medium" naff-on-click="end()" icon=""><naff-icon name="angle-double-right"></naff-icon></button>
+	</div>
+</template>
+
+<!-- LOGIC -->
+
+
 <style>
 	button[is='naff-x-button'] { opacity: 0.9; border: 1px solid #bbb; background: #ddd; color: #222; cursor: pointer; }
 	button[is='naff-x-button']:focus { opacity: 1; outline: none; }
 	button[is='naff-x-button']:active:not(.disabled) { opacity: 0.8; }
 	button[is='naff-x-button'][disabled], button[is='naff-x-button'][disabled]:hover, button[is='naff-x-button'][disabled]:focus { opacity: 0.4; cursor: not-allowed; }
-	button[is='naff-x-button'][size='extra-small'] { padding: 0 4px; font-size: 9px; line-height: 17px; min-width: 18px; height: 18px; }
-	button[is='naff-x-button'][size='small'] { padding: 0 8px; font-size: 11px; line-height: 21px; min-width: 22px; height: 22px; }
-	button[is='naff-x-button'][size='medium'] { padding: 0 8px; font-size: 14px; line-height: 29px; min-width: 30px; height: 30px; }
-	button[is='naff-x-button'][size='large'] { padding: 0 12px; font-size: 18px; line-height: 33px; min-width: 34px; height: 34px; }
-	button[is='naff-x-button'][size='extra-large'] { padding: 0 14px; font-size: 20px; line-height: 37px; min-width: 38px; height: 38px; }
+	button[is='naff-x-button'][size='extra-small'] { padding: 0 4px; font-size: 9px; line-height: 14px; min-width: 18px; height: 18px; }
+	button[is='naff-x-button'][size='small'] { padding: 0 8px; font-size: 11px; line-height: 18px; min-width: 22px; height: 22px; }
+	button[is='naff-x-button'][size='medium'] { padding: 0 8px; font-size: 14px; line-height: 26px; min-width: 30px; height: 30px; }
+	button[is='naff-x-button'][size='large'] { padding: 0 12px; font-size: 18px; line-height: 30px; min-width: 34px; height: 34px; }
+	button[is='naff-x-button'][size='extra-large'] { padding: 0 14px; font-size: 20px; line-height: 34px; min-width: 38px; height: 38px; }
 	button[is='naff-x-button'][size='extra-small'][icon] { padding: 0; }
 	button[is='naff-x-button'][size='small'][icon] { padding: 0; }
 	button[is='naff-x-button'][size='medium'][icon] { padding: 0; }
@@ -86,19 +173,17 @@
 <!-- LOGIC -->
 
 
-
-
 <style>
 	select[is="naff-x-select"] { height: 30px; padding: 2px 5px; border: 1px solid #888; outline: none; font-size: 15px; background: transparent; }
 	select[is="naff-x-select"]:focus:not([disabled]), select[is="naff-x-select"]:active:not([disabled]) { border: 1px solid #444; }
 	select[is="naff-x-select"][disabled] { cursor: not-allowed; border: 1px dashed #888; background-color: #fff; }
 </style>
 
-<!-- LOGIC -->
-
-
 </head><body><div hidden="">
 
 
 
-</div><script charset="utf-8" src="naff-form.vulc.csp.js"></script></body></html>
+
+
+
+</div><script charset="utf-8" src="naff-control.vulc.csp.js"></script></body></html>

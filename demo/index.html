@@ -130,6 +130,16 @@
 
 				<hr>
 
+		 		<h2>Choose [naff-choose]</h2>
+
+				<div class="naff-choose-box" style="display: inline-block; width: 250px;">
+					<p>Choosen Binding: {{private.choosen}}</p>
+					<br>
+					<naff-choose placeholder="Choose something" naff-value="private.choosen" naff-options="one, two, three"></naff-choose>
+				</div>
+
+				<hr>
+
 		 		<h2>Switch [naff-switch]</h2>
 
 				<div class="naff-switch-wrapper" style="display: inline-block; width: 100px;">
@@ -243,6 +253,53 @@
 
 				<p>This text is loaded on the root page!</p>
 				<naff-partial partial="partial-file"></naff-partial>
+
+				<hr>
+
+				<h2>Date Picker [naff-date-picker]</h2>
+
+				<p>Date picker to use with any click event</p>
+				<button is="naff-x-button" size="medium" shape="round" naff-on-click="show('datePickerToggle')">
+					{{private.datePickerValue}}
+					<naff-icon name="calendar"></naff-icon>
+				</button>
+				<naff-date-picker naff-toggle="private.datePickerToggle" format="dd mmm yyyy" naff-value="private.datePickerValue"></naff-date-picker>
+
+				<hr>
+
+				<h2>Time Picker [naff-time-picker]</h2>
+
+				<p>Time picker to use with any click event</p>
+				<button is="naff-x-button" size="medium" shape="round" naff-on-click="show('timePickerToggle')">
+					{{private.timePickerValue}}
+					<naff-icon name="clock-o"></naff-icon>
+				</button>
+				<naff-time-picker naff-toggle="private.timePickerToggle" format="HH:MM" naff-value="private.timePickerValue"></naff-time-picker>
+
+				<hr>
+
+				<h2>Loading [naff-loading]</h2>
+
+				<p>Shows a loading box similar to naff-message but persistant</p>
+				<button is="naff-x-button" size="medium" naff-on-click="show('loading')">
+					Show loading message
+				</button>
+				<button is="naff-x-button" size="medium" naff-on-click="hide('loading')">
+					Hide loading message
+				</button>
+				<naff-loading naff-toggle="private.loading" shape="round" position="top">
+					<naff-icon name="circle-o-notch" spin></naff-icon>
+				</naff-loading>
+
+				<hr>
+
+				<h2>Pagination Control [naff-paginate]</h2>
+
+				<p>Can be used to control pagination values. Give it a page number, page amount and monitor change event.</p>
+				<p>Page {{private.pagination.page}}</p>
+				<p>Pages {{private.pagination.pages}}</p>
+				<naff-paginate naff-page="private.pagination.page" naff-pages="private.pagination.pages" naff-total="private.pagination.total" naff-on-change="changePage()">
+				</naff-paginate>
 			</naff-page>
 		</naff-app>
 	</body>

@@ -64,17 +64,18 @@
 		changeRoute: function(event)
 		{
 			var parent = event.target;
-			while (parent.tagName != 'LI' && !parent.hasAttribute('default')) parent = parent.parentNode;
+
 			if (parent.hasAttribute('route')) {
 				naff.setLocation({route: parent.getAttribute('route')});
 				this.toggle = false;
 			} else {
-				var list = parent.querySelector('ul');
+				var list = parent.parentNode.querySelector('ul');
 				if (list.hasAttribute('active')) list.removeAttribute('active');
 				else list.setAttribute('active', '');
 			}
 
 			event.stopPropagation();
+			event.preventDefault();
 		},
 
 		toggleMenu: function()
@@ -106,6 +107,11 @@
 			} catch (e) {
 				throw 'naff-menu build error: invalid json string [' + menuItems.replace(/[\n\r]+/g, '') + ']';
 			}
+		},
+
+		addHash: function(a, b)
+		{
+			return '#' + this.item.route;
 		}
 	});
 ;
