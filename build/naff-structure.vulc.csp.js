@@ -63,13 +63,14 @@
 
 		changeRoute: function(event)
 		{
-			var parent = event.target;
+			var ele = event.target;
+			while (ele.tagName != 'LI') ele = ele.parentNode;
 
-			if (parent.hasAttribute('route')) {
-				naff.setLocation({route: parent.getAttribute('route')});
+			if (ele.hasAttribute('route')) {
+				naff.setLocation({route: ele.getAttribute('route')});
 				this.toggle = false;
 			} else {
-				var list = parent.parentNode.querySelector('ul');
+				var list = ele.parentNode.querySelector('ul');
 				if (list.hasAttribute('active')) list.removeAttribute('active');
 				else list.setAttribute('active', '');
 			}
