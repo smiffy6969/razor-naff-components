@@ -109,9 +109,10 @@
 			}
 		},
 
-		addHash: function(a, b)
+		addHash: function(ev, item)
 		{
-			return '#' + this.item.route;
+			console.log(this);
+			return '#';// + item.route;
 		}
 	});
 ;

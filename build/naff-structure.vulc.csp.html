@@ -46,20 +46,20 @@
 		<span class="_top-logo-text" naff-text="private.topLogoText" naff-route="private.defaultRoute" naff-on-click="changeRoute()" default=""></span>
 	</div>
 	<ul naff-show="toggle">
-		<li naff-each-item="attributes.menu-items">
-			<a naff-href="addHash < item" naff-on-click="changeRoute()" naff-route="item.route"><naff-icon naff-name="item.icon" naff-show="item.icon"></naff-icon>{{item.label}}</a>
+		<li naff-each-item="attributes.menu-items" naff-route="item.route">
+			<a naff-href="item.route | prefix '#'" naff-on-click="changeRoute()"><naff-icon naff-name="item.icon" naff-show="item.icon"></naff-icon>{{item.label}}</a>
 			<ul naff-if="item.menuItems">
-				<li naff-each-item2="item.menuItems">
-					<a naff-href="item2.route" naff-on-click="changeRoute()" naff-route="item2.route"><naff-icon naff-name="item2.icon" naff-show="item2.icon"></naff-icon>{{item2.label}}</a>
+				<li naff-each-item2="item.menuItems" naff-route="item2.route">
+					<a naff-href="item2.route | prefix '#'" naff-on-click="changeRoute()"><naff-icon naff-name="item2.icon" naff-show="item2.icon"></naff-icon>{{item2.label}}</a>
 					<ul naff-if="item2.menuItems">
-						<li naff-each-item3="item2.menuItems">
-							<a naff-href="item3.route" naff-on-click="changeRoute()" naff-route="item3.route"><naff-icon naff-name="item3.icon" naff-show="item3.icon"></naff-icon>{{item3.label}}</a>
+						<li naff-each-item3="item2.menuItems" naff-route="item3.route">
+							<a naff-href="item3.route | prefix '#'" naff-on-click="changeRoute()"><naff-icon naff-name="item3.icon" naff-show="item3.icon"></naff-icon>{{item3.label}}</a>
 							<ul naff-if="item3.menuItems">
-								<li naff-each-item4="item3.menuItems">
-									<a naff-href="item4.route" naff-on-click="changeRoute()" naff-route="item4.route"><naff-icon naff-name="item4.icon" naff-show="item4.icon"></naff-icon>{{item4.label}}</a>
+								<li naff-each-item4="item3.menuItems" naff-route="item4.route">
+									<a naff-href="item4.route | prefix '#'" naff-on-click="changeRoute()"><naff-icon naff-name="item4.icon" naff-show="item4.icon"></naff-icon>{{item4.label}}</a>
 									<ul naff-if="item4.menuItems">
-										<li naff-each-item5="item4.menuItems">
-											<a naff-href="item5.route" naff-on-click="changeRoute()" naff-route="item5.route"><naff-icon naff-name="item5.icon" naff-show="item5.icon"></naff-icon>{{item5.label}}</a>
+										<li naff-each-item5="item4.menuItems" naff-route="item5.route">
+											<a naff-href="item5.route | prefix '#'" naff-on-click="changeRoute()"><naff-icon naff-name="item5.icon" naff-show="item5.icon"></naff-icon>{{item5.label}}</a>
 										</li>
 									</ul>
 								</li>
