@@ -940,21 +940,21 @@
 
 <!-- STYLE - Encapsulate all css to tag name -->
 <style>
-	naff-modal { display: none; opacity: 0; position: fixed; z-index: 2000; width: 50%; max-width: 95%; top: 50%; left: 50%; background-color: white; box-shadow: 0 0 40px -10px #888; border: 1px solid #ccc; border-radius: 2px; -webkit-transition: opacity .2s ease-in-out; -moz-transition: opacity .2s ease-in-out; -ms-transition: opacity .2s ease-in-out; -o-transition: opacity .2s ease-in-out; transition: opacity .2s ease-in-out; }
+	naff-modal { display: none; opacity: 0; position: fixed; z-index: 2000; width: 50%; max-width: 95%; top: 50%; left: 50%; background-color: white; box-shadow: 0 0 40px -10px #000; -webkit-transition: opacity .2s ease-in-out; -moz-transition: opacity .2s ease-in-out; -ms-transition: opacity .2s ease-in-out; -o-transition: opacity .2s ease-in-out; transition: opacity .2s ease-in-out; }
 	@media (max-width:500px) { naff-modal { width: 97% !important; } }
-	naff-modal .-heading { padding: 10px; border-bottom: 1px solid #ddd; min-height: 30px; }
-	naff-modal .-heading heading { padding: 0px 40px 0px 0px; font-size: 20px; line-height: 30px; font-weight: bold; color: #555;}
-	naff-modal .-heading .-close { opacity: 0.8; position: absolute; top: 10px; right: 10px; }
-	naff-modal .-heading .-close:hover { opacity: 1; }
-	naff-modal main { display: block; padding: 10px; overflow: auto; box-sizing: border-box; width: 99.9%; max-height: 500px; }
-	naff-modal footer { display: block; padding: 10px; border-top: 1px solid #ddd; text-align: right; }
+	naff-modal .-heading { padding: 10px; border-bottom: 1px solid #555; min-height: 30px; background-color: #555; }
+	naff-modal .-heading heading { padding: 0px 40px 0px 0px; font-size: 20px; line-height: 30px; font-weight: bold; color: #eee; }
+	naff-modal .-heading .-close { cursor: pointer; font-size: 24px; line-height: 30px; color: #eee; position: absolute; top: 10px; right: 10px; }
+	naff-modal .-heading .-close:hover { opacity: 0.8; }
+	naff-modal main { display: block; padding: 10px; overflow: auto; box-sizing: border-box; width: 99.9%; max-height: 500px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; }
+	naff-modal footer { display: block; padding: 10px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-top: 1px solid #ddd; border-bottom: 1px solid #ccc; background-color: #f6f6f6; text-align: right; }
 </style>
 
 <!-- TEMPLATE -->
 <template id="naff-modal">
 	<div class="-heading">
 		<content select="heading"></content>
-		<button is="naff-x-button" class="-close" shape="round" color="red" size="medium" naff-on-click="hide()" icon=""><naff-icon name="times"></naff-icon></button>
+		<naff-icon class="-close" name="times" naff-on-click="hide()"></naff-icon>
 	</div>
 	<content select="main"></content>
 	<content select="footer"></content>
